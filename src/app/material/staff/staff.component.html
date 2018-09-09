@@ -1,0 +1,119 @@
+
+  <!--条件查询-->
+  <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
+  <!--操作层-->  
+  <div nz-row style="margin-top: 16px;">
+      <div nz-col [nzSpan]="24" style="text-align: left;">
+        <button nz-button [nzType]="'primary'" (click)="add()">新增商品</button>
+      </div>
+    </div>
+  <div class="search-result-list">
+      <nz-table #productManageTable [nzData]="dataList" [nzPageSize]="10" [nzScroll]="{x:'500px'}" [nzLoading]="false">
+          <thead>
+            <tr>
+              <th nzWidht="100px" nzLeft="0px">姓名</th>
+              <th>年龄</th>
+              <th>性别</th>
+              <th>家庭住址</th>
+              <th>联系电话</th>
+              <th>薪资水平</th>
+              <th nzWidth="100px" nzRight="0px">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of productManageTable.data">
+              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
+              <td>{{data.code}}</td>
+              <td>{{data.age}}</td>
+              <td>{{data.sex}}</td>
+              <td>{{data.address}}</td>
+              <td>{{data.money}}</td>
+              <td nzRight="0px">
+                <a>查看</a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+  </div>
+  <!--模态框-->
+  <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
+      <form nz-form>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>姓名</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="请输入员工姓名">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>年龄</nz-form-label>
+                <nz-form-control>
+                  <nz-input-group>
+                    <input type="text" nz-input placeholder="请输入员工年龄">
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>家庭住址</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="请输入家庭住址">
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>联系电话</nz-form-label>
+                <nz-form-control>
+                    <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+                        <ng-template #addOnBeforeTemplate>
+                          <nz-select  style="width: 70px;" >
+                            <nz-option nzLabel="+86" nzValue="+86"></nz-option>
+                          </nz-select>
+                        </ng-template>
+                        <input  id="'phoneNumber'" nz-input>
+                      </nz-input-group>
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <div nz-row nzGutter="8">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label>薪资水平</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input placeholder="请输入薪资水平">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label>供应商</nz-form-label>
+                  <nz-form-control>
+                      <nz-select nzPlaceHolder="请选择规格">
+                        <nz-option nzLabel="预定" nzValue="预定"></nz-option>
+                        <nz-option nzLabel="未预定" nzValue="未预定"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label>描述</nz-form-label>
+                <nz-form-control>
+                  <textarea nz-input placeholder="请输入描述内容" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </form>
+  </app-drawer>
