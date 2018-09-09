@@ -1,0 +1,24 @@
+<!--搜索模块-->
+<form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="8" *ngFor="let control of seachArray" [style.display]="control.show?'block':'none'">
+      <nz-form-item nzFlex >
+        <nz-form-label [nzFor]="control.name">{{control.name}}</nz-form-label>
+        <nz-form-control>
+          <input *ngIf="!control.isTime"  nz-input placeholder="请输入关键字" [formControlName]="control.key" [attr.id]="'field'+control.index">
+          <nz-date-picker  *ngIf="control.isTime" [nzFormat]="dateFormat" [formControlName]="control.key" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col [nzSpan]="24" style="text-align: right;">
+      <button nz-button [nzType]="'primary'" (click)="searchData()">查询</button>
+      <button nz-button (click)="resetForm()">清空</button>
+      <a style="margin-left:8px;font-size:12px;" (click)="toggleCollapse()" *ngIf="seachArray.length >3">
+        展开更多
+        <i class="anticon" [class.anticon-down]="isCollapse" [class.anticon-up]="!isCollapse"></i>
+      </a>
+    </div>
+  </div>
+</form>

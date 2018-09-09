@@ -1,0 +1,38 @@
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.css']
+})
+export class SearchComponent implements OnInit {
+  @Input() seachArray: any;
+  @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
+  validateForm: FormGroup;
+  isCollapse = true;
+
+  toggleCollapse(): void {
+    this.isCollapse = !this.isCollapse;
+    this.seachArray.forEach((c, index) => {
+      c.show = this.isCollapse ? (index < 3) : true;
+    });
+  }
+  resetForm(): void {
+    this.validateForm.reset();
+    this.searchData();
+  }
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit() {
+    this.validateForm = this.fb.group({});
+    for (let i = 0; i < this.seachArray.length ; i++) {
+      this.validateForm.addControl(this.seachArray[i].key, new FormControl());
+    }
+  }
+  // 数据查询
+  searchData() {
+    this.callBack.emit(this.validateForm.value);
+  }
+
+}

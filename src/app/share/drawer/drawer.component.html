@@ -1,0 +1,9 @@
+<nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"[nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible" [nzTitle]="title" (nzOnClose)="close()">
+   <div class="detail">
+     <ng-content></ng-content>
+   </div>
+    <div class="footer">
+      <button type="button" (click)="close()" class="ant-btn" style="margin-right: 8px;"><span>取消</span></button>
+      <button type="button" (click)="submit()" class="ant-btn ant-btn-primary"><span>提交</span></button>
+    </div>
+  </nz-drawer>

@@ -1,0 +1,15 @@
+@enable-gradients: true;
+
+.background-linear(@start, @middle, @end) {
+  background: @middle;
+  @colors: top, @start 0%, @middle 50%, @end 100%;
+
+    background: -moz-linear-gradient(top, @colors);
+    background: -webkit-gradient(linear, left top, left center, left bottom, color-stop(0%, @start), color-stop(50%, @middle), color-stop(100%, @end));
+    background: -webkit-linear-gradient(top, @colors);
+    background: -o-linear-gradient(top, @colors);
+    background: -ms-linear-gradient(top, @colors);
+    background: linear-gradient(to bottom, @start 0%, @middle 50%, @end 100%);
+    // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='\'' + @start + '\'', endColorstr='\'' + @end + '\'', GradientType=0);
+
+}
