@@ -6,6 +6,7 @@ import {
   Validators
 } from '@angular/forms';
 import { LoginService } from '../../common/service/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router,
   ) {
     this.title = '../../assets/img/title.png';
     this.kiwifruit = '../../assets/img/kiwifruit.png';
@@ -56,6 +58,9 @@ export class LoginComponent implements OnInit {
     };
     this.loginService.loginUser(loginObj).subscribe((res) => {
       console.log(res);
+      if  (res) {
+          this.router.navigate(['material/product']);
+      }
     });
   }
 }

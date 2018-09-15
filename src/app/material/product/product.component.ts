@@ -30,8 +30,9 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       {key: 'name', index: 0, name: '名称', show: true},
       {key: 'code', index: 1, name: '编码', show: true},
       {key: 'size', index: 2, name: '规格', show: true},
-      {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
-      {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
+      {key: 'stock', index: 3, name: '库存', show: true},
+      // {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
+      // {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
     ];
   }
 

@@ -6,15 +6,16 @@
     </button>
     <span>新七天产库管理系统</span>
   </div>
-  <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed" class="menu-list">
-    <li nz-submenu *ngFor="let menu of menuList">
+  <!--一级菜单-->
+  <ul nz-menu [nzMode]="'inline'" nzTheme='dark'  [nzInlineCollapsed]="false" [nzSelectable]="true" class="menu-list">
+    <li nz-submenu *ngFor="let menu of menuList" [nzOpen]="menu.select">
       <span title>
         <i class="anticon anticon-appstore"></i>
         <span>{{menu.title}}</span>
       </span>
+      <!--二级菜单-->
       <ul>
-        <li nz-menu-item *ngFor="let menu1 of menu.childs"><a [routerLink]="menu1.link" >{{menu1.title}}</a></li>
-        
+        <li nz-menu-item *ngFor="let menu1 of menu.childs" [nzSelected]="menu1.select"><a [routerLink]="menu1.link" >{{menu1.title}}</a></li>
       </ul>
     </li>
   </ul>
