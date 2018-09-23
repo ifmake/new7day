@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build  --prod --aot",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,6 +23,7 @@
     "core-js": "^2.5.4",
     "less": "^2.7.3",
     "ng-zorro-antd": "^1.4.0",
+    "ngx-echarts": "^3.2.0",
     "rxjs": "^6.0.0",
     "zone.js": "~0.8.26"
   },

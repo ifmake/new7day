@@ -8,16 +8,22 @@ export class DrawerComponent implements OnInit {
   title = '新建';
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   @Input() visible: boolean;
-  constructor() { }
+  data: any;
+  constructor() {
+    this.data = {
+      status: false,
+    };
+  }
 
   ngOnInit() {
   }
 
   close(): void {
-    this.callBack.emit('no');
+    this.callBack.emit(this.data);
   }
   submit() {
-    this.callBack.emit('yes');
+    this.data.status = true;
+    this.callBack.emit(this.data);
   }
 
 }

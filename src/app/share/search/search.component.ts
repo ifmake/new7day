@@ -27,11 +27,16 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.validateForm = this.fb.group({});
     for (let i = 0; i < this.seachArray.length ; i++) {
-      this.validateForm.addControl(this.seachArray[i].key, new FormControl());
+      this.validateForm.addControl(this.seachArray[i].key, new FormControl(''));
     }
   }
   // 数据查询
   searchData() {
+    for (const key in this.validateForm.value) {
+      if (this.validateForm.value[key] === null ) {
+        this.validateForm.value[key] = '';
+      }
+    }
     this.callBack.emit(this.validateForm.value);
   }
 

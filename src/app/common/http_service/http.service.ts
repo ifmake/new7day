@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Observable, throwError, observable } from 'rxjs';
 import { catchError, retry, tap} from 'rxjs/operators';
+import { LocalStorage } from '../storage/local.storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-
+  headerChnage: any;
   constructor(
     public _http: HttpClient,
-  ) { }
-
-
+    private storage: LocalStorage,
+  ) {
+    this.headerChnage = 'JWT ' + JSON.parse(this.storage.get('loginer')).token;
+   }
   /**
    * 公用请求
    * @param way 请求方式
@@ -21,7 +23,7 @@ export class HttpService {
    */
   request(way: string, url: string, option: Object) {
     return new Observable((Observer) => {
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8'});
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': this.headerChnage });
       const options = Object.assign({}, {headers: headers}, option);
       this._http.request(way, url, options).pipe(
         tap(
@@ -31,10 +33,16 @@ export class HttpService {
         catchError(this.handleError)
       ).subscribe(
         (data: any) => {
-          console.log(data);
+          if (data !== null) {
+            Observer.next(data.data || data);
+          } else {
+            Observer.next('无内容');
+          }
+          Observer.complete();
         },
         error => {
-          console.log(error);
+          Observer.next(error.error || error);
+          Observer.complete();
         },
       );
     });
@@ -64,6 +72,16 @@ export class HttpService {
    * @param url 请求地址
    * @param opts 请求参数
    */
+  patch(url: string, opts?: Object) {
+    return this.request('patch', url, Object.assign({}, opts, {
+      body: JSON.stringify(typeof opts['body'] === 'object' ? opts['body'] : {})
+    }));
+  }
+    /**
+   * put 请求
+   * @param url 请求地址
+   * @param opts 请求参数
+   */
   put(url: string, opts: Object = {}) {
     return this.request('put', url, Object.assign({}, opts, {
       body: JSON.stringify(typeof opts['body'] === 'object' ? opts['body'] : {})
@@ -80,7 +98,6 @@ export class HttpService {
     }, opts));
   }
 
-
   /**
    * 错误处理
    */
@@ -88,8 +105,9 @@ export class HttpService {
     if (error.error instanceof ErrorEvent) {
       console.error('错误产生于', error.error.message);
     } else {
-      console.error(`请求状态 ${error.status}, 请求体报错: ${error.error}`);
+      console.log(error);
+      // console.error(`请求状态 ${error.status}, 请求体报错: ${error.error}`);
     }
-    return throwError('重新请求');
+    return throwError(error);
   }
 }

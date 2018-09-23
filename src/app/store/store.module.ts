@@ -8,10 +8,12 @@ import { StoreImportComponent } from './store-import/store-import.component';
 import { StoreExportComponent } from './store-export/store-export.component';
 import { StoreCostComponent } from './store-cost/store-cost.component';
 import { StoreLoseComponent } from './store-lose/store-lose.component';
+import { ShareModule } from '../share/share.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    ShareModule,
     RouterModule.forChild(storeRouter)
   ],
   declarations: [StoreComponent, SotreSearchComponent, StoreImportComponent, StoreExportComponent, StoreCostComponent, StoreLoseComponent]

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MaterialCommon } from '../material.common';
+import { Subject, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { ProductService } from '../../common/service/product.service';
 
 @Component({
   selector: 'app-product',
@@ -8,46 +11,111 @@ import { MaterialCommon } from '../material.common';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent extends MaterialCommon implements OnInit {
+  searchStream = new Subject<any>();
+  ObserverList: Observable<any>;
   dataList: any;
-  dateFormat = 'yyyy/MM/dd';
-  constructor() {
+
+  // 新增商品表单
+  prodcutForm: FormGroup;
+  constructor(
+    private productService: ProductService,
+    private fb: FormBuilder,
+  ) {
     super();
-    this.dataList = [
-      {
-        name: '奶精',
-        code: '3212asudhflkasdjfjl.ka',
-        image: '----',
-        in_price: '30',
-        sale_price: '50asjdflk阿斯顿发送到发；爱丽丝的看法；拉屎开的发票发的按时发生的法律思考对方',
-        store: '100',
-        company: '新七天123',
-        size: '0990',
-        describe: '优势优良',
-        active: '有效'
-      }
-    ];
+    // 数据列表查询
+    this.searchStream.pipe(switchMap(() => {
+      return this.productService.getProductList(this.searchObj);
+    })).subscribe(res => {
+      this.listLoading = false;
+      this.dataList = res;
+      console.log(this.dataList.count);
+    });
     this.searchArray = [
       {key: 'name', index: 0, name: '名称', show: true},
       {key: 'code', index: 1, name: '编码', show: true},
-      {key: 'size', index: 2, name: '规格', show: true},
-      {key: 'stock', index: 3, name: '库存', show: true},
-      // {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
-      // {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
+      {key: 'spec', index: 2, name: '规格', show: true},
+      {key: 'search', index: 2, name: '模糊查询', show: true},
     ];
+    // 新增商品表单
+    this.prodcutForm = this.fb.group({
+      name: [{value: '', disabled: false}, [Validators.required]],
+      short_name: [{value: '', disabled: false}, [Validators.required]],
+      id: [{value: '', disabled: false}],
+      code: [{value: '', disabled: false}],
+      in_price: [{value: '', disabled: false}],
+      sale_price: [{value: '', disabled: false}],
+      stock: [{value: '', disabled: false}],
+      unit: [{value: '', disabled: false}],
+      brand: [{value: '', disabled: false}],
+      img: [{value: '', disabled: false}],
+      desc: [{value: '', disabled: false}],
+    });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.searchStream.next();
+  }
   // 数据查询
-  searchData(serachObj) {
-    console.log(serachObj);
+  refresh(keys) {
+    Object.assign(this.searchObj, keys);
+    this.searchStream.next();
+  }
+  // 分页查询
+  changPageIndex(page) {
+    this.searchObj.page = page;
+    this.searchStream.next();
+  }
+  PageSizeChange(size) {
+    this.searchObj.page_size = size;
+    this.searchStream.next();
   }
   // 新增
   add() {
     this.OpenDraw = true;
+    this.prodcutForm.reset();
   }
   // 确认添加
   dataBack(msg) {
+    if (msg.status) {
+      if (!this.prodcutForm.value.id || this.prodcutForm.value.id === '' ) {
+        this.productService.createProduct(this.prodcutForm.value).subscribe((res) => {
+          if (res) {
+            this.searchStream.next();
+          }
+        });
+      } else {
+        this.productService.reviseProduct(this.prodcutForm.value.id, this.prodcutForm.value).subscribe(res => {
+          this.searchStream.next();
+        });
+      }
+    }
     this.OpenDraw = false;
+  }
+  // 删除商品
+  deleteProduct(id) {
+    this.productService.deleteProduct(id).subscribe(res => {
+      this.searchStream.next();
+    });
+  }
+  // 查看商品资料
+  reviseDetail(id) {
+    this.OpenDraw = true;
+    this.productService.getProductDetail(id).subscribe(res => {
+      console.log(res);
+      const {
+        id = '',
+        name = '',
+        short_name = '',
+        code = '',
+        in_price = '',
+        sale_price = '',
+        stock = '',
+        unit = '',
+        brand = '',
+        img = '',
+        desc = ''} = res;
+        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, stock , unit,  brand , img, desc});
+    });
   }
 
   }

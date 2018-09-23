@@ -8,10 +8,9 @@ export const login_api = {
 };
 
 // 资料管理
-export const material_api = {
-    list: () => `${API_PREFIX}`,
-    detail: () => ``,
-    create: () => ``,
-    delete: () => ``,
+export const api_product = {
+    list: () => `${API_PREFIX}/goods/goods/`,
+    detail: (id) => `${API_PREFIX}/goods/goods/${id}/`,  // 查询或删除地址
+    create: () => `${API_PREFIX}/goods/goods/`,
 };
 

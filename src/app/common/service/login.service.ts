@@ -12,7 +12,7 @@ export class LoginService {
    * 登录用户
    * @param body 登录用户账号密码
    */
-  loginUser(body: any) {
+  loginUser(body: any): any {
       return this._httpService.post(login_api.login(), {body: body});
   }
 }

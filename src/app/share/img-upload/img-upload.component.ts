@@ -9,14 +9,7 @@ import { UploadFile, NzMessageService } from 'ng-zorro-antd';
 export class ImgUploadComponent implements OnInit {
 
   // 图片上传配置
-  fileList = [
-    {
-      uid: -1,
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    }
-  ];
+  fileList = [];
   previewImage = '';
   previewVisible = false;
   handlePreview = (file: UploadFile) => {

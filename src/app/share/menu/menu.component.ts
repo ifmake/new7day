@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 
 @Component({
@@ -6,8 +6,8 @@ import { Router, NavigationEnd, NavigationStart } from '@angular/router';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.less']
 })
-export class MenuComponent implements OnInit {
-
+export class MenuComponent implements OnInit, OnChanges {
+  @Input() Islogin: boolean;
   isCollapsed = false;
   menuList = [
     {title: '资料管理', link: 'material', active: 'active', select: false, childs: [
@@ -30,15 +30,17 @@ export class MenuComponent implements OnInit {
   ) {
     this.router.events.subscribe(route => {
       if (route instanceof NavigationEnd) {
-        console.log(route);
         // 组件限制两层
       this.unfoldActiveLink(route);
       }
     });
   }
-
-  ngOnInit() {
+  ngOnChanges(change) {
+    // this.menuList[0].select = true;
+    // this.menuList[0].childs[0].select = true;
   }
+
+  ngOnInit() {}
   // 动态控制菜单栏伸缩
   toggleCollapsed(): void {
     this.isCollapsed = !this.isCollapsed;

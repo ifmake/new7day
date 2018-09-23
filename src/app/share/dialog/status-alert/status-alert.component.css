@@ -1,0 +1,7 @@
+.status_alert {
+    position: fixed;
+    min-width: 30%;
+    top: 18%;
+    z-index: 999;
+    right: 0;
+}

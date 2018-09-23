@@ -1,19 +1,19 @@
-<app-login *ngIf="!Islogin"></app-login>
+<app-login [Islogin]="Islogin" (login)="login()"></app-login>
 
-<nz-layout style="height:100%" *ngIf="Islogin">
+<nz-layout style="height:100%" *ngIf="!Islogin">
   <nz-sider nzCollapsible [nzCollapsedWidth]="0" [nzBreakpoint]="'lg'" >
     <div class="logo">
     </div>
     <div class="menu">
-      <app-menu></app-menu>
+      <app-menu [Islogin]="Islogin"></app-menu>
     </div>
   </nz-sider>
   <nz-layout>
     <nz-header class="header">
       <div class="user-name">
         欢迎root用户
-        <a>退出</a>&nbsp;|&nbsp;
-        <a>修改密码</a>
+        <span class="login_out" (click)="loginOut()">退出</span>|
+        <span class="login_out">修改密码</span>
       </div>
     </nz-header>
     <nz-content class="content">
