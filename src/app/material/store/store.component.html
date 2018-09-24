@@ -8,7 +8,13 @@
       </div>
     </div>
   <div class="search-result-list">
-      <nz-table #productManageTable [nzData]="dataList" [nzPageSize]="10" [nzScroll]="{x:'500px'}" [nzLoading]="false">
+      <nz-table 
+      #productManageTable 
+      [nzData]="dataList?.results" 
+      [nzScroll]="{x:'500px'}"
+      [nzShowPagination]="false"
+      [nzPageSize] = "dataList?.page_size"
+      [nzLoading]="listLoading">
           <thead>
             <tr>
               <th nzWidht="100px" nzLeft="0px">仓库名称</th>
@@ -21,36 +27,41 @@
           <tbody>
             <tr *ngFor="let data of productManageTable.data">
               <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
-              <td>{{data.type}}</td>
-              <td>{{data.manager}}</td>
-              <td>{{data.volume}}</td>
+              <td>{{data.type === 'main'?'总仓库':'分仓库'}}</td>
+              <td>{{data.depot_keepers[0]}}</td>
+              <td>{{data.cubage}}</td>
               <td nzRight="0px">
-                <a style="margin-right:10px;">删除</a>
-                <a>查看详情</a>
+                  <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
+                  <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该仓库'" (callBack)="deleteProduct($event,data.id)"></app-comfirm-alert>
               </td>
             </tr>
           </tbody>
         </nz-table>
+        <app-pagination 
+        [nzTotal]="dataList?.count || 0" 
+        [nzPageSize]="searchObj.page_size"
+        (nzPageIndexChange)="changPageIndex($event)" 
+        (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
   </div>
   <!--模态框-->
   <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
-      <form nz-form>
+      <form nz-form [formGroup]="storeForm">
           <div nz-row nzGutter="8">
               <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label>仓库名称</nz-form-label>
+                  <nz-form-label  nzRequired>仓库名称</nz-form-label>
                   <nz-form-control>
                       <nz-form-control>
-                          <input nz-input placeholder="请输入仓库名称">
+                          <input nz-input formControlName="name" placeholder="请输入仓库名称">
                       </nz-form-control>
                   </nz-form-control>
                 </nz-form-item>
               </div>
               <div nz-col nzSpan="12">
                   <nz-form-item>
-                      <nz-form-label>仓库管理人</nz-form-label>
+                      <nz-form-label >仓库负责人</nz-form-label>
                       <nz-form-control>
-                          <input nz-input placeholder="请输入仓库管理人名称">
+                          <input nz-input formControlName="name"  placeholder="请输入仓库管理人名称">
                       </nz-form-control>
                     </nz-form-item>
               </div>
@@ -60,9 +71,9 @@
               <nz-form-item>
                 <nz-form-label>仓库类型</nz-form-label>
                 <nz-form-control>
-                    <nz-select nzPlaceHolder="请选择仓库类型">
-                      <nz-option nzLabel="1级仓库" nzValue="预定"></nz-option>
-                      <nz-option nzLabel="2级仓库" nzValue="未预定"></nz-option>
+                    <nz-select formControlName="type" nzPlaceHolder="请选择仓库类型">
+                      <nz-option nzLabel="总库" nzValue="main"></nz-option>
+                      <nz-option nzLabel="分库" nzValue="branch"></nz-option>
                     </nz-select>
                 </nz-form-control>
               </nz-form-item>
@@ -71,17 +82,27 @@
                 <nz-form-item>
                     <nz-form-label>仓库容量</nz-form-label>
                     <nz-form-control>
-                        <input nz-input placeholder="请输入单位">
+                        <input nz-input formControlName="cubage" placeholder="请输入仓库容量">
                     </nz-form-control>
                   </nz-form-item>
             </div>
+          </div>
+          <div nz-row nzGutter="8">
+              <div nz-col nzSpan="24">
+                  <nz-form-item>
+                      <nz-form-label>添加仓库管理人</nz-form-label>
+                        <nz-select  nzDisabled = true [nzMaxMultipleCount]="5" style="width: 100%" nzMode="multiple" nzPlaceHolder="Please select" formControlName="depot_keepers">
+                            <nz-option *ngFor="let option of userList" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+                          </nz-select>
+                    </nz-form-item>
+              </div>
           </div>
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="24">
               <nz-form-item>
                 <nz-form-label>描述</nz-form-label>
                 <nz-form-control>
-                  <textarea nz-input placeholder="请输入描述内容" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
+                  <textarea nz-input formControlName="desc" placeholder="请输入描述内容" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
                 </nz-form-control>
               </nz-form-item>
             </div>

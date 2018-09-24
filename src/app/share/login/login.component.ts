@@ -8,6 +8,7 @@ import {
 import { LoginService } from '../../common/service/login.service';
 import { Router } from '@angular/router';
 import { LocalStorage } from '../../common/storage/local.storage';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
+    public message: NzMessageService,
     private storage: LocalStorage,
     private router: Router
   ) {
@@ -66,6 +68,12 @@ export class LoginComponent implements OnInit {
         this.storage.set('loginer', JSON.stringify(res));
         this.router.navigate(['material/product']);
         this.login.emit();
+      } else {
+        for (const err in res) {
+          if (err) {
+            this.message.create('error', res[err][0]);
+          }
+        }
       }
     });
   }

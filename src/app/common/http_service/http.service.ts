@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular
 import { Observable, throwError, observable } from 'rxjs';
 import { catchError, retry, tap} from 'rxjs/operators';
 import { LocalStorage } from '../storage/local.storage';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class HttpService {
   headerChnage: any;
   constructor(
     public _http: HttpClient,
+    public message: NzMessageService,
     private storage: LocalStorage,
   ) {
     this.headerChnage = 'JWT ' + JSON.parse(this.storage.get('loginer')).token;
@@ -29,7 +31,6 @@ export class HttpService {
         tap(
           event => {console.log(event); },
         ),
-        retry(1),
         catchError(this.handleError)
       ).subscribe(
         (data: any) => {
@@ -37,11 +38,13 @@ export class HttpService {
             Observer.next(data.data || data);
           } else {
             Observer.next('无内容');
+            this.message.create('warning', '无返回内容');
           }
           Observer.complete();
         },
         error => {
-          Observer.next(error.error || error);
+          Object.assign(error, {error: true});
+          Observer.next(error);
           Observer.complete();
         },
       );
@@ -103,11 +106,9 @@ export class HttpService {
    */
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      console.error('错误产生于', error.error.message);
+      return throwError(error.error);
     } else {
-      console.log(error);
-      // console.error(`请求状态 ${error.status}, 请求体报错: ${error.error}`);
+      return throwError(error.error);
     }
-    return throwError(error);
   }
 }

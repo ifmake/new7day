@@ -21,11 +21,8 @@
               <th>商品图片</th>
               <th>商品进价</th>
               <th>商品售价</th>
-              <th>库存</th>
-              <th>单位</th>
               <th>规格</th>
               <th>描述</th>
-              <th>是否预定</th>
               <th nzWidth="100px" nzRight="0px">操作</th>
             </tr>
           </thead>
@@ -36,26 +33,23 @@
               <td>{{data.image}}</td>
               <td>{{data.in_price}}</td>
               <td>{{data.sale_price}}</td>
-              <td>{{data.store}}</td>
-              <td>{{data.brand}}</td>
               <td>{{data.unit}}</td>
               <td>{{data.desc}}</td>
-              <td>{{data.active}}</td>
               <td nzRight="0px">
                 <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
-                <nz-tag [nzColor]="'blue'" (click) ="deleteProduct(data.id)">删除</nz-tag>
+                <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除商品'" (callBack)="deleteProduct($event,data.id)"></app-comfirm-alert>
               </td>
             </tr>
           </tbody>
         </nz-table>
         <app-pagination 
-        [nzTotal]="dataList?.count" 
+        [nzTotal]="dataList?.count || 0" 
         [nzPageSize]="searchObj.page_size"
         (nzPageIndexChange)="changPageIndex($event)" 
         (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
   </div>
   <!--模态框-->
-  <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
+  <app-drawer [visible]="OpenDraw" [title]="formTitle" (callBack)="dataBack($event)">
       <form nz-form [formGroup]="prodcutForm"> 
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
@@ -90,7 +84,7 @@
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>商品进价</nz-form-label>
+                <nz-form-label>商品市场进价</nz-form-label>
                 <nz-form-control>
                     <input nz-input formControlName="in_price" placeholder="请输入商品进价">
                   </nz-form-control>
@@ -98,51 +92,19 @@
             </div>
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>商品售价</nz-form-label>
+                <nz-form-label>商品市场售价</nz-form-label>
                 <nz-form-control>
                     <input nz-input formControlName="sale_price" placeholder="请输入商品售价">
                   </nz-form-control>
               </nz-form-item>
             </div>
           </div>
-          <!-- <div nz-row nzGutter="8">
-            <div nz-col nzSpan="12">
-              <nz-form-item>
-                <nz-form-label>库存类型</nz-form-label>
-                <nz-form-control>
-                    <nz-select nzPlaceHolder="请选择仓库类型">
-                      <nz-option nzLabel="1级仓库" nzValue="预定"></nz-option>
-                      <nz-option nzLabel="2级仓库" nzValue="未预定"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-              </nz-form-item>
-            </div>
-            <div nz-col nzSpan="12">
-                <nz-form-item>
-                    <nz-form-label>库存</nz-form-label>
-                    <nz-form-control>
-                        <input nz-input placeholder="请输入单位">
-                    </nz-form-control>
-                  </nz-form-item>
-            </div>
-          </div> -->
           <div nz-row nzGutter="8">
               <div nz-col nzSpan="12">
                 <nz-form-item>
                   <nz-form-label>规格</nz-form-label>
                   <nz-form-control>
                       <input nz-input formControlName="unit" placeholder="请输入规格">
-                  </nz-form-control>
-                </nz-form-item>
-              </div>
-              <div nz-col nzSpan="12">
-                <nz-form-item>
-                  <nz-form-label>供应商</nz-form-label>
-                  <nz-form-control>
-                      <nz-select formControlName="brand" nzPlaceHolder="请选择规格">
-                        <nz-option nzLabel="预定" nzValue="test1"></nz-option>
-                        <nz-option nzLabel="未预定" nzValue="test2"></nz-option>
-                      </nz-select>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -167,6 +129,3 @@
           </div>
         </form>
   </app-drawer>
-
-  <!--公用组件-->
-  <app-status-alert [type]="alertType"></app-status-alert>

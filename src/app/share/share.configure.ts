@@ -8,6 +8,8 @@ import { ProductService } from '../common/service/product.service';
 import { LocalStorage } from '../common/storage/local.storage';
 import { StatusAlertComponent } from './dialog/status-alert/status-alert.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { ComfirmAlertComponent } from './dialog/comfirm-alert/comfirm-alert.component';
+import { StoreService } from '../common/service/store.service';
 
 // 公用模块
 export  const moduleCommon = [
@@ -23,6 +25,7 @@ export const componentCommon = [
     DrawerComponent,
     ImgUploadComponent,
     PaginationComponent,
+    ComfirmAlertComponent,
 ];
 // entry组件
 export const componentEntry = [];
@@ -30,4 +33,5 @@ export const componentEntry = [];
 export const SERVICE = [
     LocalStorage,
     ProductService,
+    StoreService,
 ];

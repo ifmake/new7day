@@ -19,7 +19,7 @@ export class ProductService {
     return this._httpService.get(api_product.detail(id));
   }
   // 新增商品
-  createProduct(body: any) {
+  createProduct(body: any): any {
     return this._httpService.post(api_product.create(), {body: body});
   }
   // 删除商品

@@ -25,6 +25,7 @@ export class AppComponent {
         }
       }
     });
+    this.Islogin = true;
   }
   // 登录系统
   login() {

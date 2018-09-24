@@ -5,7 +5,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./drawer.component.css']
 })
 export class DrawerComponent implements OnInit {
-  title = '新建';
+  @Input()title = '新建';
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   @Input() visible: boolean;
   data: any;
@@ -19,6 +19,7 @@ export class DrawerComponent implements OnInit {
   }
 
   close(): void {
+    this.data.status = false;
     this.callBack.emit(this.data);
   }
   submit() {

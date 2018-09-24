@@ -4,6 +4,8 @@ import { MaterialCommon } from '../material.common';
 import { Subject, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ProductService } from '../../common/service/product.service';
+import { NzMessageService } from 'ng-zorro-antd';
+import { SupplierService } from '../../common/service/supplier.service';
 
 @Component({
   selector: 'app-product',
@@ -12,12 +14,12 @@ import { ProductService } from '../../common/service/product.service';
 })
 export class ProductComponent extends MaterialCommon implements OnInit {
   searchStream = new Subject<any>();
-  ObserverList: Observable<any>;
   dataList: any;
 
   // 新增商品表单
   prodcutForm: FormGroup;
   constructor(
+    public message: NzMessageService,
     private productService: ProductService,
     private fb: FormBuilder,
   ) {
@@ -44,7 +46,6 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       code: [{value: '', disabled: false}],
       in_price: [{value: '', disabled: false}],
       sale_price: [{value: '', disabled: false}],
-      stock: [{value: '', disabled: false}],
       unit: [{value: '', disabled: false}],
       brand: [{value: '', disabled: false}],
       img: [{value: '', disabled: false}],
@@ -53,6 +54,19 @@ export class ProductComponent extends MaterialCommon implements OnInit {
   }
 
   ngOnInit() {
+    this.searchStream.next();
+  }
+  // 接口错误提示
+  errorAlert(errors) {
+    for (const err in errors) {
+      if (err && typeof errors[err] === 'object') {
+        this.message.create('error', errors[err][0]);
+      }
+    }
+  }
+  // 数据查询
+  searchData(serachObj) {
+    Object.assign(this.searchObj, serachObj);
     this.searchStream.next();
   }
   // 数据查询
@@ -72,6 +86,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
   // 新增
   add() {
     this.OpenDraw = true;
+    this.formTitle = '商品新增';
     this.prodcutForm.reset();
   }
   // 确认添加
@@ -79,27 +94,44 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     if (msg.status) {
       if (!this.prodcutForm.value.id || this.prodcutForm.value.id === '' ) {
         this.productService.createProduct(this.prodcutForm.value).subscribe((res) => {
-          if (res) {
+          if (!res.error) {
+            this.OpenDraw = false;
+            this.message.create('success', '新建成功');
             this.searchStream.next();
+          } else {
+            this.errorAlert(res);
           }
         });
       } else {
         this.productService.reviseProduct(this.prodcutForm.value.id, this.prodcutForm.value).subscribe(res => {
-          this.searchStream.next();
+          if (!res.error) {
+            this.OpenDraw = false;
+            this.searchStream.next();
+            this.message.create('success', '修改成功');
+          } else {
+            this.errorAlert(res);
+          }
         });
       }
+    } else {
+      this.OpenDraw = false;
     }
-    this.OpenDraw = false;
   }
   // 删除商品
-  deleteProduct(id) {
-    this.productService.deleteProduct(id).subscribe(res => {
-      this.searchStream.next();
-    });
+  deleteProduct(status, id) {
+    if (status.type) {
+      this.productService.deleteProduct(id).subscribe(res => {
+        this.searchStream.next();
+        this.message.info('删除成功');
+      });
+    } else {
+      this.message.info('取消删除');
+    }
   }
   // 查看商品资料
   reviseDetail(id) {
     this.OpenDraw = true;
+    this.formTitle = '商品修改';
     this.productService.getProductDetail(id).subscribe(res => {
       console.log(res);
       const {
@@ -109,14 +141,14 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         code = '',
         in_price = '',
         sale_price = '',
-        stock = '',
         unit = '',
         brand = '',
         img = '',
         desc = ''} = res;
-        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, stock , unit,  brand , img, desc});
+        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, unit,  brand , img, desc});
     });
   }
+
 
   }
 

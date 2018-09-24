@@ -5,14 +5,20 @@
   <!--操作层-->  
   <div nz-row style="margin-top: 16px;">
       <div nz-col [nzSpan]="24" style="text-align: left;">
-        <button nz-button [nzType]="'primary'" (click)="add()">新增商品</button>
+        <button nz-button [nzType]="'primary'" (click)="add()">新增供应商</button>
       </div>
     </div>
   <div class="search-result-list">
-      <nz-table #productManageTable [nzData]="dataList" [nzPageSize]="10" [nzScroll]="{x:'1500px'}" [nzLoading]="false">
+      <nz-table #productManageTable 
+      [nzData]="dataList?.results" 
+      [nzPageSize]="10"
+      [nzScroll]="{x:'1500px'}"
+      [nzShowPagination]="false"
+      [nzPageSize] = "dataList?.page_size"
+      [nzLoading]="listLoading">
           <thead>
             <tr>
-              <th nzWidht="100px" nzLeft="0px">名称</th>
+              <th nzWidht="100px" nzLeft="0px">供应商名称</th>
               <th>供应类型</th>
               <th>详细地址</th>
               <th>执照编号</th>
@@ -27,30 +33,38 @@
           <tbody>
             <tr *ngFor="let data of productManageTable.data">
               <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
-              <td>{{data.type}}</td>
+              <td *ngIf="data.type ==='formal'">正规合作</td>
+              <td *ngIf="data.type ==='finance'">商铺合作</td>
+              <td *ngIf="data.type ==='stall'">摊贩合作</td>
               <td>{{data.address}}</td>
-              <td>{{data.code}}</td>
-              <td>{{data.boss}}</td>
-              <td>{{data.b_phone}}</td>
-              <td>{{data.staff}}</td>
-              <td>{{data.s_phone}}</td>
-              <td>{{data.describe}}</td>
+              <td>{{data.license_code}}</td>
+              <td>{{data.operator}}</td>
+              <td>{{data.tontact_phone}}</td>
+              <td>{{data.contact_name}}</td>
+              <td>{{data.tontact_phone}}</td>
+              <td>{{data.desc}}</td>
               <td nzRight="0px">
-                <a>查看</a>
+                <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
+                <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该仓库'" (callBack)="deleteProduct($event,data.id)"></app-comfirm-alert>
               </td>
             </tr>
           </tbody>
         </nz-table>
+        <app-pagination 
+        [nzTotal]="dataList?.count || 0" 
+        [nzPageSize]="searchObj.page_size"
+        (nzPageIndexChange)="changPageIndex($event)" 
+        (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
   </div>
   <!--模态框-->
   <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
-      <form nz-form>
+      <form nz-form [formGroup]="supplierFrom">
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>供应商名称</nz-form-label>
+                <nz-form-label nzRequired>供应商名称</nz-form-label>
                 <nz-form-control>
-                  <input nz-input nzRequired placeholder="请输入供应商名称">
+                  <input nz-input formControlName="name" placeholder="请输入供应商名称">
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -59,7 +73,7 @@
                 <nz-form-label>执照编号</nz-form-label>
                 <nz-form-control>
                   <nz-input-group>
-                    <input type="text" nz-input placeholder="请输入执照编号">
+                    <input type="text" formControlName="license_code" nz-input placeholder="请输入执照编号">
                   </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
@@ -70,10 +84,10 @@
                 <nz-form-item>
                   <nz-form-label nzRequired>合作类型</nz-form-label>
                   <nz-form-control>
-                      <nz-select nzPlaceHolder="请选择合作类型" >
-                        <nz-option nzLabel="正规合作" nzValue="0"></nz-option>
-                        <nz-option nzLabel="商铺合作" nzValue="1"></nz-option>
-                        <nz-option nzLabel="摊贩合作" nzValue="2"></nz-option>
+                      <nz-select formControlName="type" nzPlaceHolder="请选择合作类型" >
+                        <nz-option nzLabel="正规合作" nzValue="formal"></nz-option>
+                        <nz-option nzLabel="商铺合作" nzValue="finance"></nz-option>
+                        <nz-option nzLabel="摊贩合作" nzValue="stall"></nz-option>
                       </nz-select>
                   </nz-form-control>
                 </nz-form-item>
@@ -82,7 +96,7 @@
                   <nz-form-item>
                       <nz-form-label>供应商地址</nz-form-label>
                       <nz-form-control>
-                          <input nz-input placeholder="请输入单位">
+                          <input formControlName="address" nz-input placeholder="请输入单位">
                       </nz-form-control>
                     </nz-form-item>
               </div>
@@ -90,17 +104,17 @@
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>负责人</nz-form-label>
+                <nz-form-label nzRequired>负责人</nz-form-label>
                 <nz-form-control>
-                    <input nz-input placeholder="请输入负责人名称">
+                    <input nz-input formControlName="operator" placeholder="请输入负责人名称">
                   </nz-form-control>
               </nz-form-item>
             </div>
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>负责人电话</nz-form-label>
+                <nz-form-label >负责人电话</nz-form-label>
                 <nz-form-control>
-                    <input nz-input placeholder="请输入负责人电话">
+                    <input nz-input formControlName="tontact_phone"  placeholder="请输入负责人电话">
                   </nz-form-control>
               </nz-form-item>
             </div>
@@ -111,7 +125,7 @@
                 <nz-form-item>
                   <nz-form-label>经办人</nz-form-label>
                   <nz-form-control>
-                      <input nz-input placeholder="请输入经办人名称">
+                      <input nz-input formControlName="contact_name" placeholder="请输入经办人名称">
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -120,7 +134,7 @@
                   <nz-form-label>经办人电话</nz-form-label>
                   <nz-form-control>
                       <nz-form-control>
-                          <input nz-input placeholder="请输入经办人电话">
+                          <input nz-input formControlName="tontact_phone" placeholder="请输入经办人电话">
                       </nz-form-control>
                   </nz-form-control>
                 </nz-form-item>
@@ -131,7 +145,7 @@
               <nz-form-item>
                 <nz-form-label>描述</nz-form-label>
                 <nz-form-control>
-                  <textarea nz-input placeholder="请输入描述内容" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
+                  <textarea nz-input formControlName="desc" placeholder="请输入描述内容" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
                 </nz-form-control>
               </nz-form-item>
             </div>
