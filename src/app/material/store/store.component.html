@@ -28,7 +28,7 @@
             <tr *ngFor="let data of productManageTable.data">
               <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
               <td>{{data.type === 'main'?'总仓库':'分仓库'}}</td>
-              <td>{{data.depot_keepers[0]}}</td>
+              <td>{{getManagers(data.depot_keepers)}}</td>
               <td>{{data.cubage}}</td>
               <td nzRight="0px">
                   <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>

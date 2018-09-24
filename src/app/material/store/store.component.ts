@@ -15,6 +15,7 @@ import { AccountService } from '../../common/service/account.service';
 export class StoreComponent extends MaterialCommon implements OnInit {
   searchStream = new Subject<any>();
   dataList: any;
+  managerStr: string;
   storeForm: FormGroup;
   constructor(
     public message: NzMessageService,
@@ -56,6 +57,16 @@ export class StoreComponent extends MaterialCommon implements OnInit {
       if (err && typeof errors[err] === 'object') {
         this.message.create('error', errors[err][0]);
       }
+    }
+  }
+  // 获取仓库管理人
+  getManagers(manages: any = []) {
+    this.managerStr  = '';
+    if (manages.length > 0) {
+      manages.map((manger) => {
+        this.managerStr += manger.name + ',';
+      });
+      return this.managerStr;
     }
   }
 

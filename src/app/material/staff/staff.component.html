@@ -36,7 +36,7 @@
               <td>{{data.gender}}</td>
               <td>{{data.address}}</td>
               <td>{{data.phone}}</td>
-              <td>{{data.money}}</td>
+              <td>{{data.salary}}</td>
               <td nzRight="0px">
                 <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
                 <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该仓库'" (callBack)="deleteStaff($event,data.id)"></app-comfirm-alert>
