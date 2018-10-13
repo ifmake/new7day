@@ -1,0 +1,30 @@
+<div class="product_cards">
+  <div class="product_card" *ngFor= "let pro of stockArr; let i = index"  [ngStyle]="{'margin-right': (i+1)%4 === 0? '0':'2.6%'}">
+    <nz-card  nzHoverable  
+    [nzActions]="[actionDetail,actionImport,actionExport]"
+    [nzLoading]="cardLoading"
+    [nzCover]="coverTemplate">
+      <nz-card-meta [nzTitle]="pro.name || '商品不存在'" [nzDescription]="pro.desc || ''"></nz-card-meta>
+
+    </nz-card>
+    <ng-template #coverTemplate>
+      <div class="rzl_card_content">
+        <div class="card_img">
+            <img alt="example" [src]="pro.imgUrl || '暂无图片'"/>
+            <div class="select_input">
+                <label nz-checkbox [(ngModel)]="pro.select"></label>
+            </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #actionDetail>
+       <span (click)="operatePro(pro,'look')">查看</span>
+    </ng-template> 
+    <ng-template #actionImport>
+      <span (click)="operatePro(pro,'import')">进货</span>
+    </ng-template>
+    <ng-template #actionExport>
+      <span (click)="operatePro(pro,'export')">出货</span>
+    </ng-template>
+  </div>
+</div>

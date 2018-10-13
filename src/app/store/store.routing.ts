@@ -9,7 +9,7 @@ export const storeRouter: Routes = [
     { path: '', redirectTo: 'search', pathMatch: 'full'},
     {path: 'search', component: SotreSearchComponent},
     {path: 'import', component: StoreImportComponent},
-    {path: 'export', component: StoreExportComponent},
+    // {path: 'export', component: StoreExportComponent},
     {path: 'cost', component: StoreCostComponent},
     {path: 'lose', component: StoreLoseComponent},
 ];

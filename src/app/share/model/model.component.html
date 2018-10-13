@@ -1,0 +1,14 @@
+
+<div *ngIf="OpenModel" class="model_body">
+    <div class="model_body">
+        <div class="model_title">
+            {{title}}
+        </div>
+        <div class="model_content">
+            <ng-content></ng-content>
+        </div>
+        <div class="model_footer">
+            <button nz-button [nzType]="'default'" (click)="closeModel()">关闭</button>
+        </div>
+    </div>
+</div>

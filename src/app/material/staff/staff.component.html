@@ -2,11 +2,9 @@
   <!--条件查询-->
   <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
   <!--操作层-->  
-  <div nz-row style="margin-top: 16px;">
-      <div nz-col [nzSpan]="24" style="text-align: left;">
+  <app-handle-layout>
         <button nz-button [nzType]="'primary'" (click)="add()">新增员工</button>
-      </div>
-    </div>
+  </app-handle-layout>
   <div class="search-result-list">
       <nz-table 
       #productManageTable
@@ -39,7 +37,7 @@
               <td>{{data.salary}}</td>
               <td nzRight="0px">
                 <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
-                <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该仓库'" (callBack)="deleteStaff($event,data.id)"></app-comfirm-alert>
+                <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该员工'" (callBack)="deleteStaff($event,data.id)"></app-comfirm-alert>
               </td>
             </tr>
           </tbody>
@@ -61,7 +59,7 @@
                   <nz-input-group>
                     <input nz-input formControlName="name" placeholder="请输入员工姓名">
                   </nz-input-group>
-                  <nz-form-explain *ngIf="accountForm.get('name').dirty && accountForm.get('name').errors">Please input your username!</nz-form-explain>
+                  <nz-form-explain *ngIf="accountForm.get('name').dirty && accountForm.get('name').errors">请输入员工姓名</nz-form-explain>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -72,7 +70,7 @@
                       <nz-input-group>
                           <input  formControlName="phone" id="'phoneNumber'" placeholder="请输入电话号码" nz-input>
                         </nz-input-group>
-                        <nz-form-explain *ngIf="accountForm.get('phone').dirty && accountForm.get('phone').errors">Please input your username!</nz-form-explain>
+                        <nz-form-explain *ngIf="accountForm.get('phone').dirty && accountForm.get('phone').errors">请输入联系电话</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
               </div>

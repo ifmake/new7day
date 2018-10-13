@@ -1,0 +1,27 @@
+<div nz-row class="text-grid">
+    <div nz-col nzSpan="6" class="rzl_tg_title">{{name}}：</div>
+    <div nz-col nzSpan="18" class="rzl_tg_content" >
+        <nz-list 
+        [nzDataSource]="recordArr"
+        nzBordered
+        [nzRenderItem]="item">
+          <ng-template #item let-item>
+            <nz-list-item [nzContent]="ListContent"></nz-list-item>
+            <ng-template #ListContent>
+              <div class="rzl_recordlist_content">
+                <p class="title">{{item.name}}</p>
+                <p>进价：<span class="red">{{item.import_price}}</span></p>
+                <p *ngIf="type==='import'">进货数量：<span class="red">{{item.sum}}</span></p>
+                <p *ngIf="type==='export'">发货数量：<span class="red">{{item.sum}}</span></p>
+                <p>单位：{{item.unit}}</p>
+                <p>进货时间：{{item.time}}</p>
+              </div>
+            </ng-template>
+          </ng-template>
+      </nz-list>
+     <div class="loadmore_record">
+       <span appTextHover (click)="loadmoreRecord()">查看更多记录>></span>
+     </div>
+    </div>
+  </div>
+  

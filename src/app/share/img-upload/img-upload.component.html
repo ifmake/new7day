@@ -1,12 +1,12 @@
 <nz-upload
-nzAction="https://jsonplaceholder.typicode.com/posts/"
+nzAction="http://47.93.0.160:8000/auth/oss"
 nzListType="picture-card"
 [(nzFileList)]="fileList"
 [nzShowButton]="fileList.length < 3"
 [nzPreview]="handlePreview"
 (nzChange)="uploadImg($event)">
   <i class="anticon anticon-plus"></i>
-  <div class="ant-upload-text">Upload</div>
+  <div class="ant-upload-text">上传图片</div>
 </nz-upload>
 <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible=false">
   <ng-template #modalContent>

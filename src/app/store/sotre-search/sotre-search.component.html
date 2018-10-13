@@ -8,10 +8,15 @@
      </div>
    </div>
  <div class="search-result-list">
-     <nz-table #productManageTable [nzData]="dataList" [nzPageSize]="10" [nzScroll]="{x:'1500px'}" [nzLoading]="false">
+     <nz-table #productManageTable 
+     [nzData]="dataList"  
+     [nzShowPagination]="false"
+     [nzScroll]="{x:'1500px'}"
+     [nzLoading]="listLoading">
          <thead>
            <tr>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
+             <th nzLeft="112px">库存状态</th>
              <th>商品编码</th>
              <th>商品图片</th>
              <th>所属仓库</th>
@@ -22,13 +27,13 @@
              <th>单位</th>
              <th>规格</th>
              <th>描述</th>
-             <th nzRight="176px">库存状态</th>
              <th nzWidth="100px" nzRight="0px">操作</th>
            </tr>
          </thead>
          <tbody>
            <tr *ngFor="let data of productManageTable.data">
              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
+             <td nzLeft="112px" [ngStyle]="{color:(data.status==='缺货'?'red':'rgb(81, 247, 81)')}">{{data.status}}</td>
              <td>{{data.code}}</td>
              <td>{{data.image}}</td>
              <td>{{data.storage}}</td>
@@ -39,7 +44,7 @@
              <td>{{data.company}}</td>
              <td>{{data.size}}</td>
              <td>{{data.describe}}</td>
-             <td nzRight="176px" [ngStyle]="{color:(data.status==='缺货'?'red':'rgb(81, 247, 81)')}">{{data.status}}</td>
+        
              <td nzRight="0px">
               <nz-tag [nzColor]="'blue'" (click) ="lookDetail()">查看</nz-tag>
               <nz-tag [nzColor]="'blue'">进货</nz-tag>
@@ -48,4 +53,9 @@
            </tr>
          </tbody>
        </nz-table>
+       <app-pagination 
+       [nzTotal]="dataList?.count || 0" 
+       [nzPageSize]="searchObj.page_size"
+       (nzPageIndexChange)="changPageIndex($event)" 
+       (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
  </div>

@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
+import { StoreCommon } from '../store_common.compoennt';
 
 @Component({
   selector: 'app-sotre-search',
   templateUrl: './sotre-search.component.html',
   styleUrls: ['./sotre-search.component.css']
 })
-export class SotreSearchComponent implements OnInit {
+export class SotreSearchComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
   ObserverList: Observable<any>;
   dataList: any;
   searchArray: any = [];
   constructor() {
+    super();
+    this.listLoading = false;
     this.dataList = [
       {
         name: '奶精',

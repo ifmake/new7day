@@ -2,11 +2,9 @@
   <!--条件查询-->
   <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
   <!--操作层-->  
-  <div nz-row style="margin-top: 16px;">
-      <div nz-col [nzSpan]="24" style="text-align: left;">
-        <button nz-button [nzType]="'primary'" (click)="add()">新增仓库</button>
-      </div>
-    </div>
+  <app-handle-layout>
+      <button nz-button [nzType]="'primary'" (click)="add()">新增仓库</button>
+  </app-handle-layout>
   <div class="search-result-list">
       <nz-table 
       #productManageTable 

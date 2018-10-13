@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable, throwError, observable } from 'rxjs';
-import { catchError, retry, tap} from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpErrorResponse, } from '@angular/common/http';
+import { Observable, throwError} from 'rxjs';
+import { catchError,  tap, delay, debounceTime, retry} from 'rxjs/operators';
 import { LocalStorage } from '../storage/local.storage';
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -31,6 +31,7 @@ export class HttpService {
         tap(
           event => {console.log(event); },
         ),
+        retry(2),
         catchError(this.handleError)
       ).subscribe(
         (data: any) => {
@@ -43,9 +44,11 @@ export class HttpService {
           Observer.complete();
         },
         error => {
-          Object.assign(error, {error: true});
-          Observer.next(error);
-          Observer.complete();
+          if (error) {
+            Object.assign(error, {error: true});
+            Observer.next(error);
+            Observer.complete();
+          }
         },
       );
     });
@@ -105,7 +108,9 @@ export class HttpService {
    * 错误处理
    */
   private handleError(error: HttpErrorResponse) {
+    console.log(error);
     if (error.error instanceof ErrorEvent) {
+      console.log(error);
       return throwError(error.error);
     } else {
       return throwError(error.error);

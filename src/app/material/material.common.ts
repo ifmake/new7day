@@ -6,15 +6,10 @@ export class MaterialCommon extends ShareCommon {
   // 列表数据加载
     listLoading: boolean;
     searchArray = [];
-    searchObj: any;
     OpenDraw: boolean;
   constructor() {
     super();
     this.listLoading = true;
-    this.searchObj = {
-      page: 1,
-      page_size: 10,
-    };
   }
 
 }

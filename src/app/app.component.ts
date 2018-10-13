@@ -37,7 +37,6 @@ export class AppComponent {
     this.Islogin = true;
     this.storage.remove('loginer');
     this.router.navigate(['']);
-
   }
 
 }

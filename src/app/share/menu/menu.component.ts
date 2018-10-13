@@ -18,8 +18,8 @@ export class MenuComponent implements OnInit, OnChanges {
     ]},
     {title: '仓库管理', link: 'store', active: 'active', select: false, childs: [
       {title: '库存查询', link: '/store/search', active: 'active', select: false},
-      {title: '进货管理', link: '/store/import', active: 'active', select: false},
-      {title: '出库管理', link: '/store/export', active: 'active', select: false},
+      {title: '进出货管理', link: '/store/import', active: 'active', select: false},
+      // {title: '出库管理', link: '/store/export', active: 'active', select: false},
       {title: '成本核算', link: '/store/cost', active: 'active', select: false},
       {title: '报损管理', link: '/store/lose', active: 'active', select: false},
     ]},

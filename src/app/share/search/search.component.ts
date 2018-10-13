@@ -29,6 +29,9 @@ export class SearchComponent implements OnInit {
     for (let i = 0; i < this.seachArray.length ; i++) {
       this.validateForm.addControl(this.seachArray[i].key, new FormControl(''));
     }
+    this.seachArray.forEach((c, index) => {
+      c.show = this.isCollapse ? (index < 3) : true;
+    });
   }
   // 数据查询
   searchData() {

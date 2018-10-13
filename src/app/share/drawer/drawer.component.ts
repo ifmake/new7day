@@ -6,8 +6,11 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 export class DrawerComponent implements OnInit {
   @Input()title = '新建';
-  @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   @Input() visible: boolean;
+  @Input() maskClose: boolean;
+  @Input() width: number | string;
+  @Input() NoOperate: boolean;
+  @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   data: any;
   constructor() {
     this.data = {
@@ -15,8 +18,7 @@ export class DrawerComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   close(): void {
     this.data.status = false;

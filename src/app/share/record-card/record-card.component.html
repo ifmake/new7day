@@ -1,0 +1,41 @@
+<!--静态展示-->
+<div  *ngIf="!formCard">
+  <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" [nzTitle]="record.name" [nzExtra]="staticTemplate">
+    <app-text-grid [name]="'进价'" [content]="record.import_price"></app-text-grid>
+    <app-text-grid [name]="'数量'" [content]="record.sum"></app-text-grid>
+    <app-text-grid [name]="'单位'" [content]="record.unit"></app-text-grid>
+    <app-text-grid [name]="'进货时间'" [content]="record.time"></app-text-grid>
+    <app-text-grid [name]="'操作人'" [content]="record.maker"></app-text-grid>
+  </nz-card>
+  <ng-template  #staticTemplate>
+      <span appTextHover *ngIf="recordType === 'import'" (click)="operateRecord('import')">进货</span>
+      <span appTextHover *ngIf="recordType === 'export'" (click)="operateRecord('export')" >发货</span>
+  </ng-template>
+</div>
+<!--表单卡片-->
+<div  *ngIf="formCard">
+    <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" [nzTitle]="record.name" [nzExtra]="activeTemplate">
+        <form nz-form [formGroup]="operateForm">
+            <nz-form-item>
+                <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">进价</nz-form-label>
+                <nz-form-control  [nzSpan]="18">
+                  <input nz-input formControlName="import_price" name="errorValid">
+                  <nz-form-explain *ngIf="operateForm.get('import_price').dirty && operateForm.get('import_price').errors">必须填写</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                  <nz-form-label nzRequired [nzSpan]="5">数量</nz-form-label>
+                  <nz-form-control  [nzSpan]="18">
+                    <input nz-input formControlName="sum" name="errorValid">
+                    <nz-form-explain *ngIf="operateForm.get('sum').dirty && operateForm.get('sum').errors">必须是数字必须填写</nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+        </form>
+    </nz-card>
+    <ng-template  #activeTemplate>
+        <span appTextHover *ngIf="recordType === 'import'" (click)="submitForm()">确认</span>
+    </ng-template>
+  </div>
+
+
+

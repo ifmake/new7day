@@ -1,3 +1,54 @@
-<p>
-  store-import works!
-</p>
+
+<!--查询条件-->
+<app-search [seachArray]="searchArray"  (callBack)="refresh($event)"></app-search>
+<!--操作层-->
+<app-handle-layout>
+  <button nz-button [nzType]="'primary'" >批量进货</button>
+  <button nz-button [nzType]="'primary'">批量发货</button>
+</app-handle-layout>
+<!--商品列表-->
+<nz-spin [nzSpinning]="isSplin" class="rzl_splin_body">
+  <nz-tabset
+    style="height:auto;"
+    [nzTabPosition]="'top'"
+    [(nzSelectedIndex)]="selectedIndex"
+    (nzSelectChange)="changeStore($event)">
+    <nz-tab
+      *ngFor="let store of stores"
+      [nzTitle]="store.name"
+      (nzSelect)="changeStore(store)"
+      (nzClick)="changeStore(store)"
+      (nzDeselect)="changeStore(store)">
+      <div class="product_cards">
+        <app-product-card [stockArr]="stockArr" (callBack)="productOperate($event)"></app-product-card>
+      </div>
+      <!--分页-->
+      <app-pagination 
+      [nzTotal]="stockArr.length || 0" 
+      [nzPageSize]="searchObj.page_size"
+      (nzPageIndexChange)="changPageIndex($event)" 
+      (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+    </nz-tab>
+  </nz-tabset>
+</nz-spin>
+<!--进货出货详情-->
+<app-drawer [visible]="OpenDraw" [maskClose]="drawerMaskClose" [title]="drawerTitle" [width]="720" [NoOperate]="true" (callBack)="closeDraw($event)">
+  <!--商品基本信息-->
+  <app-text-grid *ngFor="let pro of ProStockArr" [name]="pro.name" [content]="pro.content"></app-text-grid>
+  <!--进发货-->
+  <app-product-record [name]="'进货记录'" [type]="operate_type.import" [recordArr]="recordArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
+  <app-product-record [name]="'发货记录'" [type]="operate_type.export" [recordArr]="recordArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
+  <!--二层弹窗-->
+  <app-drawer [visible]="OpenDrawList" [maskClose]="drawerMaskClose" [title]="drawerListTitle" [width]="400" [NoOperate]="true" (callBack)="closeChildDraw($event)">
+    <app-record-card [recordListArr]="recordArr" [recordType]="recordType" (recordProduct)="OpenModel($event)"></app-record-card>
+  </app-drawer>
+</app-drawer>
+    <!--进货出货控制-->
+    <!-- <nz-modal style="z-index:10000" [(nzVisible)]="ModelVisible" [nzTitle]="ModelTitle || '进货管理'" (nzOnCancel)="modelCancel()">
+        <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [formCard]="true"></app-record-card>
+    </nz-modal> -->
+<app-model [OpenModel]="ModelVisible" [title]="ModelTitle || '进货管理'" (close)="modelCancel()">
+    <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [formCard]="true"></app-record-card>
+</app-model>
+
+
