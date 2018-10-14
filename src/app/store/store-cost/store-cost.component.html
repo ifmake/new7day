@@ -1,3 +1,35 @@
-<p>
-  store-cost works!
-</p>
+<div class="rzl_chart_filter">
+  <div  nz-row class="rzl_chart_filter_list"> 
+    <div nz-col nzSpan="4" class="rzl_chart_filter_title">仓库选择:</div>
+    <div nz-col nzSpan="20">
+      <nz-tag class="rzl_chart_tags" nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">总仓库</nz-tag>
+      <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">仓库1</nz-tag>
+    </div>
+  </div>
+  <div  nz-row class="rzl_chart_filter_list"> 
+    <div nz-col nzSpan="4" class="rzl_chart_filter_title">查询类型:</div>
+    <div nz-col nzSpan="20">
+      <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">数量</nz-tag>
+      <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">成本</nz-tag>
+    </div>
+  </div>
+  <div  nz-row class="rzl_chart_filter_list"> 
+    <div nz-col nzSpan="4" class="rzl_chart_filter_title">时间选择:</div>
+    <div nz-col nzSpan="20">
+      <nz-month-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="选择查询月份"></nz-month-picker>
+    </div>
+  </div>
+</div>
+
+<div echarts [options]="options" class="demo-chart"
+(chartInit)="onChartEvent($event, 'chartInit')"
+(chartClick)="onChartEvent($event, 'chartClick')"
+(chartDblClick)="onChartEvent($event, 'chartDblClick')"
+(chartMouseDown)="onChartEvent($event, 'chartMouseDown')"
+(chartMouseUp)="onChartEvent($event, 'chartMouseUp')"
+(chartMouseOver)="onChartEvent($event, 'chartMouseOver')"
+(chartMouseOut)="onChartEvent($event, 'chartMouseOut')"
+(chartGlobalOut)="onChartEvent($event, 'chartGlobalOut')"
+(chartContextMenu)="onChartEvent($event, 'chartContextMenu')"
+(chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
+></div>

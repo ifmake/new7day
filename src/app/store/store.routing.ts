@@ -10,6 +10,6 @@ export const storeRouter: Routes = [
     {path: 'search', component: SotreSearchComponent},
     {path: 'import', component: StoreImportComponent},
     // {path: 'export', component: StoreExportComponent},
-    {path: 'cost', component: StoreCostComponent},
     {path: 'lose', component: StoreLoseComponent},
+    {path: 'cost', loadChildren: './store-cost/store-cost.module#StoreCostModule'},
 ];
