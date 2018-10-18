@@ -63,5 +63,12 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   // 查看详情
   lookDetail() {
   }
+  // 数据分页
+  changPageIndex(page) {
+    console.log(page);
+  }
+  PageSizeChange(pageSize) {
+    console.log(pageSize);
+  }
 
 }

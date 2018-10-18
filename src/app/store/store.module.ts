@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
 import { storeRouter } from './store.routing';
 import { SotreSearchComponent } from './sotre-search/sotre-search.component';
 import { StoreImportComponent } from './store-import/store-import.component';
-import { StoreExportComponent } from './store-export/store-export.component';
 import { StoreLoseComponent } from './store-lose/store-lose.component';
 import { ShareModule } from '../share/share.module';
+import { StoreExportComponent } from './store-export/store-export.component';
 
 @NgModule({
   imports: [
@@ -15,6 +15,11 @@ import { ShareModule } from '../share/share.module';
     ShareModule,
     RouterModule.forChild(storeRouter)
   ],
-  declarations: [StoreComponent, SotreSearchComponent, StoreImportComponent, StoreLoseComponent]
+  declarations: [
+    StoreComponent,
+    SotreSearchComponent,
+    StoreImportComponent,
+    StoreExportComponent,
+    StoreLoseComponent]
 })
 export class StoreModule { }

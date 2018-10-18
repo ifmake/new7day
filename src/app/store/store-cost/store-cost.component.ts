@@ -10,6 +10,7 @@ import { graphic } from 'echarts';
 export class StoreCostComponent implements OnInit {
   options: any;
   detectEventChanges = true;
+  date: string;
 
   constructor() {
     const dataAxis = ['奶茶', '杯子', '大碗', '凉面碗', '奶精', '珍珠', '苹果', '西瓜', '柠檬', '奶茶杯', ];
@@ -108,5 +109,8 @@ export class StoreCostComponent implements OnInit {
     // console.log(chart);
     // console.log(type);
   }
-
+  // 检测时间变化
+  checkChange(change) {
+    console.log(change);
+  }
 }

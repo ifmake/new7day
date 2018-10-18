@@ -61,6 +61,9 @@ export class StoreImportComponent extends StoreCommon implements OnInit {
   // 商品库存详情
   openDraw() {
   }
+  refresh(searchData) {
+    console.log(searchData);
+  }
   // 商品操作
   productOperate(prod) {
     if (prod.operate_type === 'look')  {

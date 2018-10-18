@@ -16,7 +16,7 @@
   <div  nz-row class="rzl_chart_filter_list"> 
     <div nz-col nzSpan="4" class="rzl_chart_filter_title">时间选择:</div>
     <div nz-col nzSpan="20">
-      <nz-month-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="选择查询月份"></nz-month-picker>
+      <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event)" nzPlaceHolder="选择查询月份"></nz-month-picker>
     </div>
   </div>
 </div>
