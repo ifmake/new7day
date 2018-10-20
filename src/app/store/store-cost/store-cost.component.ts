@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
 import { graphic } from 'echarts';
+import { reduce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-store-cost',
@@ -9,21 +10,25 @@ import { graphic } from 'echarts';
 })
 export class StoreCostComponent implements OnInit {
   options: any;
+  initOpts: any;
   detectEventChanges = true;
   date: string;
 
   constructor() {
-    const dataAxis = ['奶茶', '杯子', '大碗', '凉面碗', '奶精', '珍珠', '苹果', '西瓜', '柠檬', '奶茶杯', ];
+    const dataAxis = ['奶茶', '杯子', '大碗', '凉面碗', '奶精', '珍珠', '苹果', '西瓜', '柠檬', '奶茶杯'];
     const data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321];
-    const yMax = 500;
     const dataShadow = [];
 
     for (let i = 0; i < data.length; i++) {
-      dataShadow.push(yMax);
+      dataShadow.push(data[i]);
     }
+    this.initOpts = {
+      renderer: 'svg',
+      height: 400
+    };
     this.options = {
       title: {
-        text: '新七天总仓库每件商品出货量'
+        text: '新七天总仓库每件商品出货量',
       },
       xAxis: {
         data: dataAxis,
@@ -51,7 +56,7 @@ export class StoreCostComponent implements OnInit {
         },
         axisLabel: {
           textStyle: {
-            color: '#999'
+            color: '#666'
           }
         }
       },
@@ -60,6 +65,12 @@ export class StoreCostComponent implements OnInit {
           type: 'inside'
         }
       ],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+      },
       series: [
         { // For shadow
           name: '商品信息',
@@ -106,7 +117,6 @@ export class StoreCostComponent implements OnInit {
 
   // 图标事件
   onChartEvent(chart, type) {
-    // console.log(chart);
     // console.log(type);
   }
   // 检测时间变化

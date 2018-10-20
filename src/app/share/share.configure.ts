@@ -12,12 +12,24 @@ import { ComfirmAlertComponent } from './dialog/comfirm-alert/comfirm-alert.comp
 import { StoreService } from '../common/service/store.service';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { HandleLayoutComponent } from './handle-layout/handle-layout.component';
-import { TextGridComponent } from './text-grid/text-grid.component';
 import { ProductRecordComponent } from './product-record/product-record.component';
 import { TextHoverDirective } from '../common/directive/text-hover/text-hover.directive';
 import { RecordCardComponent } from './record-card/record-card.component';
 import { ModelComponent } from './model/model.component';
+import { TextGridComponent } from './grid/text-grid/text-grid.component';
+import { RowGridComponent } from './grid/row-grid/row-grid.component';
 
+// 布局组件
+const GridCompoennt = [
+    TextGridComponent,
+    RowGridComponent,
+];
+// 弹窗组件
+const alertComponent = [
+    ModelComponent,
+    StatusAlertComponent,
+    ComfirmAlertComponent,
+];
 // 公用模块
 export  const moduleCommon = [
     ReactiveFormsModule,
@@ -25,21 +37,21 @@ export  const moduleCommon = [
     HttpClientModule,
     NgZorroAntdModule,
 ];
+
 // 公用组件
 export const componentCommon = [
     SearchComponent,
-    StatusAlertComponent,
-    ModelComponent,
     DrawerComponent,
     ImgUploadComponent,
     PaginationComponent,
-    ComfirmAlertComponent,
     ProductCardComponent,
     HandleLayoutComponent,
-    TextGridComponent,
     ProductRecordComponent,
     RecordCardComponent,
+    ...GridCompoennt,
+    ...alertComponent
 ];
+
 // entry组件
 export const componentEntry = [];
 // 服务

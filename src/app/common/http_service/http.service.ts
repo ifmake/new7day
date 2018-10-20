@@ -14,9 +14,7 @@ export class HttpService {
     public _http: HttpClient,
     public message: NzMessageService,
     private storage: LocalStorage,
-  ) {
-    this.headerChnage = 'JWT ' + JSON.parse(this.storage.get('loginer')).token;
-   }
+  ) {}
   /**
    * 公用请求
    * @param way 请求方式
@@ -25,6 +23,7 @@ export class HttpService {
    */
   request(way: string, url: string, option: Object) {
     return new Observable((Observer) => {
+      this.headerChnage = 'JWT ' + JSON.parse(this.storage.get('loginer')).token;
       const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': this.headerChnage });
       const options = Object.assign({}, {headers: headers}, option);
       this._http.request(way, url, options).pipe(

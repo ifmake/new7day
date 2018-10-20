@@ -1,27 +1,18 @@
 <div class="rzl_chart_filter">
-  <div  nz-row class="rzl_chart_filter_list"> 
-    <div nz-col nzSpan="4" class="rzl_chart_filter_title">仓库选择:</div>
-    <div nz-col nzSpan="20">
-      <nz-tag class="rzl_chart_tags" nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">总仓库</nz-tag>
-      <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">仓库1</nz-tag>
-    </div>
-  </div>
-  <div  nz-row class="rzl_chart_filter_list"> 
-    <div nz-col nzSpan="4" class="rzl_chart_filter_title">查询类型:</div>
-    <div nz-col nzSpan="20">
-      <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">数量</nz-tag>
-      <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">成本</nz-tag>
-    </div>
-  </div>
-  <div  nz-row class="rzl_chart_filter_list"> 
-    <div nz-col nzSpan="4" class="rzl_chart_filter_title">时间选择:</div>
-    <div nz-col nzSpan="20">
-      <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event)" nzPlaceHolder="选择查询月份"></nz-month-picker>
-    </div>
-  </div>
+  <app-row-grid [T_row]="3" [C_row]="21" [Title]="'仓库选择'">
+    <nz-tag class="rzl_chart_tags" nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">总仓库</nz-tag>
+    <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">仓库1</nz-tag>
+  </app-row-grid>
+  <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
+    <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">数量</nz-tag>
+    <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">成本</nz-tag>
+  </app-row-grid>
+  <app-row-grid [T_row]="3" [C_row]="21" [Title]="'时间选择'">
+    <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event)" nzPlaceHolder="选择查询月份"></nz-month-picker>
+  </app-row-grid>
 </div>
 
-<div echarts [options]="options" class="demo-chart"
+<div echarts [initOpts]="initOpts" [options]="options" class="demo-chart"
 (chartInit)="onChartEvent($event, 'chartInit')"
 (chartClick)="onChartEvent($event, 'chartClick')"
 (chartDblClick)="onChartEvent($event, 'chartDblClick')"
