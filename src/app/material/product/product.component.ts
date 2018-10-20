@@ -46,7 +46,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       code: [{value: '', disabled: false}],
       in_price: [{value: '', disabled: false}],
       sale_price: [{value: '', disabled: false}],
-      unit: [{value: '', disabled: false}],
+      unit: [{value: '', disabled: false}, [Validators.required]],
       brand: [{value: '', disabled: false}],
       img: [{value: '', disabled: false}],
       desc: [{value: '', disabled: false}],
@@ -92,29 +92,55 @@ export class ProductComponent extends MaterialCommon implements OnInit {
   // 确认添加
   dataBack(msg) {
     if (msg.status) {
-      if (!this.prodcutForm.value.id || this.prodcutForm.value.id === '' ) {
-        this.productService.createProduct(this.prodcutForm.value).subscribe((res) => {
-          if (!res.error) {
-            this.OpenDraw = false;
-            this.message.create('success', '新建成功');
-            this.searchStream.next();
-          } else {
-            this.errorAlert(res);
-          }
-        });
-      } else {
-        this.productService.reviseProduct(this.prodcutForm.value.id, this.prodcutForm.value).subscribe(res => {
-          if (!res.error) {
-            this.OpenDraw = false;
-            this.searchStream.next();
-            this.message.create('success', '修改成功');
-          } else {
-            this.errorAlert(res);
-          }
-        });
+      for (const i in this.prodcutForm.controls) {
+        if (i) {
+          this.prodcutForm.controls[i].markAsDirty();
+          this.prodcutForm.controls[i].updateValueAndValidity();
+        }
       }
+      if (this.prodcutForm.value.name === null || this.prodcutForm.value.name === '') {
+        this.message.create('error', '商品名称不能为空');
+        return;
+      }
+      if (this.prodcutForm.value.short_name === '' || this.prodcutForm.value.short_name === null) {
+        this.message.create('error', '搜索关键字不能为空');
+        return;
+      }
+      if (this.prodcutForm.value.short_name === '' || this.prodcutForm.value.short_name === null) {
+        this.message.create('error', '搜索关键字不能为空');
+        return;
+      }
+      if (this.prodcutForm.value.unit === '' || this.prodcutForm.value.unit === null) {
+        this.message.create('error', '规格不能为空');
+        return;
+      }
+      this.saveProduct();
     } else {
       this.OpenDraw = false;
+    }
+  }
+  // 保存商品
+  saveProduct() {
+    if (!this.prodcutForm.value.id || this.prodcutForm.value.id === '' ) {
+      this.productService.createProduct(this.prodcutForm.value).subscribe((res) => {
+        if (!res.error) {
+          this.OpenDraw = false;
+          this.message.create('success', '新建成功');
+          this.searchStream.next();
+        } else {
+          this.errorAlert(res);
+        }
+      });
+    } else {
+      this.productService.reviseProduct(this.prodcutForm.value.id, this.prodcutForm.value).subscribe(res => {
+        if (!res.error) {
+          this.OpenDraw = false;
+          this.searchStream.next();
+          this.message.create('success', '修改成功');
+        } else {
+          this.errorAlert(res);
+        }
+      });
     }
   }
   // 删除商品

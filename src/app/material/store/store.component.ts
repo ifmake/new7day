@@ -41,7 +41,7 @@ export class StoreComponent extends MaterialCommon implements OnInit {
       id: [{value: '', disabled: false}],
       name: [{value: '', disabled: false}, [Validators.required]],
       type: [{value: '', disabled: false}, [Validators.required]],
-      cubage: [{value: '', disabled: false}, [Validators.required]],
+      cubage: [{value: '', disabled: false}],
       depot_keepers: [{value: ['1'], disabled: false}],
       desc: [{value: '', disabled: false}],
     });
@@ -103,29 +103,47 @@ export class StoreComponent extends MaterialCommon implements OnInit {
   // 确认添加
   dataBack(msg) {
     if (msg.status) {
-      if (!this.storeForm.value.id  || this.storeForm.value.id === '') {
-        this.storeService.createStore(this.storeForm.value).subscribe(res => {
-          if (!res.error) {
-            this.searchStream.next();
-            this.message.create('success', '添加成功');
-            this.OpenDraw = false;
-          } else {
-            this.errorAlert(res);
-          }
-        });
-      } else {
-        this.storeService.reviseStore(this.storeForm.value.id, this.storeForm.value).subscribe(res => {
-          if (!res.error) {
-            this.searchStream.next();
-            this.message.create('success', '修改成功');
-            this.OpenDraw = false;
-          } else {
-            this.errorAlert(res);
-          }
-        });
+      for (const i in this.storeForm.controls) {
+        if (i) {
+          this.storeForm.controls[i].markAsDirty();
+          this.storeForm.controls[i].updateValueAndValidity();
+        }
       }
+      if (this.storeForm.value.name === null || this.storeForm.value.name === '') {
+        this.message.create('error', '仓库名称不能为空');
+        return;
+      }
+      if (this.storeForm.value.type === null || this.storeForm.value.type === '') {
+        this.message.create('error', '仓库类型不能为空');
+        return;
+      }
+      this.saveStore();
     } else {
       this.OpenDraw = false;
+    }
+  }
+  // 保存仓库
+  saveStore() {
+    if (!this.storeForm.value.id  || this.storeForm.value.id === '') {
+      this.storeService.createStore(this.storeForm.value).subscribe(res => {
+        if (!res.error) {
+          this.searchStream.next();
+          this.message.create('success', '添加成功');
+          this.OpenDraw = false;
+        } else {
+          this.errorAlert(res);
+        }
+      });
+    } else {
+      this.storeService.reviseStore(this.storeForm.value.id, this.storeForm.value).subscribe(res => {
+        if (!res.error) {
+          this.searchStream.next();
+          this.message.create('success', '修改成功');
+          this.OpenDraw = false;
+        } else {
+          this.errorAlert(res);
+        }
+      });
     }
   }
   // 获取仓库信息

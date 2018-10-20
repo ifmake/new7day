@@ -63,6 +63,7 @@
                 <nz-form-label nzRequired>供应商名称</nz-form-label>
                 <nz-form-control>
                   <input nz-input formControlName="name" placeholder="请输入供应商名称">
+                  <nz-form-explain *ngIf="supplierFrom.get('name').dirty && supplierFrom.get('name').errors">请输入供应商名称</nz-form-explain>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -87,6 +88,7 @@
                         <nz-option nzLabel="商铺合作" nzValue="finance"></nz-option>
                         <nz-option nzLabel="摊贩合作" nzValue="stall"></nz-option>
                       </nz-select>
+                      <nz-form-explain *ngIf="supplierFrom.get('type').dirty && supplierFrom.get('type').errors">请选择合作类型</nz-form-explain>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -105,6 +107,7 @@
                 <nz-form-label nzRequired>负责人</nz-form-label>
                 <nz-form-control>
                     <input nz-input formControlName="operator" placeholder="请输入负责人名称">
+                    <nz-form-explain *ngIf="supplierFrom.get('operator').dirty && supplierFrom.get('operator').errors">请输入负责人名称</nz-form-explain>
                   </nz-form-control>
               </nz-form-item>
             </div>

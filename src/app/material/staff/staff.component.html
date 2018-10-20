@@ -79,12 +79,15 @@
               <div nz-col nzSpan="12">
                   <nz-form-item>
                     <nz-form-label nzRequired>员工角色</nz-form-label>
-                    <nz-select formControlName="role">
-                      <nz-option nzValue="super_admin" nzLabel="超级管理员"></nz-option>
-                      <nz-option nzValue="admin" nzLabel="管理员"></nz-option>
-                      <nz-option nzValue="worker" nzLabel="业务员"></nz-option>
-                      <nz-option nzValue="warekeeper" nzLabel="仓库管理员"></nz-option>
-                    </nz-select>
+                    <nz-form-control>
+                      <nz-select formControlName="role">
+                        <nz-option nzValue="super_admin" nzLabel="超级管理员"></nz-option>
+                        <nz-option nzValue="admin" nzLabel="管理员"></nz-option>
+                        <nz-option nzValue="worker" nzLabel="业务员"></nz-option>
+                        <nz-option nzValue="warekeeper" nzLabel="仓库管理员"></nz-option>
+                      </nz-select>
+                      <nz-form-explain *ngIf="accountForm.get('role').dirty && accountForm.get('role').errors">请选择员工角色</nz-form-explain>
+                    </nz-form-control>
                   </nz-form-item>
                 </div>
                 <div nz-col nzSpan="12">
@@ -93,6 +96,7 @@
                       <nz-form-control>
                           <nz-input-group>
                               <input  formControlName="code" name="code" placeholder="请输入员工编号" nz-input>
+                              <nz-form-explain *ngIf="accountForm.get('code').dirty && accountForm.get('code').errors">请输入员工编号</nz-form-explain>
                             </nz-input-group>
                         </nz-form-control>
                     </nz-form-item>

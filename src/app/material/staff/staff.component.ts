@@ -43,9 +43,9 @@ export class StaffComponent extends MaterialCommon implements OnInit {
       role: [{value: '', disabled: false}, [Validators.required]],
       code: [{value: '', disabled: false}, [Validators.required]],
       address: [{value: '', disabled: false}],
-      salary: [{value: '', disabled: false}],
+      salary: [{value: '1500', disabled: false}],
       depot: [{value: '', disabled: false}],
-      gender: [{value: '', disabled: false}],
+      gender: [{value: '1', disabled: false}],
       desc: [{value: '', disabled: false}],
     });
   }
@@ -104,30 +104,55 @@ export class StaffComponent extends MaterialCommon implements OnInit {
   // 确认添加
   dataBack(msg) {
     if (msg.status) {
-      if (!this.accountForm.value.id || this.accountForm.value.id === null) {
-        this.accountService.createAccount(this.accountForm.value).subscribe(res => {
-          console.log(res);
-          if (!res.error) {
-            this.message.create('success', '添加成功');
-            this.searchStream.next();
-            this.OpenDraw = false;
-          } else {
-           this.errorAlert(res);
-          }
-        });
-      } else {
-        this.accountService.reviseAccount(this.accountForm.value.id, this.accountForm.value).subscribe(res => {
-          if (!res.error) {
-            this.message.create('success', '修改成功');
-            this.searchStream.next();
-            this.OpenDraw = false;
-          } else {
-            this.errorAlert(res);
-          }
-        });
+      for (const i in this.accountForm.controls) {
+        if (i) {
+          this.accountForm.controls[i].markAsDirty();
+          this.accountForm.controls[i].updateValueAndValidity();
+        }
       }
+      if (this.accountForm.value.name === null || this.accountForm.value.name === '') {
+        this.message.create('error', '员工姓名不能为空');
+        return;
+      }
+      if (this.accountForm.value.phone === null || this.accountForm.value.phone === '') {
+        this.message.create('error', '员工联系电话不能为空');
+        return;
+      }
+      if (this.accountForm.value.role === null || this.accountForm.value.role === '') {
+        this.message.create('error', '员工角色不能为空');
+        return;
+      }
+      if (this.accountForm.value.code === null || this.accountForm.value.code === '') {
+        this.message.create('error', '员工编码不能为空');
+        return;
+      }
+      this.saveStaff();
     } else {
       this.OpenDraw = false;
+    }
+  }
+  // 保存员工信息
+  saveStaff() {
+    if (!this.accountForm.value.id || this.accountForm.value.id === null) {
+      this.accountService.createAccount(this.accountForm.value).subscribe(res => {
+        if (!res.error) {
+          this.message.create('success', '添加成功');
+          this.searchStream.next();
+          this.OpenDraw = false;
+        } else {
+         this.errorAlert(res);
+        }
+      });
+    } else {
+      this.accountService.reviseAccount(this.accountForm.value.id, this.accountForm.value).subscribe(res => {
+        if (!res.error) {
+          this.message.create('success', '修改成功');
+          this.searchStream.next();
+          this.OpenDraw = false;
+        } else {
+          this.errorAlert(res);
+        }
+      });
     }
   }
   // 获取仓库列表

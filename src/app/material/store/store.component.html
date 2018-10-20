@@ -51,15 +51,17 @@
                   <nz-form-control>
                       <nz-form-control>
                           <input nz-input formControlName="name" placeholder="请输入仓库名称">
+                          <nz-form-explain *ngIf="storeForm.get('name').dirty && storeForm.get('name').errors">请输入仓库名称</nz-form-explain>
                       </nz-form-control>
                   </nz-form-control>
                 </nz-form-item>
               </div>
               <div nz-col nzSpan="12">
                   <nz-form-item>
-                      <nz-form-label >仓库负责人</nz-form-label>
+                      <nz-form-label nzRequired>仓库负责人</nz-form-label>
                       <nz-form-control>
                           <input nz-input formControlName="name"  placeholder="请输入仓库管理人名称">
+                          <nz-form-explain *ngIf="storeForm.get('name').dirty && storeForm.get('name').errors">请输入仓库名称</nz-form-explain>
                       </nz-form-control>
                     </nz-form-item>
               </div>
@@ -67,12 +69,13 @@
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>仓库类型</nz-form-label>
+                <nz-form-label nzRequired>仓库类型</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="type" nzPlaceHolder="请选择仓库类型">
                       <nz-option nzLabel="总库" nzValue="main"></nz-option>
                       <nz-option nzLabel="分库" nzValue="branch"></nz-option>
                     </nz-select>
+                    <nz-form-explain *ngIf="storeForm.get('type').dirty && storeForm.get('type').errors">请输入仓库名称</nz-form-explain>
                 </nz-form-control>
               </nz-form-item>
             </div>

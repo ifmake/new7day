@@ -36,7 +36,7 @@ export class SupplierComponent extends MaterialCommon implements OnInit {
       type: [{value: '', disabled: false}, [Validators.required]],
       license_code: [{value: '', disabled: false}, [Validators.required]],
       address: [{value: '', disabled: false}],
-      operator: [{value: '', disabled: false}],
+      operator: [{value: '', disabled: false}, [Validators.required]],
       contact_name: [{value: '', disabled: false}],
       tontact_phone: [{value: '', disabled: false}, ],
       desc: [{value: '', disabled: false}],
@@ -100,32 +100,62 @@ export class SupplierComponent extends MaterialCommon implements OnInit {
   // 确认添加
   dataBack(msg) {
     if (msg.status) {
-      if (!this.supplierFrom.value.id || this.supplierFrom.value.id === null) {
-        this.supplierService.createSupplier(this.supplierFrom.value).subscribe(res => {
-          console.log(res);
-          if (!res.error) {
-            this.message.create('success', '添加成功');
-            this.searchStream.next();
-            this.OpenDraw = false;
-          } else {
-            this.errorAlert(res);
-          }
-        });
-      } else {
-        this.supplierService.reviseSupplier(this.supplierFrom.value.id, this.supplierFrom.value).subscribe(res => {
-          if (!res.error) {
-            this.message.create('success', '修改成功');
-            this.searchStream.next();
-            this.OpenDraw = false;
-          } else {
-            this.errorAlert(res);
-          }
-        });
+      for (const i in this.supplierFrom.controls) {
+        if (i) {
+          this.supplierFrom.controls[i].markAsDirty();
+          this.supplierFrom.controls[i].updateValueAndValidity();
+        }
       }
+      if (this.supplierFrom.value.name === null || this.supplierFrom.value.name === '') {
+        this.message.create('error', '供应商名称不能为空');
+        return;
+      }
+      if (this.supplierFrom.value.type === null || this.supplierFrom.value.type === '') {
+        this.message.create('error', '合作类型不能为空');
+        return;
+      }
+      if (this.supplierFrom.value.operator === null || this.supplierFrom.value.operator === '') {
+        this.message.create('error', '负责人不能为空');
+        return;
+      }
+      this.saveSupplier();
     } else {
       this.OpenDraw = false;
     }
   }
-
-  
+  // 保存供应商
+  saveSupplier() {
+    if (!this.supplierFrom.value.id || this.supplierFrom.value.id === null) {
+      this.supplierService.createSupplier(this.supplierFrom.value).subscribe(res => {
+        if (!res.error) {
+          this.message.create('success', '添加成功');
+          this.searchStream.next();
+          this.OpenDraw = false;
+        } else {
+          this.errorAlert(res);
+        }
+      });
+    } else {
+      this.supplierService.reviseSupplier(this.supplierFrom.value.id, this.supplierFrom.value).subscribe(res => {
+        if (!res.error) {
+          this.message.create('success', '修改成功');
+          this.searchStream.next();
+          this.OpenDraw = false;
+        } else {
+          this.errorAlert(res);
+        }
+      });
+    }
+  }
+  // 删除供应商
+  deleteProduct(status, id) {
+    if (status.type) {
+      this.supplierService.deleteSupplier(id).subscribe(res => {
+        this.searchStream.next();
+        this.message.info('删除成功');
+      });
+    } else {
+      this.message.info('取消删除');
+    }
+  }
 }
