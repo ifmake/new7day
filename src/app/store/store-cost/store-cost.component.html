@@ -1,14 +1,12 @@
 <div class="rzl_chart_filter">
   <app-row-grid [T_row]="3" [C_row]="21" [Title]="'仓库选择'">
-    <nz-tag class="rzl_chart_tags" nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">总仓库</nz-tag>
-    <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">仓库1</nz-tag>
+    <nz-tag *ngFor="let store of storeList;let i = index" name="store" nzMode="checkable" [nzChecked]="store.checked" (nzCheckedChange)="checkChange(store,i)">{{store.name}}</nz-tag>
   </app-row-grid>
   <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
-    <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event)">数量</nz-tag>
-    <nz-tag nzMode="checkable" [nzChecked]="false" (nzCheckedChange)="checkChange($event)">成本</nz-tag>
+    <nz-tag *ngFor ="let search of searchTypeList;let i = index" nzMode="checkable" [nzChecked]="search.checked" (nzCheckedChange)="checkChange($event,i)">{{search.name}}</nz-tag>
   </app-row-grid>
   <app-row-grid [T_row]="3" [C_row]="21" [Title]="'时间选择'">
-    <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event)" nzPlaceHolder="选择查询月份"></nz-month-picker>
+    <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询月份"></nz-month-picker>
   </app-row-grid>
 </div>
 

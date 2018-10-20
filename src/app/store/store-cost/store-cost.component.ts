@@ -2,19 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import * as echarts from 'echarts';
 import { graphic } from 'echarts';
 import { reduce } from 'rxjs/operators';
+import { ShareCommon } from 'src/app/share/share.component';
 
 @Component({
   selector: 'app-store-cost',
   templateUrl: './store-cost.component.html',
   styleUrls: ['./store-cost.component.less']
 })
-export class StoreCostComponent implements OnInit {
+export class StoreCostComponent extends ShareCommon implements OnInit {
   options: any;
   initOpts: any;
   detectEventChanges = true;
   date: string;
+  searchTypeList = [
+    {name: '数量', checked: true},
+    {name: '成本', checked: true},
+  ];
 
   constructor() {
+    super();
+    this.storeList = [
+      {name: '总仓库', checked: true},
+      {name: '仓库1', checked: false}
+    ];
     const dataAxis = ['奶茶', '杯子', '大碗', '凉面碗', '奶精', '珍珠', '苹果', '西瓜', '柠檬', '奶茶杯'];
     const data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321];
     const dataShadow = [];
@@ -120,7 +130,13 @@ export class StoreCostComponent implements OnInit {
     // console.log(type);
   }
   // 检测时间变化
-  checkChange(change) {
-    console.log(change);
+  checkChange(change, index) {
+    this.storeList.map((store, index1) => {
+      if (index1 === index) {
+        this.storeList[index1].checked = true;
+      } else {
+        this.storeList[index1].checked = false;
+      }
+    });
   }
 }
