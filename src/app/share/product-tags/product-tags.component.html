@@ -1,0 +1,3 @@
+<div class="rzl_product_tags">
+  <nz-tag *ngFor="let prod of ProdArr" [nzMode]="tag_config.model" [nzColor]="tag_config.color" (nzAfterClose)="deleteProd(prod)">{{prod.name}}</nz-tag>
+</div>

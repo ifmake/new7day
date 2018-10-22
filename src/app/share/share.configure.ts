@@ -18,6 +18,8 @@ import { RecordCardComponent } from './record-card/record-card.component';
 import { ModelComponent } from './model/model.component';
 import { TextGridComponent } from './grid/text-grid/text-grid.component';
 import { RowGridComponent } from './grid/row-grid/row-grid.component';
+import { ImgListComponent } from './img-list/img-list.component';
+import { ProductTagsComponent } from './product-tags/product-tags.component';
 
 // 布局组件
 const GridCompoennt = [
@@ -47,7 +49,9 @@ export const componentCommon = [
     ProductCardComponent,
     HandleLayoutComponent,
     ProductRecordComponent,
+    ProductTagsComponent,
     RecordCardComponent,
+    ImgListComponent,
     ...GridCompoennt,
     ...alertComponent
 ];

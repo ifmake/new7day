@@ -1,9 +1,10 @@
 <nz-upload
-nzAction="http://47.93.0.160:8000/auth/oss"
+nzAction="http://new7day.oss-cn-beijing.aliyuncs.com/"
 nzListType="picture-card"
 [(nzFileList)]="fileList"
-[nzShowButton]="fileList.length < 3"
+[nzShowButton]="fileList.length < 2"
 [nzPreview]="handlePreview"
+[nzRemove] = "removeImg"
 (nzChange)="uploadImg($event)">
   <i class="anticon anticon-plus"></i>
   <div class="ant-upload-text">上传图片</div>

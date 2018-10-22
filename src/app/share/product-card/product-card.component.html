@@ -12,7 +12,7 @@
         <div class="card_img">
             <img alt="example" [src]="pro.imgUrl || '暂无图片'"/>
             <div class="select_input">
-                <label nz-checkbox [(ngModel)]="pro.select"></label>
+                <label nz-checkbox [(ngModel)]="pro.select" (ngModelChange)="selectPro($event,pro)"></label>
             </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {NZ_I18N, en_US } from 'ng-zorro-antd';
     ...componentEntry,
     ...DERECTIVE,
 
+
   ],
   imports: [
     CommonModule,
