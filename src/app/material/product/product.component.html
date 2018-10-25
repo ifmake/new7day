@@ -28,7 +28,9 @@
             <tr *ngFor="let data of productManageTable.data">
               <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
               <td>{{data.code}}</td>
-              <td>{{data.image}}</td>
+              <td>
+               <app-img-list [imgUrl]="data.img"></app-img-list>
+              </td>
               <td>{{data.in_price}}</td>
               <td>{{data.sale_price}}</td>
               <td>{{data.unit}}</td>
@@ -114,7 +116,7 @@
                 <nz-form-item>
                   <nz-form-label>商品图片</nz-form-label>
                   <nz-form-control>
-                    <app-img-upload></app-img-upload>
+                    <app-img-upload (callBack)="getImg($event)" [ImgUrl]="prodcutForm.value.img"></app-img-upload>
                   </nz-form-control>
                 </nz-form-item>
             </div>

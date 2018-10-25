@@ -31,7 +31,8 @@
               "src/styles.less"
             ],
             "scripts": [
-              "node_modules/echarts/dist/echarts.min.js"
+              "node_modules/echarts/dist/echarts.min.js",
+              "node_modules/ali-oss/dist/aliyun-oss-sdk.min.js"
             ]
           },
           "configurations": {

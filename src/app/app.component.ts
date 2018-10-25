@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 export class AppComponent {
   title = 'new7Day';
   Islogin: boolean;
+  count = 5;
   constructor(
     private router: Router,
     private storage: LocalStorage,

@@ -9,14 +9,14 @@
    </div>
  <div class="search-result-list">
      <nz-table #productManageTable 
-     [nzData]="dataList"  
+     [nzData]="dataList?.results"  
      [nzShowPagination]="false"
      [nzScroll]="{x:'1500px'}"
      [nzLoading]="listLoading">
          <thead>
            <tr>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
-             <th nzLeft="112px">库存状态</th>
+             <th nzLeft="118px">库存状态</th>
              <th>商品编码</th>
              <th>商品图片</th>
              <th>所属仓库</th>
@@ -33,17 +33,17 @@
          <tbody>
            <tr *ngFor="let data of productManageTable.data">
              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
-             <td nzLeft="112px" [ngStyle]="{color:(data.status==='缺货'?'red':'rgb(81, 247, 81)')}">{{data.status}}</td>
+             <td nzLeft="118px" [ngStyle]="{color:(data.stock_status==='warn'?'red':'rgb(81, 247, 81)')}">{{data.stock_status==='warn'?'缺货':'正常'}}</td>
              <td>{{data.code}}</td>
              <td>{{data.image}}</td>
              <td>{{data.storage}}</td>
-             <td>{{data.store}}</td>
+             <td>{{data.stock}}</td>
              <td>{{data.maker}}</td>
              <td>{{data.in_price}}</td>
              <td>{{data.sale_price}}</td>
              <td>{{data.company}}</td>
-             <td>{{data.size}}</td>
-             <td>{{data.describe}}</td>
+             <td>{{data.unit}}</td>
+             <td>{{data.desc}}</td>
         
              <td nzRight="0px">
               <nz-tag [nzColor]="'blue'" (click) ="lookDetail()">查看</nz-tag>

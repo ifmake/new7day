@@ -30,13 +30,12 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     })).subscribe(res => {
       this.listLoading = false;
       this.dataList = res;
-      console.log(this.dataList.count);
     });
     this.searchArray = [
       {key: 'name', index: 0, name: '名称', show: true},
       {key: 'code', index: 1, name: '编码', show: true},
       {key: 'spec', index: 2, name: '规格', show: true},
-      {key: 'search', index: 2, name: '模糊查询', show: true},
+      {key: 'search', index: 3, name: '模糊查询', show: true},
     ];
     // 新增商品表单
     this.prodcutForm = this.fb.group({
@@ -88,6 +87,10 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     this.OpenDraw = true;
     this.formTitle = '商品新增';
     this.prodcutForm.reset();
+  }
+  // 图片上传路径
+  getImg(imgData) {
+    this.prodcutForm.patchValue({img: imgData.imgUrl});
   }
   // 确认添加
   dataBack(msg) {
@@ -172,6 +175,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         img = '',
         desc = ''} = res;
         this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, unit,  brand , img, desc});
+        console.log(this.prodcutForm);
     });
   }
 

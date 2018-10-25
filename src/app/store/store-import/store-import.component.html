@@ -3,9 +3,11 @@
 <app-search [seachArray]="searchArray"  (callBack)="refresh($event)"></app-search>
 <!--操作层-->
 <app-handle-layout>
-  <button nz-button [nzType]="'primary'" >批量进货</button>
-  <button nz-button [nzType]="'primary'">批量发货</button>
+  <button nz-button [nzType]="'primary'" (click)="batchImport('import')">批量进货</button>
+  <button nz-button [nzType]="'primary'" (click)="batchImport('export')">批量发货</button>
 </app-handle-layout>
+<!--多选标签组-->
+<app-product-tags *ngIf="importProdArr.length > 0" [ProdArr]="importProdArr" (unSelect)="unSelectProd($event)"></app-product-tags>
 <!--商品列表-->
 <nz-spin [nzSpinning]="isSplin" class="rzl_splin_body">
   <nz-tabset
@@ -20,7 +22,7 @@
       (nzClick)="changeStore(store)"
       (nzDeselect)="changeStore(store)">
       <div class="product_cards">
-        <app-product-card [stockArr]="stockArr" (callBack)="productOperate($event)"></app-product-card>
+        <app-product-card [stockArr]="stockArr" (callBack)="productOperate($event)" (selectProds)="selectProds($event)"></app-product-card>
       </div>
       <!--分页-->
       <app-pagination 

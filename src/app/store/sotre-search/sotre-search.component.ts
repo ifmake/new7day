@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { StoreCommon } from '../store_common.compoennt';
+import { StockListService } from '../../common/service/product-service/production-service.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sotre-search',
@@ -12,38 +14,17 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   ObserverList: Observable<any>;
   dataList: any;
   searchArray: any = [];
-  constructor() {
+  constructor(
+    private stockList: StockListService
+  ) {
     super();
-    this.listLoading = false;
-    this.dataList = [
-      {
-        name: '奶精',
-        code: 'XS187329772',
-        image: '----',
-        store: '100',
-        storage: '总仓库',
-        maker: '张三',
-        in_price: '30',
-        sale_price: '50as',
-        company: '新七天123',
-        size: '0990',
-        describe: '优势优良',
-        status: '库存正常',
-      }, {
-        name: '杯子',
-        code: 'XS18732s232',
-        image: '----',
-        store: '10',
-        storage: '总仓库',
-        maker: '张三',
-        in_price: '30',
-        sale_price: '50as',
-        company: '新七天123',
-        size: '0990',
-        describe: '优势优良',
-        status: '缺货',
-      }
-    ];
+    this.searchStream.pipe(switchMap(() => {
+      return this.stockList.getStockList(this.searchObj);
+    })).subscribe(res => {
+      this.listLoading = false;
+      this.dataList = res;
+    });
+
     this.searchArray = [
       {key: 'name', index: 0, name: '名称', show: true},
       {key: 'stock', index: 3, name: '库存', show: true},
@@ -56,19 +37,25 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   }
 
   ngOnInit() {
+    this.searchStream.next();
   }
 
   // 数据过滤
-  searchData(term) {}
+  searchData(serachObj) {
+    Object.assign(this.searchObj, serachObj);
+    this.searchStream.next();
+  }
   // 查看详情
   lookDetail() {
   }
   // 数据分页
   changPageIndex(page) {
-    console.log(page);
+    this.searchObj.page = page;
+    this.searchStream.next();
   }
   PageSizeChange(pageSize) {
-    console.log(pageSize);
+    this.searchObj.page_size = pageSize;
+    this.searchStream.next();
   }
 
 }

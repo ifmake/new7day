@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreCommon } from '../store_common.compoennt';
+import { StockListService } from '../../common/service/product-service/production-service.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-store-import',
@@ -12,6 +14,8 @@ export class StoreImportComponent extends StoreCommon implements OnInit {
   stockArr: any = [];
   isSplin = false;
   recordType = 'import';
+  // 批量选择商品
+  importProdArr = [];
 
   // 商品库存查看
   ProStockArr = [
@@ -28,7 +32,10 @@ export class StoreImportComponent extends StoreCommon implements OnInit {
     {name: '芒果', import_price: '1233', sum: 1000, unit: '元/斤', time: '10/10 15:30', maker: 'admin1'},
     {name: '芒果', import_price: '123', sum: 10, unit: '元/斤', time: '10/10 15:30', maker: 'admin1'},
   ];
-  constructor() {
+  constructor(
+    public message: NzMessageService,
+    public stockList: StockListService,
+  ) {
     super();
     this.stores = [
       {name: '总仓库', index: 0, path: '', content: 'sdfsd'},
@@ -42,19 +49,46 @@ export class StoreImportComponent extends StoreCommon implements OnInit {
     ];
     this.stockArr = [
       {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/title.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
-      {name: '芒果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
+      {name: '句子', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
+      {name: '苹果', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/title.png'},
+      {name: '西瓜', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
+      {name: '奶茶', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
+      {name: '舒服', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
+      {name: '芒撒是的', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
+      {name: '杯子', stock: 300, desc: '库存300', select: false, imgUrl: 'assets/img/lemon.png'},
     ];
    }
 
   ngOnInit() {
   }
-  // 仓库切换
+  /**
+   * 批量选择商品
+   */
+  selectProds(prod) {
+    console.log(prod);
+    if (prod.operate_type === 'select') {
+      this.importProdArr.push(prod);
+    } else {
+      this.unSelectProd(prod);
+    }
+  }
+  // 取消选中商品
+  unSelectProd(prod) {
+      this.importProdArr.splice(0, 1);
+      console.log(this.importProdArr);
+  }
+  // 批量进货
+  batchImport(type) {
+    if (this.importProdArr.length  < 1) {
+      this.message.create('warning', '请选择进货商品');
+      return false;
+    }
+    this.ModelVisible = true;
+    this.recordArr = this.importProdArr;
+  }
+  /**
+   * 仓库切换
+  */
   changeStore(store) {
     console.log(store);
   }

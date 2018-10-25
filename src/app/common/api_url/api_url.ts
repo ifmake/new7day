@@ -35,6 +35,14 @@ export const api_account = {
     create: () => `${API_PREFIX}/account/profile/`,
 };
 
+/**
+ * 进出货管理模块
+ */
+export const api_productIX = {
+    list: () => `${API_PREFIX}/goods/goods/stock/`,
+};
+
+
 
 
 
