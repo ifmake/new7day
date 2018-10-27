@@ -1,6 +1,6 @@
 
-<div *ngIf="OpenModel" class="model_body">
-    <div class="model_body">
+<div *ngIf="OpenModel" class="model_body" >
+    <div class="model_body" [ngStyle]="{'width': (width?width:500)+ 'px'}">
         <div class="model_title">
             {{title}}
         </div>

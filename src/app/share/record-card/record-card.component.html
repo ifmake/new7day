@@ -8,8 +8,8 @@
     <app-text-grid [name]="'操作人'" [content]="record.maker"></app-text-grid>
   </nz-card>
   <ng-template  #staticTemplate>
-      <span appTextHover *ngIf="recordType === 'import'" (click)="operateRecord('import')">进货</span>
-      <span appTextHover *ngIf="recordType === 'export'" (click)="operateRecord('export')" >发货</span>
+      <span appTextHover *ngIf="recordType === 'depot_in'" (click)="operateRecord('depot_in')">进货</span>
+      <span appTextHover *ngIf="recordType === 'depot_out'" (click)="operateRecord('depot_out')" >发货</span>
   </ng-template>
 </div>
 <!--表单卡片-->
@@ -19,22 +19,43 @@
             <nz-form-item>
                 <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">进价</nz-form-label>
                 <nz-form-control  [nzSpan]="18">
-                  <input nz-input formControlName="import_price" name="errorValid">
-                  <nz-form-explain *ngIf="operateForm.get('import_price').dirty && operateForm.get('import_price').errors">必须填写</nz-form-explain>
+                  <input nz-input formControlName="price" name="errorValid">
+                  <nz-form-explain *ngIf="operateForm.get('price').dirty && operateForm.get('price').errors">必须填写</nz-form-explain>
                 </nz-form-control>
               </nz-form-item>
               <nz-form-item>
                   <nz-form-label nzRequired [nzSpan]="5">数量</nz-form-label>
                   <nz-form-control  [nzSpan]="18">
-                    <input nz-input formControlName="sum" name="errorValid">
-                    <nz-form-explain *ngIf="operateForm.get('sum').dirty && operateForm.get('sum').errors">必须是数字必须填写</nz-form-explain>
+                    <input nz-input formControlName="count" name="errorValid">
+                    <nz-form-explain *ngIf="operateForm.get('count').dirty && operateForm.get('count').errors">必须是数字必须填写</nz-form-explain>
+                  </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                  <nz-form-label nzRequired [nzSpan]="5">规格</nz-form-label>
+                  <nz-form-control  [nzSpan]="18">
+                    <input nz-input formControlName="unit" name="errorValid">
+                    <nz-form-explain *ngIf="operateForm.get('unit').dirty && operateForm.get('unit').errors">必须是数字必须填写</nz-form-explain>
                   </nz-form-control>
                 </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzRequired [nzSpan]="5">{{recordType === 'depot_in'?'进货源':'出货源'}}</nz-form-label>
+                    <nz-form-control  [nzSpan]="18" >
+                        <nz-select name="select-error" [ngModel]="'Option 1'" [ngModelOptions]="{standalone: true}">
+                            <nz-option *ngFor="let option of sourceslist" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                            <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">必须是数字必须填写</nz-form-explain>
+                          </nz-select>  
+                    </nz-form-control>
+                  </nz-form-item>
         </form>
+        <ng-template  #activeTemplate>
+            <!-- <span appTextHover  >清空</span> -->
+            <button nz-button nzType="dashed" (click)="clearForm(record)">清空</button>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="primary" (click)="submitForm(record)">确认</button>
+            <!-- <span appTextHover (click)="submitForm(record)">确认</span> -->
+        </ng-template>
     </nz-card>
-    <ng-template  #activeTemplate>
-        <span appTextHover *ngIf="recordType === 'import'" (click)="submitForm()">确认</span>
-    </ng-template>
+  
   </div>
 
 

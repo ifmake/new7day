@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { StoreCommon } from '../store_common.compoennt';
-import { StockListService } from '../../common/service/product-service/production-service.service';
+import { StockListService } from '../../common/service/product-service/production-stock.service';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -14,10 +14,24 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   ObserverList: Observable<any>;
   dataList: any;
   searchArray: any = [];
+  allChecked: boolean;
+  // 进货组件
+  ModelVisible: boolean;
+  ModelTitle = '进货管理';
+  recordArr: any;
+  recordType: string;
+  // 商品详情组件
+   ProStockArr = [
+    {name: '所属仓库', content: '总仓库'},
+    {name: '操作人', content: '测试用户'},
+    {name: '最近进货时间', content: '2018-10-12'},
+    {name: '最近出货时间', content: '2018-10-10'},
+  ];
   constructor(
     private stockList: StockListService
   ) {
     super();
+    this.recordArr = [];
     this.searchStream.pipe(switchMap(() => {
       return this.stockList.getStockList(this.searchObj);
     })).subscribe(res => {
@@ -34,6 +48,7 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
       // {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
       // {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
     ];
+    
   }
 
   ngOnInit() {
@@ -45,8 +60,29 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     Object.assign(this.searchObj, serachObj);
     this.searchStream.next();
   }
+  // 选中商品
+  checkAll(prods) {
+    console.log(prods);
+  }
   // 查看详情
-  lookDetail() {
+  lookDetail(prod) {
+    console.log(prod);
+    this.OpenDraw = true;
+    this.drawerTitle = prod.name;
+    this.stockList.getDetail(prod.id).subscribe(res => {
+      console.log(res);
+    });
+  }
+  // 记录单
+  lookMoreRecord(type) {
+    console.log(type);
+    this.OpenDrawList = true;
+    this.recordType = type;
+    if (type === 'import') {
+      this.drawerListTitle = '进货历史记录';
+    } else {
+      this.drawerListTitle = '发货历史记录';
+    }
   }
   // 数据分页
   changPageIndex(page) {
@@ -55,6 +91,30 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   }
   PageSizeChange(pageSize) {
     this.searchObj.page_size = pageSize;
+    this.searchStream.next();
+  }
+  /**
+   * 进出货流程
+   */
+  modelCancel() {
+    this.ModelVisible = false;
+  }
+  // 进出货
+  cancelProduct(prod, type) {
+    this.ModelVisible = true;
+    this.recordArr = [];
+    this.recordType = type;
+    this.recordArr.push(prod);
+    if (type === 'depot_in') {
+      this.ModelTitle = '商品进货';
+    } else {
+      this.ModelTitle = '商品发货';
+    }
+  }
+  // 进出货回调
+  stocCallBack(recode) {
+    console.log(recode);
+    this.modelCancel();
     this.searchStream.next();
   }
 

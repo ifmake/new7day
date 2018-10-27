@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class ShareCommon  {
+    searchStream = new Subject<any>();
     formTitle: string;
     // 基准数据列表;
     storeList = [];

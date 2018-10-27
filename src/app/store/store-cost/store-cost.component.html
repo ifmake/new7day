@@ -1,24 +1,79 @@
-<div class="rzl_chart_filter">
-  <app-row-grid [T_row]="3" [C_row]="21" [Title]="'仓库选择'">
-    <nz-tag *ngFor="let store of storeList;let i = index" name="store" nzMode="checkable" [nzChecked]="store.checked" (nzCheckedChange)="checkChange(store,i)">{{store.name}}</nz-tag>
-  </app-row-grid>
-  <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
-    <nz-tag *ngFor ="let search of searchTypeList;let i = index" nzMode="checkable" [nzChecked]="search.checked" (nzCheckedChange)="checkChange($event,i)">{{search.name}}</nz-tag>
-  </app-row-grid>
-  <app-row-grid [T_row]="3" [C_row]="21" [Title]="'时间选择'">
-    <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询月份"></nz-month-picker>
-  </app-row-grid>
-</div>
 
-<div echarts [initOpts]="initOpts" [options]="options" class="demo-chart"
-(chartInit)="onChartEvent($event, 'chartInit')"
-(chartClick)="onChartEvent($event, 'chartClick')"
-(chartDblClick)="onChartEvent($event, 'chartDblClick')"
-(chartMouseDown)="onChartEvent($event, 'chartMouseDown')"
-(chartMouseUp)="onChartEvent($event, 'chartMouseUp')"
-(chartMouseOver)="onChartEvent($event, 'chartMouseOver')"
-(chartMouseOut)="onChartEvent($event, 'chartMouseOut')"
-(chartGlobalOut)="onChartEvent($event, 'chartGlobalOut')"
-(chartContextMenu)="onChartEvent($event, 'chartContextMenu')"
-(chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
-></div>
+
+<nz-spin [nzSpinning]="isSplin" class="rzl_splin_body">
+  <nz-tabset
+    style="height:auto;"
+    [nzTabPosition]="'top'"
+    [(nzSelectedIndex)]="selectedIndex"
+    (nzSelectChange)="changeStore($event)">
+    <nz-tab
+      *ngFor="let type of costTypes"
+      [nzTitle]="type.name">
+      <!--成本走势-->
+        <div class="all_cost" *ngIf="selectedIndex === 1">
+          <div class="rzl_chart_filter">
+            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'仓库选择'">
+              <nz-tag *ngFor="let store of storeList;let i = index" name="store" nzMode="checkable" [nzChecked]="store.checked" (nzCheckedChange)="checkChange(store,i)">{{store.name}}</nz-tag>
+            </app-row-grid>
+            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
+              <nz-tag *ngFor ="let search of searchTypeList;let i = index" nzMode="checkable" [nzChecked]="search.checked" (nzCheckedChange)="checkChange($event,i)">{{search.name}}</nz-tag>
+            </app-row-grid>
+            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'时间选择'">
+              <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询月份"></nz-month-picker>
+            </app-row-grid>
+          </div>
+          
+          <div echarts [initOpts]="initOpts" [options]="options" class="demo-chart"
+          (chartInit)="onChartEvent($event, 'chartInit')"
+          (chartClick)="onChartEvent($event, 'chartClick')"
+          (chartDblClick)="onChartEvent($event, 'chartDblClick')"
+          (chartMouseDown)="onChartEvent($event, 'chartMouseDown')"
+          (chartMouseUp)="onChartEvent($event, 'chartMouseUp')"
+          (chartMouseOver)="onChartEvent($event, 'chartMouseOver')"
+          (chartMouseOut)="onChartEvent($event, 'chartMouseOut')"
+          (chartGlobalOut)="onChartEvent($event, 'chartGlobalOut')"
+          (chartContextMenu)="onChartEvent($event, 'chartContextMenu')"
+          (chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
+          ></div>
+        </div>
+        <!--商品成本-->
+        <div class="product_cost" *ngIf="selectedIndex === 0">
+           <!--条件查询-->
+            <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
+            <div class="product_cost_list">
+            <nz-table #productManageTable 
+            [nzData]="dataList?.results"  
+            [nzShowPagination]="false"
+            [nzScroll]="{x:'800px'}">
+                <thead>
+                  <tr>
+                    <th nzWidht="100px" nzLeft="0px">商品名称</th>
+                    <th nzLeft="118px">商品成本</th>
+                    <th>平均进价</th>
+                    <th>库存</th>
+                    <th>规格</th>
+                    <th>所属仓库</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of costList">
+                    <td nzWidht="100px" nzLeft="0px">水果</td>
+                    <td nzLeft="118px" [ngStyle]="{color:(data.stock_status==='warn'?'red':'rgb(81, 247, 81)')}">{{data.stock_status==='warn'?'334':'300'}}</td>
+                    <td>1.2元每斤</td>
+                    <td>300</td>
+                    <td>元/斤</td>
+                    <td>总仓库</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+            <!--分页-->
+          <app-pagination 
+            [nzTotal]="dataList?.count || 0"
+            [nzPageSize]="searchObj.page_size"
+            (nzPageIndexChange)="changPageIndex($event)"
+            (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+        </div>
+    </nz-tab>
+  </nz-tabset>
+</nz-spin>

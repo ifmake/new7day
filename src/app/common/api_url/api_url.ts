@@ -40,6 +40,16 @@ export const api_account = {
  */
 export const api_productIX = {
     list: () => `${API_PREFIX}/goods/goods/stock/`,
+    stockAndSend: () => `${API_PREFIX}/order/order/new/`,
+    recordsList: (id) => `${API_PREFIX}/goods/goodsrecord/${id}/`,
+    orderDetail: (id) => `${API_PREFIX}/order/order/${id}`
+};
+
+/**
+ * 仓库成本模块
+ */
+export const api_cost = {
+    list: () => `${API_PREFIX}/goods/goods/cost/`
 };
 
 

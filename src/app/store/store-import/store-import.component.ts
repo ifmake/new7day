@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreCommon } from '../store_common.compoennt';
-import { StockListService } from '../../common/service/product-service/production-service.service';
+import { StockListService } from '../../common/service/product-service/production-stock.service';
 import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
@@ -19,7 +19,7 @@ export class StoreImportComponent extends StoreCommon implements OnInit {
 
   // 商品库存查看
   ProStockArr = [
-    {name: '仓库', content: '总仓库'},
+    {name: '所属仓库', content: '总仓库'},
     {name: '供应商', content: '测试公司'},
     {name: '操作人', content: '测试用户'},
     {name: '最近进货时间', content: '2018-10-12'},
@@ -100,6 +100,8 @@ export class StoreImportComponent extends StoreCommon implements OnInit {
   }
   // 商品操作
   productOperate(prod) {
+    this.recordArr = [];
+    this.recordArr[0] = prod;
     if (prod.operate_type === 'look')  {
       this.lookProduct(prod);
     } else if (prod.operate_type === 'import') {

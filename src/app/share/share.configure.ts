@@ -20,6 +20,7 @@ import { TextGridComponent } from './grid/text-grid/text-grid.component';
 import { RowGridComponent } from './grid/row-grid/row-grid.component';
 import { ImgListComponent } from './img-list/img-list.component';
 import { ProductTagsComponent } from './product-tags/product-tags.component';
+import { StockCostService } from '../common/service/product-service/product-cost.service';
 
 // 布局组件
 const GridCompoennt = [
@@ -63,6 +64,7 @@ export const SERVICE = [
     LocalStorage,
     ProductService,
     StoreService,
+    StockCostService,
 ];
 // 指令
 export const DERECTIVE = [

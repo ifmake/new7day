@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class ModelComponent implements OnInit {
   @Input() OpenModel: boolean;
   @Input() title: string;
+  @Input() width: number | string;
   @Output()close: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
