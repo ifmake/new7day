@@ -22,19 +22,7 @@
               <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询月份"></nz-month-picker>
             </app-row-grid>
           </div>
-          
-          <div echarts [initOpts]="initOpts" [options]="options" class="demo-chart"
-          (chartInit)="onChartEvent($event, 'chartInit')"
-          (chartClick)="onChartEvent($event, 'chartClick')"
-          (chartDblClick)="onChartEvent($event, 'chartDblClick')"
-          (chartMouseDown)="onChartEvent($event, 'chartMouseDown')"
-          (chartMouseUp)="onChartEvent($event, 'chartMouseUp')"
-          (chartMouseOver)="onChartEvent($event, 'chartMouseOver')"
-          (chartMouseOut)="onChartEvent($event, 'chartMouseOut')"
-          (chartGlobalOut)="onChartEvent($event, 'chartGlobalOut')"
-          (chartContextMenu)="onChartEvent($event, 'chartContextMenu')"
-          (chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
-          ></div>
+          <div echarts [options]="options" [autoResize]="autoResize" style="height: 500px"></div>
         </div>
         <!--商品成本-->
         <div class="product_cost" *ngIf="selectedIndex === 0">
@@ -49,20 +37,20 @@
                   <tr>
                     <th nzWidht="100px" nzLeft="0px">商品名称</th>
                     <th nzLeft="118px">商品成本</th>
-                    <th>平均进价</th>
-                    <th>库存</th>
+                    <!-- <th>平均进价</th> -->
+                    <th>消耗</th>
                     <th>规格</th>
-                    <th>所属仓库</th>
+                    <!-- <th>所属仓库</th> -->
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of costList">
-                    <td nzWidht="100px" nzLeft="0px">水果</td>
-                    <td nzLeft="118px" [ngStyle]="{color:(data.stock_status==='warn'?'red':'rgb(81, 247, 81)')}">{{data.stock_status==='warn'?'334':'300'}}</td>
-                    <td>1.2元每斤</td>
-                    <td>300</td>
+                  <tr *ngFor="let data of dataList">
+                    <td nzWidht="100px" nzLeft="0px">{{data.goods__name}}</td>
+                    <td nzLeft="118px" [ngStyle]="{color:'red'}">{{data.cost}}</td>
+                    <!-- <td>1.2元每斤</td> -->
+                    <td>{{data.count}}</td>
                     <td>元/斤</td>
-                    <td>总仓库</td>
+                    <!-- <td>总仓库</td> -->
                   </tr>
                 </tbody>
               </nz-table>

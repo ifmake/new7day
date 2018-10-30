@@ -18,13 +18,13 @@
            <tr>
              <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="false" (nzCheckedChange)="checkAll($event)"></th>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
-             <th nzLeft="115px">库存状态</th>
+             <th nzLeft="112px">库存状态</th>
              <th>商品编码</th>
              <th>所属仓库</th>
              <th>库存</th>
              <th>操作人</th>
-             <th>商品进价</th>
-             <th>商品售价</th> 
+             <th>商品最近进价</th>
+             <th>商品最近售价</th> 
              <th>单位</th>
              <th>规格</th>
              <th>描述</th>
@@ -35,7 +35,7 @@
            <tr *ngFor="let data of productManageTable.data">
              <td nzShowCheckbox [(nzChecked)]="data.is_book" (nzCheckedChange)="checkAll($event)"></td>
              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
-             <td nzLeft="115px" [ngStyle]="{color:(data.stock_status==='warn'?'red':'rgb(81, 247, 81)')}">{{data.stock_status==='warn'?'缺货':'正常'}}</td>
+             <td nzLeft="112px" [ngStyle]="{color:(data.stock_status==='warn'?'red':'rgb(81, 247, 81)')}">{{data.stock_status==='warn'?'缺货':'正常'}}</td>
              <td>{{data.code}}</td>
              <td>{{data.storage}}</td>
              <td>{{data.stock}}</td>
