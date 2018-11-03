@@ -1,0 +1,53 @@
+.rzl_menu_list{
+    width: 100%;
+    height: 40px;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    background: #f0f2f5;
+    border-radius: 5px 5px 0 0;
+    .rzl_menu{
+      height: 100%;
+      width: auto;
+      max-width: 200px;
+      overflow: hidden;
+      white-space: nowrap;
+      border-radius: 5px 5px 0 0 ;
+      display: inline-block;
+      position: relative;
+      .rzl_menu_ink{
+          width: 100%;
+          height: 100%;
+          padding: 0 40px 0 20px;
+          color: #666;
+          text-align: center;
+          display: inline-block;
+          line-height: 40px;
+          animation: all linear 0.5s;
+          &:hover,:focus,:active {
+            background: #fff;
+            color: #2593fc;
+          }
+      }
+      .rzl_remove{
+          position: absolute;
+          right: 5px;
+          top: 0;
+          width: 20px;
+          height: 100%;
+          text-align: center;
+          font-size: 18px;
+          line-height: 32px;
+          animation: all linear 0.2s;
+          cursor: pointer;
+          &:hover,:focus {
+              color: red;
+          }
+      }
+    }
+    .active {
+        background: #fff;
+        color: #2593fc!important;
+        text-decoration: none;  
+    }
+}

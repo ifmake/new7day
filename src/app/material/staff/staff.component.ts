@@ -35,22 +35,22 @@ export class StaffComponent extends MaterialCommon implements OnInit {
       {key: 'name', index: 0, name: '姓名', show: true},
       {key: 'code', index: 1, name: '员工编号', show: true},
     ];
-    // 表单数据
-    this.accountForm = this.fb.group({
-      id: [{value: '', disabled: false}],
-      name: [{value: '', disabled: false}, [Validators.required]],
-      phone: [{value: '', disabled: false}, [Validators.required]],
-      role: [{value: '', disabled: false}, [Validators.required]],
-      code: [{value: '', disabled: false}, [Validators.required]],
-      address: [{value: '', disabled: false}],
-      salary: [{value: '1500', disabled: false}],
-      depot: [{value: '', disabled: false}],
-      gender: [{value: '1', disabled: false}],
-      desc: [{value: '', disabled: false}],
-    });
   }
 
   ngOnInit() {
+    // 表单数据
+    this.accountForm = this.fb.group({
+      id: [{ value: '', disabled: false }],
+      name: [{ value: '', disabled: false }, [Validators.required]],
+      phone: [{ value: '', disabled: false }, [Validators.required]],
+      role: [{ value: '', disabled: false }, [Validators.required]],
+      code: [{ value: '', disabled: false }, [Validators.required]],
+      address: [{ value: '', disabled: false }],
+      salary: [{ value: '1500', disabled: false }],
+      depot: [{ value: '', disabled: false }],
+      gender: [{ value: 1, disabled: false }],
+      desc: [{ value: '', disabled: false }],
+    });
     this.searchStream.next();
     this.getStoreList();
   }
@@ -81,6 +81,7 @@ export class StaffComponent extends MaterialCommon implements OnInit {
     this.OpenDraw = true;
     this.formTitle = '员工添加';
     this.accountForm.reset();
+    this.accountForm.patchValue({gender: 1});
   }
   // 查看资料
   reviseDetail(id) {

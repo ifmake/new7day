@@ -12,17 +12,22 @@
       <!--成本走势-->
         <div class="all_cost" *ngIf="selectedIndex === 1">
           <div class="rzl_chart_filter">
-            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'仓库选择'">
+            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'成本类型'">
               <nz-tag *ngFor="let store of storeList;let i = index" name="store" nzMode="checkable" [nzChecked]="store.checked" (nzCheckedChange)="checkChange(store,i)">{{store.name}}</nz-tag>
             </app-row-grid>
-            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
+            <!-- <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
               <nz-tag *ngFor ="let search of searchTypeList;let i = index" nzMode="checkable" [nzChecked]="search.checked" (nzCheckedChange)="checkChange($event,i)">{{search.name}}</nz-tag>
-            </app-row-grid>
+            </app-row-grid> -->
             <app-row-grid [T_row]="3" [C_row]="21" [Title]="'时间选择'">
-              <nz-month-picker [(ngModel)]="date" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询月份"></nz-month-picker>
+              <nz-year-picker [(ngModel)]="date" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询年份"></nz-year-picker>
             </app-row-grid>
           </div>
-          <div echarts [options]="options" [autoResize]="autoResize" style="height: 500px"></div>
+          <div  echarts [options]="options"
+                [autoResize]="autoResize"
+                style="height: 500px"
+                (chartClick)="onChartEvent($event, 'chartClick')"
+                >
+          </div>
         </div>
         <!--商品成本-->
         <div class="product_cost" *ngIf="selectedIndex === 0">

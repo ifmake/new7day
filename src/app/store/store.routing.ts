@@ -5,9 +5,28 @@ import { StoreLoseComponent } from './store-lose/store-lose.component';
 
 export const storeRouter: Routes = [
     { path: '', redirectTo: 'search', pathMatch: 'full'},
-    {path: 'search', component: SotreSearchComponent},
-    {path: 'import', component: StoreImportComponent},
+    // 库存查询
+    {
+        path: 'search',
+        data: { title: '库存查询', module: 'store/search', power: 'show' },
+        component: SotreSearchComponent
+    },
+    // 进出货管理
+    {
+        path: 'import',
+        data: { title: '进出货管理', module: 'store/import', power: 'show' },
+        component: StoreImportComponent},
     // {path: 'export', component: StoreExportComponent},
-    {path: 'lose', component: StoreLoseComponent},
-    {path: 'cost', loadChildren: './store-cost/store-cost.module#StoreCostModule'},
+    // 报损管理
+    {
+        path: 'lose',
+        data: { title: '报损管理', module: 'store/lose', power: 'show' },
+        component: StoreLoseComponent
+    },
+    // 成本核算
+    {
+        path: 'cost',
+        data: { title: '成本核算', module: 'store/cost', power: 'show' },
+        loadChildren: './store-cost/store-cost.module#StoreCostModule'
+    },
 ];

@@ -5,7 +5,7 @@
     <div class="logo">
     </div>
     <div class="menu">
-      <app-menu [Islogin]="Islogin"></app-menu>
+      <app-menu [Islogin]="Islogin" [ActiveMenus]="ActiveMenus" (menus)="getMenus($event)"></app-menu>
     </div>
   </nz-sider>
   <nz-layout>
@@ -20,9 +20,10 @@
       </div>
     </nz-header>
     <nz-content class="content">
-      <div style="padding:24px; background: #fff; min-height: 360px;">
-        <router-outlet></router-outlet>
-      </div>
+      <app-menu-list [MenuList]="ActiveMenus" (remove)="removeMenu($event)"></app-menu-list>
+          <div style="padding:24px; background: #fff; min-height: 360px;">
+            <router-outlet></router-outlet>
+          </div>
     </nz-content>
     <nz-footer style="text-align: center;">新七天仓库管理系统</nz-footer>
   </nz-layout>

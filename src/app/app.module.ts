@@ -9,8 +9,10 @@ import zh from '@angular/common/locales/zh';
 import { ShareModule } from './share/share.module';
 import { LoginModule } from './share/login/login.module';
 import { MenuComponent } from './share/menu/menu.component';
-import { RouterModule } from '@angular/router';
+import { RouterModule, RouteReuseStrategy } from '@angular/router';
 import { rootRouter } from './app.routing';
+import { SimpleReuseStrategy } from './common/storage/SimpleReuseStrategy';
+import { MenuListComponent } from './share/menu-list/menu-list.component';
 
 registerLocaleData(zh);
 
@@ -18,6 +20,7 @@ registerLocaleData(zh);
   declarations: [
     AppComponent,
     MenuComponent,
+    MenuListComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,7 +29,10 @@ registerLocaleData(zh);
     ShareModule,
     LoginModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [
+    { provide: NZ_I18N, useValue: zh_CN },
+    { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,7 +13,7 @@ import { StockCostService } from 'src/app/common/service/product-service/product
 export class StoreCostComponent extends ShareCommon implements OnInit {
   costTypes = [
     {name: '商品成本', type: 'product_cost', index: 0},
-    {name: '成本走势', type: 'all_cost', index: 1},
+    {name: '仓库成本走势', type: 'all_cost', index: 1},
   ];
   isSplin = false;
   selectedIndex = 0;
@@ -47,18 +47,18 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
     });
     // 成本走势
     this.storeList = [
-      {name: '总仓库', checked: true},
-      {name: '仓库1', checked: false}
+      {name: '成本', checked: true},
+      {name: '数量', checked: false}
     ];
    // 总成本走势
   this.autoResize = true;
   this.options = {
     title: {
-      text: '库房每月总成本走势'
+      text: '仓库成本'
     },
     xAxis: {
       type: 'category',
-      data: ['一月', '二月', '三月', '四月', '五月', '六月', '7月', '8月', '9月', '10月']
+      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月']
     },
     tooltip: {
       trigger: 'axis',
@@ -66,13 +66,24 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
         animation: false
       }
     },
+    legend: {
+      data: ['总成本', '损耗']
+    },
     yAxis: {
       type: 'value'
     },
-    series: [{
-      data: [820, 932, 901, 934, 1290, 1330, 1320, 1500, 1630, 1750, 1840 ],
-      type: 'line'
-    }]
+    series: [
+      {
+        name: '总成本',
+        data: [820, 932, 901, 934, 1290, 1330, 1320, 1500, 1630, 1750, 1840],
+        type: 'line'
+      },
+      {
+        name: '损耗',
+        data: [20, 142, 31, 34, 290, 30, 20, 110, 30, 50, 40],
+        type: 'line'
+      },
+    ]
   };
   }
 
@@ -108,7 +119,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
    */
   // 图标事件
   onChartEvent(chart, type) {
-    // console.log(type);
+    console.log(chart);
   }
   // 检测时间变化
   checkChange(change, index) {
