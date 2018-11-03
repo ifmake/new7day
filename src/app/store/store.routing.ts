@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { SotreSearchComponent } from './sotre-search/sotre-search.component';
 import { StoreImportComponent } from './store-import/store-import.component';
 import { StoreLoseComponent } from './store-lose/store-lose.component';
+import { StoreRecordComponent } from './store-record/store-record.component';
 
 export const storeRouter: Routes = [
     { path: '', redirectTo: 'search', pathMatch: 'full'},
@@ -15,7 +16,8 @@ export const storeRouter: Routes = [
     {
         path: 'import',
         data: { title: '进出货管理', module: 'store/import', power: 'show' },
-        component: StoreImportComponent},
+        component: StoreImportComponent
+    },
     // {path: 'export', component: StoreExportComponent},
     // 报损管理
     {
@@ -28,5 +30,11 @@ export const storeRouter: Routes = [
         path: 'cost',
         data: { title: '成本核算', module: 'store/cost', power: 'show' },
         loadChildren: './store-cost/store-cost.module#StoreCostModule'
+    },
+    // 进出货记录
+    {
+        path: 'record',
+        data: { title: '进出货记录', module: 'store/record', power: 'show' },
+        component: StoreRecordComponent,
     },
 ];

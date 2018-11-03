@@ -48,7 +48,6 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
       // {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
       // {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
     ];
-    
   }
 
   ngOnInit() {

@@ -1,0 +1,43 @@
+
+ <!--条件查询-->
+ <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
+  <!--记录查询-->
+  <div class="search-result-list">
+     <nz-table #RecordTable 
+     [nzData]="dataList?.results"  
+     [nzShowPagination]="false"
+     [nzScroll]="{x:'1500px'}"
+     [nzLoading]="listLoading">
+         <thead>
+           <tr>
+             <th nzWidht="100px" nzLeft="0px">商品名称</th>
+             <th>订单类型</th>
+             <th>进价</th>
+             <th>数量</th>
+             <th>规格</th>
+             <th>操作人</th>
+             <th>操作时间</th> 
+             <th nzWidth="100px" nzRight="0px">操作</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr *ngFor="let data of RecordTable.data">
+             <td nzWidht="100px" nzLeft="0px">{{data.goods_name}}</td>
+             <td>{{data.record_type==='depot_in'?'进货':'出货'}}</td>
+             <td>{{data.price}}</td>
+             <td>{{data.amount}}</td>
+             <td>{{data.unit}}</td>
+             <td>{{data.operator_account}}</td>
+             <td>{{data.record_time| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+             <td nzRight="0px">
+              <nz-tag [nzColor]="'blue'" (click) ="searchStock(data)">库存查询</nz-tag>
+             </td>
+           </tr>
+         </tbody>
+       </nz-table>
+       <app-pagination 
+       [nzTotal]="dataList?.count || 0" 
+       [nzPageSize]="searchObj.page_size"
+       (nzPageIndexChange)="changPageIndex($event)" 
+       (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+ </div>

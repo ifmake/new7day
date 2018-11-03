@@ -22,7 +22,7 @@ export class StockListService {
        return this._httpService.get(api_productIX.orderDetail(id));
     }
     // 订单列表
-    getRecordList(id: number | string) {
-        return this._httpService.get(api_productIX.recordsList(id));
+    getRecordList(keys: any): any {
+        return this._httpService.get(api_productIX.recordsList(), {params: keys});
     }
 }

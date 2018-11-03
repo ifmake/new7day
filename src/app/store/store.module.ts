@@ -8,6 +8,7 @@ import { StoreImportComponent } from './store-import/store-import.component';
 import { StoreLoseComponent } from './store-lose/store-lose.component';
 import { ShareModule } from '../share/share.module';
 import { StoreExportComponent } from './store-export/store-export.component';
+import { StoreRecordComponent } from './store-record/store-record.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { StoreExportComponent } from './store-export/store-export.component';
     SotreSearchComponent,
     StoreImportComponent,
     StoreExportComponent,
-    StoreLoseComponent]
+    StoreLoseComponent,
+    StoreRecordComponent]
 })
 export class StoreModule { }
