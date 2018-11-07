@@ -4,6 +4,7 @@ import { graphic } from 'echarts';
 import { reduce, switchMap } from 'rxjs/operators';
 import { ShareCommon } from 'src/app/share/share.component';
 import { StockCostService } from 'src/app/common/service/product-service/product-cost.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-store-cost',
@@ -17,7 +18,6 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
   ];
   isSplin = false;
   selectedIndex = 0;
-
   // 商品成本
   searchArray = [
     {key: 'name', index: 0, name: '商品名称', show: true},
@@ -32,7 +32,22 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
     {name: '数量', checked: true},
     {name: '成本', checked: true},
   ];
-
+  // 月度成本统计
+  monthCostStream = new Subject<any>();
+  monthSearch: any;
+  MonthArr = [];
+  costArr = [];
+  countArr = [];
+  useCostArr = [];
+  useCountArr = [];
+   // 值为空推0
+   getZero(value) {
+      if (value === null || value === '') {
+        return 0;
+      } else {
+        return value;
+      }
+  }
   constructor(
     private costService: StockCostService
   ) {
@@ -45,6 +60,74 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
       this.listLoading = false;
       this.dataList = res;
     });
+    // 月度成本统计
+    this.monthSearch = {
+      page: 1,
+      page_size: 10,
+    };
+    this.monthCostStream.pipe(switchMap(() => {
+      return this.costService.getMonthAdjust(this.searchObj);
+    })).subscribe(res => {
+      if (res && res['length'] > 0) {
+        const Data: any = res;
+        Data.map(data => {
+          this.MonthArr.push(`${data.month}月份`);
+          this.costArr.push(this.getZero(data.cost));
+          this.countArr.push(this.getZero(data.count));
+          this.useCostArr.push(this.getZero(data.used_cost));
+          this.useCountArr.push(this.getZero(data.used_count));
+          this.options = {
+            title: {
+              text: '仓库成本'
+            },
+            xAxis: {
+              type: 'category',
+              data: this.MonthArr
+            },
+            tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                animation: false
+              }
+            },
+            legend: {
+              data: ['总成本', '总数量', '使用成本', '使用数量' ]
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                name: '总成本',
+                data: this.costArr,
+                type: 'line'
+              },
+              {
+                name: '总数量',
+                data: this.countArr,
+                type: 'line'
+              },
+              {
+                name: '使用成本',
+                data: this.useCostArr,
+                type: 'line'
+              },
+              {
+                name: '使用数量',
+                data: this.useCountArr,
+                type: 'line'
+              },
+              // {
+              //   name: '损耗',
+              //   data: [20, 142, 31, 34, 290, 30, 20, 110, 30, 50, 40],
+              //   type: 'line'
+              // },
+            ]
+          };
+        });
+      }
+    });
+
     // 成本走势
     this.storeList = [
       {name: '成本', checked: true},
@@ -52,39 +135,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
     ];
    // 总成本走势
   this.autoResize = true;
-  this.options = {
-    title: {
-      text: '仓库成本'
-    },
-    xAxis: {
-      type: 'category',
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月']
-    },
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        animation: false
-      }
-    },
-    legend: {
-      data: ['总成本', '损耗']
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        name: '总成本',
-        data: [820, 932, 901, 934, 1290, 1330, 1320, 1500, 1630, 1750, 1840],
-        type: 'line'
-      },
-      {
-        name: '损耗',
-        data: [20, 142, 31, 34, 290, 30, 20, 110, 30, 50, 40],
-        type: 'line'
-      },
-    ]
-  };
+
   }
 
 
@@ -94,6 +145,9 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
   // 切换类型
   changeStore(store) {
     console.log(store);
+    if (store.index === 1) {
+      this.monthCostStream.next();
+    }
     this.selectedIndex = store.index;
   }
   /**

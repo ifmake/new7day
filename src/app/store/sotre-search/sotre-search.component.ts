@@ -13,8 +13,10 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
   ObserverList: Observable<any>;
   dataList: any;
+  displayData: any = [];
   searchArray: any = [];
   allChecked: boolean;
+  indeterminate: boolean;
   // 进货组件
   ModelVisible: boolean;
   ModelTitle = '进货管理';
@@ -41,10 +43,10 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
 
     this.searchArray = [
       {key: 'name', index: 0, name: '名称', show: true},
-      {key: 'stock', index: 3, name: '库存', show: true},
-      {key: 'store', index: 4, name: '所属仓库', show: true},
-      {key: 'maker', index: 5, name: '操作人', show: true},
-      {key: 'status', index: 5, name: '库存状态', show: true},
+      // {key: 'stock', index: 3, name: '库存', show: true},
+      {key: 'depot', index: 4, name: '所属仓库', show: true},
+      {key: 'last_operator_name', index: 5, name: '操作人', show: true},
+      {key: 'stock_status', index: 5, name: '库存状态', show: true},
       // {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
       // {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
     ];
@@ -60,8 +62,20 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     this.searchStream.next();
   }
   // 选中商品
+  // 刷新状态
+  refreshStatus(): void {
+    const allChecked = this.displayData.every(value => value.is_book === true);
+    const allUnChecked = this.displayData.every(value => !value.is_book);
+    this.allChecked = allChecked;
+    this.indeterminate = (!allChecked) && (!allUnChecked);
+  }
+  // 选中所有
   checkAll(prods) {
-    console.log(prods);
+    this.displayData.forEach(data => data.is_book = prods);
+    this.refreshStatus();
+  }
+  currentPageDataChange(datas) {
+    this.displayData = datas;
   }
   // 查看详情
   lookDetail(prod) {
@@ -69,7 +83,6 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     this.OpenDraw = true;
     this.drawerTitle = prod.name;
     this.stockList.getDetail(prod.id).subscribe(res => {
-      console.log(res);
     });
   }
   // 记录单

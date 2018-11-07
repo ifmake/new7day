@@ -21,7 +21,7 @@ export class HttpService {
    * @param url 请求路径
    * @param option 请求配置
    */
-  request(way: string, url: string, option: Object) {
+  request(way: string, url: string, option: Object): any {
     return new Observable((Observer) => {
       this.headerChnage = 'JWT ' + JSON.parse(this.storage.get('loginer')).token;
       const headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8', 'Authorization': this.headerChnage });
@@ -57,7 +57,7 @@ export class HttpService {
    * @param url 请求地址
    * @param options 请求配置（可选）
    */
-  get(url: string, options?: Object) {
+  get(url: string, options?: Object): any {
     return this.request('get', url, Object.assign({
       method: 'get'
     }, options));
@@ -67,7 +67,7 @@ export class HttpService {
    * @param url 请求地址
    * @param options 请求参数
    */
-  post(url: string, options: Object = {}) {
+  post(url: string, options: Object = {}): any {
     return this.request('post', url, {
       body: JSON.stringify(typeof options['body'] === 'object' ? options['body'] : {})
     });
@@ -77,7 +77,7 @@ export class HttpService {
    * @param url 请求地址
    * @param opts 请求参数
    */
-  patch(url: string, opts?: Object) {
+  patch(url: string, opts?: Object): any {
     return this.request('patch', url, Object.assign({}, opts, {
       body: JSON.stringify(typeof opts['body'] === 'object' ? opts['body'] : {})
     }));
@@ -87,7 +87,7 @@ export class HttpService {
    * @param url 请求地址
    * @param opts 请求参数
    */
-  put(url: string, opts: Object = {}) {
+  put(url: string, opts: Object = {}): any {
     return this.request('put', url, Object.assign({}, opts, {
       body: JSON.stringify(typeof opts['body'] === 'object' ? opts['body'] : {})
     }));
@@ -97,7 +97,7 @@ export class HttpService {
    * @param url 请求地址
    * @param opts 请求参数（可选）
    */
-  delete(url: string, opts?: Object) {
+  delete(url: string, opts?: Object): any {
     return this.request('delete', url, Object.assign({
       method: 'delete'
     }, opts));

@@ -11,12 +11,13 @@
  <div class="search-result-list">
      <nz-table #productManageTable 
      [nzData]="dataList?.results"  
+     (nzCurrentPageDataChange)="currentPageDataChange($event)"
      [nzShowPagination]="false"
      [nzScroll]="{x:'1500px'}"
      [nzLoading]="listLoading">
          <thead>
            <tr>
-             <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="false" (nzCheckedChange)="checkAll($event)"></th>
+             <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
              <th nzLeft="112px">库存状态</th>
              <th>商品编码</th>
@@ -39,8 +40,8 @@
              <td>{{data.code}}</td>
              <td>{{data.storage}}</td>
              <td>{{data.current_depot_stock}}</td>
-             <td>{{data.maker}}</td>
-             <td>{{data.in_price}}</td>
+             <td>{{data.last_operator_name}}</td>
+             <td>{{data.last_price}}</td>
              <td>{{data.sale_price}}</td>
              <td>{{data.company}}</td>
              <td>{{data.unit}}</td>

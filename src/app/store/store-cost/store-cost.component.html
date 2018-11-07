@@ -41,9 +41,10 @@
                 <thead>
                   <tr>
                     <th nzWidht="100px" nzLeft="0px">商品名称</th>
-                    <th nzLeft="118px">商品成本</th>
-                    <!-- <th>平均进价</th> -->
-                    <th>消耗</th>
+                    <th nzLeft="118px">商品总成本</th>
+                    <th>商品总量</th>
+                    <th>发货成本</th>
+                    <th>发货数量</th>
                     <th>规格</th>
                     <!-- <th>所属仓库</th> -->
                   </tr>
@@ -52,8 +53,9 @@
                   <tr *ngFor="let data of dataList">
                     <td nzWidht="100px" nzLeft="0px">{{data.goods__name}}</td>
                     <td nzLeft="118px" [ngStyle]="{color:'red'}">{{data.cost}}</td>
-                    <!-- <td>1.2元每斤</td> -->
                     <td>{{data.count}}</td>
+                    <td>{{data.used_cost}}</td>
+                    <td>{{data.used_count}}</td>
                     <td>元/斤</td>
                     <!-- <td>总仓库</td> -->
                   </tr>

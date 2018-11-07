@@ -14,6 +14,7 @@
              <th>订单类型</th>
              <th>进价</th>
              <th>数量</th>
+             <th>成本（元）</th>
              <th>规格</th>
              <th>操作人</th>
              <th>操作时间</th> 
@@ -25,6 +26,7 @@
              <td nzWidht="100px" nzLeft="0px">{{data.goods_name}}</td>
              <td>{{data.record_type==='depot_in'?'进货':'出货'}}</td>
              <td>{{data.price}}</td>
+             <td>{{data.count}}</td>
              <td>{{data.amount}}</td>
              <td>{{data.unit}}</td>
              <td>{{data.operator_account}}</td>

@@ -49,7 +49,8 @@ export const api_productIX = {
  * 仓库成本模块
  */
 export const api_cost = {
-    list: () => `${API_PREFIX}/goods/goods/cost/`
+    list: () => `${API_PREFIX}/goods/goods/cost/`,
+    monthAdjust: () => `${API_PREFIX}/goods/goods/stats/`
 };
 
 

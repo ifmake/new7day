@@ -13,4 +13,8 @@ export class StockCostService {
     getCostList(keys: any): any {
         return this._httpService.get(api_cost.list(), {params: keys});
     }
+    // 成本月度核算
+    getMonthAdjust(keys: any): any {
+        return this._httpService.get(api_cost.monthAdjust(), {params: keys});
+    }
 }

@@ -15,6 +15,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   operateForm: FormGroup;
   sourceslist = [];
+  storelist = [];
   constructor(
     private fb: FormBuilder,
     private stockService: StockListService
@@ -25,7 +26,12 @@ export class RecordCardComponent implements OnInit, OnChanges {
       count: [{value: null, disabled: false}, [Validators.required]],
       unit: [{value: null, disabled: false}, [Validators.required]],
       source: [{value: null, disabled: false}, [Validators.required]],
+      operate_depot: [{value: null, disabled: false}, [Validators.required]],
     });
+    this.storelist = [
+      {label: '总仓库', value: '1'},
+      {label: '分仓库', value: '2'},
+    ];
   }
 
   ngOnInit() {
@@ -44,7 +50,19 @@ export class RecordCardComponent implements OnInit, OnChanges {
         {label: '店面', value: 4},
       ];
     }
-    this.operateForm.reset();
+    console.log(this.recordListArr);
+    if (this.recordListArr.length  > 0 && this.recordListArr.length  < 2) {
+      const formObj = {
+        goods_id: this.recordListArr[0].id,
+        price: this.recordListArr[0].last_price,
+        unit: this.recordListArr[0].unit,
+        count: '',
+        source: '',
+        operate_depot: '1'
+      };
+      this.operateForm.setValue(formObj);
+      console.log(this.operateForm.value);
+    }
   }
   // 清空表单
   clearForm() {
