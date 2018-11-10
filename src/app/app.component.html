@@ -5,7 +5,7 @@
     <div class="logo">
     </div>
     <div class="menu">
-      <app-menu [Islogin]="Islogin" [ActiveMenus]="ActiveMenus" (menus)="getMenus($event)"></app-menu>
+      <app-menu [Islogin]="Islogin" [RightsMenus]="RightsMenus" [ActiveMenus]="ActiveMenus" (menus)="getMenus($event)"></app-menu>
     </div>
   </nz-sider>
   <nz-layout>
@@ -15,7 +15,7 @@
         <nz-badge [nzCount]="count">
           <a class="head-example">root</a>
         </nz-badge>
-        <span class="login_out" (click)="loginOut()">退出</span>|
+        <span class="login_out" (click)="ModelVisible = true">退出</span>|
         <span class="login_out">修改密码</span>
       </div>
     </nz-header>
@@ -28,3 +28,7 @@
     <nz-footer style="text-align: center;">新七天仓库管理系统</nz-footer>
   </nz-layout>
 </nz-layout>
+
+<app-model [OpenModel]="ModelVisible" [type]="true" [title]="ModelTitle" (close)="ModelVisible = false" (callBack)="loginOut()" [width]="600">
+   是否确认退出登录
+</app-model>

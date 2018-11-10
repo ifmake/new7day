@@ -66,11 +66,11 @@ export class RecordCardComponent implements OnInit, OnChanges {
   }
   // 清空表单
   clearForm() {
-    this.operateForm.reset();
+    this.operateForm.controls.count.reset();
+    this.operateForm.controls.price.reset();
   }
   // 表单提交
   submitForm(recode) {
-    console.log(recode);
     for (const i in this.operateForm.controls) {
       if (i) {
         this.operateForm.controls[ i ].markAsDirty();

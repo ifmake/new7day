@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as echarts from 'echarts';
 import { graphic } from 'echarts';
 import { reduce, switchMap } from 'rxjs/operators';
@@ -13,8 +13,8 @@ import { Subject } from 'rxjs';
 })
 export class StoreCostComponent extends ShareCommon implements OnInit {
   costTypes = [
-    {name: '商品成本', type: 'product_cost', index: 0},
-    {name: '仓库成本走势', type: 'all_cost', index: 1},
+    {name: '仓库成本走势', type: 'all_cost', index: 0},
+    {name: '商品成本', type: 'product_cost', index: 1},
   ];
   isSplin = false;
   selectedIndex = 0;
@@ -24,15 +24,18 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
   ];
   dataList: any;
   // 整体成本走势
-  options: any;
-  autoResize: any;
-  detectEventChanges = true;
-  date: string;
+  yearDate: any;
   searchTypeList = [
     {name: '数量', checked: true},
     {name: '成本', checked: true},
   ];
   // 月度成本统计
+  LineOptions: any;
+  PieOption: any;
+  updateOption: any;
+  autoResize: any;
+  IsPieChart: boolean;
+  detectEventChanges = true;
   monthCostStream = new Subject<any>();
   monthSearch: any;
   MonthArr = [];
@@ -40,6 +43,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
   countArr = [];
   useCostArr = [];
   useCountArr = [];
+  lineChart: any;
    // 值为空推0
    getZero(value) {
       if (value === null || value === '') {
@@ -65,67 +69,58 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
       page: 1,
       page_size: 10,
     };
+    this.yearDate = new Date().getFullYear().toString();
     this.monthCostStream.pipe(switchMap(() => {
       return this.costService.getMonthAdjust(this.searchObj);
     })).subscribe(res => {
       if (res && res['length'] > 0) {
         const Data: any = res;
+        this.MonthArr = [];
+        this.costArr = [];
+        this.countArr = [];
+        this.useCostArr = [];
+        this.useCountArr = [];
         Data.map(data => {
           this.MonthArr.push(`${data.month}月份`);
           this.costArr.push(this.getZero(data.cost));
           this.countArr.push(this.getZero(data.count));
           this.useCostArr.push(this.getZero(data.used_cost));
           this.useCountArr.push(this.getZero(data.used_count));
-          this.options = {
-            title: {
-              text: '仓库成本'
-            },
-            xAxis: {
-              type: 'category',
-              data: this.MonthArr
-            },
-            tooltip: {
-              trigger: 'axis',
-              axisPointer: {
-                animation: false
-              }
-            },
-            legend: {
-              data: ['总成本', '总数量', '使用成本', '使用数量' ]
-            },
-            yAxis: {
-              type: 'value'
-            },
-            series: [
-              {
-                name: '总成本',
-                data: this.costArr,
-                type: 'line'
-              },
-              {
-                name: '总数量',
-                data: this.countArr,
-                type: 'line'
-              },
-              {
-                name: '使用成本',
-                data: this.useCostArr,
-                type: 'line'
-              },
-              {
-                name: '使用数量',
-                data: this.useCountArr,
-                type: 'line'
-              },
-              // {
-              //   name: '损耗',
-              //   data: [20, 142, 31, 34, 290, 30, 20, 110, 30, 50, 40],
-              //   type: 'line'
-              // },
-            ]
-          };
         });
       }
+      this.LineOptions = {
+        title: {
+          text: '仓库成本（点击当月查看占比图）'
+        },
+        xAxis: {
+          type: 'category',
+          data: this.MonthArr
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            animation: false
+          }
+        },
+        legend: {
+          data: ['总成本', '总数量', '使用成本', '使用数量' ]
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: '总成本',
+            data: this.costArr,
+            type: 'line'
+          },
+          {
+            name: '使用成本',
+            data: this.useCostArr,
+            type: 'line',
+          },
+        ]
+      };
     });
 
     // 成本走势
@@ -140,13 +135,14 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
 
 
   ngOnInit() {
-    this.searchStream.next();
+    this.monthCostStream.next();
   }
   // 切换类型
   changeStore(store) {
-    console.log(store);
-    if (store.index === 1) {
+    if (store.index === 0) {
       this.monthCostStream.next();
+    } else {
+      this.searchStream.next();
     }
     this.selectedIndex = store.index;
   }
@@ -171,9 +167,58 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
   /**
    * 成本走势
    */
-  // 图标事件
-  onChartEvent(chart, type) {
-    console.log(chart);
+  // 图片初始化
+  onChartOninit(chart) {
+    this.lineChart = chart;
+    console.log(this.lineChart);
+  }
+  onChartEvent(chart) {
+    this.IsPieChart = true;
+    const index = chart.dataIndex + 1;
+    const costTypeArr = ['出货成本', '库存', '损耗' ];
+    const DataArr = [];
+    costTypeArr.map(name => {
+      const DataObj = {
+        value: null,
+        name: name,
+      };
+      if (name === '出货成本') {
+        DataObj.value = this.useCostArr[chart.dataIndex];
+      }
+      if (name === '库存') {
+        DataObj.value = this.costArr[chart.dataIndex] - this.useCostArr[chart.dataIndex];
+      }
+      if (name === '损耗') {
+        DataObj.value = 10;
+      }
+      DataArr.push(DataObj);
+    });
+
+   this.PieOption = {
+      title: {
+        text: `${index}月份成本占比`,
+        x: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        x: 'center',
+        y: 'bottom',
+        data: costTypeArr
+      },
+      calculable: true,
+      series: [
+        {
+          name: 'area',
+          type: 'pie',
+          radius: [30, 110],
+          roseType: 'area',
+          data: DataArr
+        }
+      ]
+    };
   }
   // 检测时间变化
   checkChange(change, index) {
@@ -184,5 +229,36 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
         this.storeList[index1].checked = false;
       }
     });
+    if (change.name === '数量') {
+      this.updateOption = {
+        series: [
+          {
+            name: '总数量',
+            data: this.countArr,
+            type: 'line'
+          },
+          {
+            name: '使用数量',
+            data: this.useCountArr,
+            type: 'line'
+          },
+        ]
+      };
+    } else {
+      this.updateOption = {
+        series: [
+          {
+            name: '总成本',
+            data: this.costArr,
+            type: 'line'
+          },
+          {
+            name: '使用成本',
+            data: this.useCostArr,
+            type: 'line',
+          },
+        ]
+      };
+    }
   }
 }

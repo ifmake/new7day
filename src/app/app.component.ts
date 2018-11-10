@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { LocalStorage } from './common/storage/local.storage';
 import { SimpleReuseStrategy } from './common/storage/SimpleReuseStrategy';
-import { ActiveMenus } from './common/interface/menu.interface';
+import { ActiveMenus, RightsMenus} from './common/interface/menu.interface';
+import { SuperMenu, MangerMenu, StockManageMenu } from './common/comom-constant/menu-rights';
 
 @Component({
   selector: 'app-root',
@@ -14,18 +15,31 @@ export class AppComponent {
   Islogin: boolean;
   count = 5;
   MenuIndex: number;
+  RightsMenus: Array<RightsMenus> = [];
   ActiveMenus: Array<ActiveMenus> = [];
+  // 弹窗
+  ModelTitle: string;
+  ModelVisible: boolean;
   constructor(
     private router: Router,
     private storage: LocalStorage,
   ) {
+    this.ModelTitle = '退出登录';
     // 监听路由变化
     this.router.events.subscribe(route => {
       if (route instanceof NavigationStart) {
         const userInfo = JSON.parse(this.storage.get('loginer'));
         if (userInfo.token && userInfo.token !== '') {
           this.Islogin = false;
-          // this.router.navigate(['material/product']);
+          if (userInfo.profile.role === 'super_admin') {
+            this.RightsMenus = SuperMenu;
+          }
+          if (userInfo.profile.role === 'admin') {
+            this.RightsMenus = MangerMenu;
+          }
+          if (userInfo.profile.role === 'warekeeper') {
+            this.RightsMenus = StockManageMenu;
+          }
         } else {
           this.Islogin = true;
         }
@@ -35,7 +49,11 @@ export class AppComponent {
   }
   // 获取多窗口模式路由
   getMenus(menus) {
+    if (menus.length > 0) {
       this.ActiveMenus = menus;
+    } else {
+      this.router.navigate(['']);
+    }
   }
   // 获取选中的index
   removeMenu(menu) {
@@ -58,13 +76,18 @@ export class AppComponent {
   // 登录系统
   login() {
     this.Islogin = false;
+    this.ActiveMenus = [];
+    this.router.navigate(['welcome']);
+    const userInfo = JSON.parse(this.storage.get('loginer'));
   }
+
 
   // 退出登录
   loginOut() {
+    this.ModelVisible = false;
     this.Islogin = true;
+    this.RightsMenus = [];
     this.storage.remove('loginer');
-    this.router.navigate(['']);
   }
 
 }
