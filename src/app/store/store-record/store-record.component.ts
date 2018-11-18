@@ -19,8 +19,8 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
   ) {
     super();
     this.searchArray = [
-      {key: 'goods_name', index: 0, name: '商品名称', show: true},
-      {key: 'data.operator_account', index: 5, name: '操作人', show: true},
+      {key: 'search', index: 0, name: '商品名称', show: true},
+      {key: 'operator_account', index: 5, name: '操作人', show: true},
       {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
       {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
     ];

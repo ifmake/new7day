@@ -13,7 +13,8 @@ import { SuperMenu, MangerMenu, StockManageMenu, BossMenu} from './common/comom-
 export class AppComponent {
   title = 'new7Day';
   Islogin: boolean;
-  count = 5;
+  count = 0;
+  loginer_name: string;
   MenuIndex: number;
   RightsMenus: Array<RightsMenus> = [];
   ActiveMenus: Array<ActiveMenus> = [];
@@ -29,6 +30,7 @@ export class AppComponent {
     this.router.events.subscribe(route => {
       if (route instanceof NavigationStart) {
         const userInfo = JSON.parse(this.storage.get('loginer'));
+        this.loginer_name = userInfo.profile.name;
         if (userInfo.token && userInfo.token !== '') {
           this.Islogin = false;
           if (userInfo.profile.role === 'super_admin') {
