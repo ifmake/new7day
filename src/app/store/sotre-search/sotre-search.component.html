@@ -68,10 +68,10 @@
 <!--进货出货详情-->
 <app-drawer [visible]="OpenDraw" [maskClose]="drawerMaskClose" [title]="drawerTitle" [width]="720" [NoOperate]="true" (callBack)="closeDraw($event)">
     <!--商品基本信息-->
-    <app-text-grid *ngFor="let pro of ProStockArr" [name]="pro.name" [content]="pro.content"></app-text-grid>
+    <app-text-grid *ngFor="let pro of ProStockArr" [name]="pro.name" [content]="pro.content" [type]="pro.type"></app-text-grid>
     <!--进发货-->
-    <app-product-record [name]="'进货记录'" [type]="operate_type.import" [recordArr]="recordArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
-    <app-product-record [name]="'发货记录'" [type]="operate_type.export" [recordArr]="recordArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
+    <app-product-record [name]="'进货记录'" [type]="operate_type.import" [recordArr]="importOrderArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
+    <app-product-record [name]="'发货记录'" [type]="operate_type.export" [recordArr]="exportOrderArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
     <!--二层弹窗-->
     <app-drawer [visible]="OpenDrawList" [maskClose]="drawerMaskClose" [title]="drawerListTitle" [width]="400" [NoOperate]="true" (callBack)="closeChildDraw($event)">
       <app-record-card [recordListArr]="recordArr" [recordType]="recordType" ></app-record-card>

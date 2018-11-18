@@ -2,6 +2,7 @@
 <div nz-row class="text-grid">
   <div nz-col nzSpan="8" class="rzl_tg_title">{{name}}：</div>
   <div nz-col nzSpan="16" class="rzl_tg_content" >
-      {{content}}
+    <span *ngIf="type==='string'">{{content}}</span>
+    <span *ngIf="type==='time'">{{content | date:'yyyy-MM-dd HH:mm:ss'}}</span>
   </div>
 </div>

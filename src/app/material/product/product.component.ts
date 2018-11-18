@@ -32,10 +32,9 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       this.dataList = res;
     });
     this.searchArray = [
-      {key: 'name', index: 0, name: '名称', show: true},
+      {key: 'search', index: 0, name: '名称', show: true},
       {key: 'code', index: 1, name: '编码', show: true},
       {key: 'spec', index: 2, name: '规格', show: true},
-      {key: 'search', index: 3, name: '模糊查询', show: true},
     ];
     // 新增商品表单
     this.prodcutForm = this.fb.group({
@@ -43,6 +42,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       short_name: [{value: '', disabled: false}, [Validators.required]],
       id: [{value: '', disabled: false}],
       code: [{value: '', disabled: false}],
+      warn_stock: [{value: '', disabled: false}],
       in_price: [{value: '', disabled: false}],
       sale_price: [{value: '', disabled: false}],
       unit: [{value: '', disabled: false}, [Validators.required]],
@@ -117,6 +117,10 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         this.message.create('error', '规格不能为空');
         return;
       }
+      if (this.prodcutForm.value.warn_stock < 1) {
+        this.message.create('error', '预警库存不能小于1');
+        return;
+      }
       this.saveProduct();
     } else {
       this.OpenDraw = false;
@@ -162,7 +166,6 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     this.OpenDraw = true;
     this.formTitle = '商品修改';
     this.productService.getProductDetail(id).subscribe(res => {
-      console.log(res);
       const {
         id = '',
         name = '',
@@ -171,10 +174,11 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         in_price = '',
         sale_price = '',
         unit = '',
+        warn_stock = '',
         brand = '',
         img = '',
         desc = ''} = res;
-        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, unit,  brand , img, desc});
+        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, unit, warn_stock, brand , img, desc});
         console.log(this.prodcutForm);
     });
   }

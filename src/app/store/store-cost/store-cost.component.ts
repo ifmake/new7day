@@ -5,6 +5,7 @@ import { reduce, switchMap } from 'rxjs/operators';
 import { ShareCommon } from 'src/app/share/share.component';
 import { StockCostService } from 'src/app/common/service/product-service/product-cost.service';
 import { Subject } from 'rxjs';
+import { LocalStorage } from 'src/app/common/storage/local.storage';
 
 @Component({
   selector: 'app-store-cost',
@@ -12,15 +13,12 @@ import { Subject } from 'rxjs';
   styleUrls: ['./store-cost.component.less']
 })
 export class StoreCostComponent extends ShareCommon implements OnInit {
-  costTypes = [
-    {name: '仓库成本走势', type: 'all_cost', index: 0},
-    {name: '商品成本', type: 'product_cost', index: 1},
-  ];
+  costTypes: any;
   isSplin = false;
   selectedIndex = 0;
   // 商品成本
   searchArray = [
-    {key: 'name', index: 0, name: '商品名称', show: true},
+    {key: 'search', index: 0, name: '商品名称', show: true},
   ];
   dataList: any;
   // 整体成本走势
@@ -43,6 +41,8 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
   countArr = [];
   useCostArr = [];
   useCountArr = [];
+  damagedCostArr = [];
+  damagedCountArr = [];
   lineChart: any;
    // 值为空推0
    getZero(value) {
@@ -53,14 +53,14 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
       }
   }
   constructor(
-    private costService: StockCostService
+    private costService: StockCostService,
+    private storage: LocalStorage,
   ) {
     super();
     // 商品成本
     this.searchStream.pipe(switchMap(() => {
       return this.costService.getCostList(this.searchObj);
     })).subscribe(res => {
-      console.log(res);
       this.listLoading = false;
       this.dataList = res;
     });
@@ -80,12 +80,16 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
         this.countArr = [];
         this.useCostArr = [];
         this.useCountArr = [];
+        this.damagedCostArr = [];
+        this.damagedCountArr = [];
         Data.map(data => {
           this.MonthArr.push(`${data.month}月份`);
           this.costArr.push(this.getZero(data.cost));
           this.countArr.push(this.getZero(data.count));
           this.useCostArr.push(this.getZero(data.used_cost));
           this.useCountArr.push(this.getZero(data.used_count));
+          this.damagedCostArr.push(this.getZero(data.damaged_cost));
+          this.damagedCountArr.push(this.getZero(data.damaged_count));
         });
       }
       this.LineOptions = {
@@ -94,6 +98,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
         },
         xAxis: {
           type: 'category',
+          text: '元',
           data: this.MonthArr
         },
         tooltip: {
@@ -103,7 +108,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
           }
         },
         legend: {
-          data: ['总成本', '总数量', '使用成本', '使用数量' ]
+          data: ['总成本', '总数量', '损耗成本', '使用成本', '使用数量' ]
         },
         yAxis: {
           type: 'value'
@@ -117,6 +122,11 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
           {
             name: '使用成本',
             data: this.useCostArr,
+            type: 'line',
+          },
+          {
+            name: '损耗成本',
+            data: this.damagedCostArr,
             type: 'line',
           },
         ]
@@ -135,7 +145,20 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
 
 
   ngOnInit() {
-    this.monthCostStream.next();
+    const userInfo = JSON.parse(this.storage.get('loginer'));
+    if (userInfo.profile.role === 'boss') {
+      this.costTypes = [
+        {name: '仓库成本走势', type: 'all_cost', index: 0},
+        {name: '商品成本', type: 'product_cost', index: 1},
+      ];
+      this.monthCostStream.next();
+    } else {
+      this.selectedIndex = 1;
+      this.searchStream.next();
+      this.costTypes = [
+        {name: '商品成本', type: 'product_cost', index: 1},
+      ];
+    }
   }
   // 切换类型
   changeStore(store) {
@@ -189,7 +212,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
         DataObj.value = this.costArr[chart.dataIndex] - this.useCostArr[chart.dataIndex];
       }
       if (name === '损耗') {
-        DataObj.value = 10;
+        DataObj.value = this.damagedCostArr[chart.dataIndex];
       }
       DataArr.push(DataObj);
     });
@@ -255,6 +278,11 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
           {
             name: '使用成本',
             data: this.useCostArr,
+            type: 'line',
+          },
+          {
+            name: '损耗成本',
+            data: this.damagedCostArr,
             type: 'line',
           },
         ]

@@ -6,6 +6,7 @@
      <nz-table #RecordTable 
      [nzData]="dataList?.results"  
      [nzShowPagination]="false"
+     [nzPageSize] = "searchObj.page_size"
      [nzScroll]="{x:'1500px'}"
      [nzLoading]="listLoading">
          <thead>

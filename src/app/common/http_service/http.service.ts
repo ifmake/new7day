@@ -109,10 +109,10 @@ export class HttpService {
   private handleError(error: HttpErrorResponse) {
     console.log(error);
     if (error.error instanceof ErrorEvent) {
-      console.log(error);
       return throwError(error.error);
     } else {
-      return throwError(error.error);
+      console.log(error);
+      return throwError(error);
     }
   }
 }

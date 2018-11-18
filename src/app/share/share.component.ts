@@ -8,6 +8,7 @@ export class ShareCommon  {
     // 基准数据列表;
     storeList = [];
     supplierList = [];
+    productList = [];
     userList = [];
     listLoading: boolean;
     // 查询参数

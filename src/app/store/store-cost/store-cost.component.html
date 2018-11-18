@@ -50,6 +50,8 @@
                     <th>商品总量</th>
                     <th>发货成本</th>
                     <th>发货数量</th>
+                    <th>损耗成本</th>
+                    <th>损耗数量</th>
                     <th>规格</th>
                     <!-- <th>所属仓库</th> -->
                   </tr>
@@ -58,9 +60,11 @@
                   <tr *ngFor="let data of productManageTable.data">
                     <td nzWidht="100px" nzLeft="0px">{{data.goods__name}}</td>
                     <td nzLeft="118px" [ngStyle]="{color:'red'}">{{data.cost}}</td>
-                    <td>{{data.count}}</td>
-                    <td>{{data.used_cost}}</td>
-                    <td>{{data.used_count}}</td>
+                    <td>{{data.count || 0}}</td>
+                    <td>{{data.used_cost || 0}}</td>
+                    <td>{{data.used_count || 0}}</td>
+                    <td>{{data.damaged_cost || 0}}</td>
+                    <td>{{data.damaged_count || 0}}</td>
                     <td>{{data.unit}}</td>
                     <!-- <td>总仓库</td> -->
                   </tr>

@@ -111,6 +111,15 @@
                   </nz-form-control>
                 </nz-form-item>
               </div>
+              <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label>预警库存</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="warn_stock" placeholder="请输入预警库存(默认值为10)">
+                        <nz-form-explain *ngIf="prodcutForm.get('warn_stock').dirty && prodcutForm.get('warn_stock').errors">请输入预警库存</nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
             </div>
             <div nz-row nzGutter="8">
                 <nz-form-item>

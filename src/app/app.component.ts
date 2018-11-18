@@ -3,7 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { LocalStorage } from './common/storage/local.storage';
 import { SimpleReuseStrategy } from './common/storage/SimpleReuseStrategy';
 import { ActiveMenus, RightsMenus} from './common/interface/menu.interface';
-import { SuperMenu, MangerMenu, StockManageMenu } from './common/comom-constant/menu-rights';
+import { SuperMenu, MangerMenu, StockManageMenu, BossMenu} from './common/comom-constant/menu-rights';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +39,9 @@ export class AppComponent {
           }
           if (userInfo.profile.role === 'warekeeper') {
             this.RightsMenus = StockManageMenu;
+          }
+          if (userInfo.profile.role === 'boss') {
+            this.RightsMenus = BossMenu;
           }
         } else {
           this.Islogin = true;

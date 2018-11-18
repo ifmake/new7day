@@ -9,9 +9,13 @@ export class TextGridComponent implements OnInit {
 
   @Input() name: string;
   @Input() content: string;
+  @Input() type: string;
   constructor() { }
 
   ngOnInit() {
+    if (!this.type) {
+      this.type = 'string';
+    }
   }
 
 }

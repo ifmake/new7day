@@ -24,8 +24,6 @@ export class MenuComponent implements OnInit , OnChanges {
   ) {}
   ngOnChanges() {
     this.menuList = this.RightsMenus;
-    console.log(this.menuList);
-    
   }
   ngOnInit() {
     this.router.events.pipe(

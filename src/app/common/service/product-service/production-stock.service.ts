@@ -17,9 +17,9 @@ export class StockListService {
     stockAndSend(body: any): any {
         return this._httpService.post(api_productIX.stockAndSend(), {body: body});
     }
-    // 查看商品详情
-    getDetail(id: number | string) {
-       return this._httpService.get(api_productIX.orderDetail(id));
+    // 查看单件商品记录
+    getDetail(keys: any): any {
+       return this._httpService.get(api_productIX.goodsrecord(), {params: keys});
     }
     // 订单列表
     getRecordList(keys: any): any {

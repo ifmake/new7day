@@ -42,7 +42,7 @@ export const api_productIX = {
     list: () => `${API_PREFIX}/goods/goods/stock/`,
     stockAndSend: () => `${API_PREFIX}/order/order/new/`,
     recordsList: () => `${API_PREFIX}/goods/goodsrecord/`,
-    orderDetail: (id) => `${API_PREFIX}/order/order/${id}`
+    goodsrecord: () => `${API_PREFIX}/goods/goodsrecord/`
 };
 
 /**
@@ -52,6 +52,20 @@ export const api_cost = {
     list: () => `${API_PREFIX}/goods/goods/cost/`,
     monthAdjust: () => `${API_PREFIX}/goods/goods/stats/`
 };
+
+/**
+ * 商品损耗模块
+ */
+export const api_lose = {
+    list: (id?: any) => {
+        if (id) {
+            return `${API_PREFIX}/goods/damaged/${id}`;
+        } else {
+            return `${API_PREFIX}/goods/damaged/`;
+        }
+    }
+};
+
 
 
 
