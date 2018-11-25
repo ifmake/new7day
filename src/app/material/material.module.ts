@@ -8,6 +8,7 @@ import { ShareModule } from '../share/share.module';
 import { StoreComponent } from './store/store.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { StaffComponent } from './staff/staff.component';
+import { ShopfrontComponent } from './shopfront/shopfront.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { StaffComponent } from './staff/staff.component';
     ShareModule,
     RouterModule.forChild(materialRouter)
   ],
-  declarations: [MaterialComponent, ProductComponent, StoreComponent, SupplierComponent, StaffComponent]
+  declarations: [MaterialComponent, ProductComponent, StoreComponent, SupplierComponent, StaffComponent, ShopfrontComponent]
 })
 export class MaterialModule { }

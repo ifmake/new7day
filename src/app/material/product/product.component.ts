@@ -70,7 +70,6 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     Object.assign(this.searchObj, serachObj);
     this.searchStream.next();
   }
-  // 数据查询
   refresh(keys) {
     Object.assign(this.searchObj, keys);
     this.searchStream.next();

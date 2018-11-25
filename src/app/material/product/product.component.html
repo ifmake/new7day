@@ -4,7 +4,7 @@
   <!--操作层-->  
   <app-handle-layout>
     <button nz-button [nzType]="'primary'" (click)="add()">新增商品</button>
-    <app-upload-btn [uploadUrl]="uploadUrl"></app-upload-btn>
+    <app-upload-btn [uploadUrl]="uploadUrl" (callBack)="searchStream.next()"></app-upload-btn>
   </app-handle-layout>
   <div class="search-result-list">
       <nz-table #productManageTable 

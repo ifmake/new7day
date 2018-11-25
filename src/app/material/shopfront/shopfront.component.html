@@ -1,0 +1,119 @@
+ <!--条件查询-->
+ <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
+<!--操作层-->  
+<app-handle-layout>
+      <button nz-button [nzType]="'primary'" (click)="addshop()">新增店铺</button>
+</app-handle-layout>
+<!--列表展示层-->
+<div class="search-result-list">
+    <nz-table 
+    #productManageTable
+    [nzData]="dataList?.results"
+    [nzPageSize]="10"
+    [nzScroll]="{x:'500px'}"
+    [nzShowPagination]="false"
+    [nzPageSize] = "dataList?.page_size"
+    [nzLoading]="listLoading">
+        <thead>
+          <tr>
+            <th nzWidht="100px" nzLeft="0px">店铺名称</th>
+            <th>店面类型</th>
+            <th>店长</th>
+            <th>联系方式</th>
+            <th>店铺地址</th>
+            <th>店铺人数</th>
+            <th nzWidth="100px" nzRight="0px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of productManageTable.data">
+            <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
+            <th>{{data.code}}</th>
+            <td>{{data.code}}</td>
+            <td>{{data.age}}</td>
+            <td>{{data.gender}}</td>
+            <td>{{data.salary}}</td>
+            <td nzRight="0px">
+              <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
+              <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该店铺'" (callBack)="deleteStaff($event,data.id)"></app-comfirm-alert>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <app-pagination 
+      [nzTotal]="dataList?.count || 0" 
+      [nzPageSize]="searchObj.page_size"
+      (nzPageIndexChange)="changPageIndex($event)" 
+      (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+</div>
+<!--模态框层-->
+<app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)" [title]="formTitle">
+    <form nz-form [formGroup]="shopFrontForm">
+        <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzRequired>店面名称</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="name" placeholder="请输入店面名称">
+                  <nz-form-explain *ngIf="shopFrontForm.get('name').dirty && shopFrontForm.get('name').errors">请输入店面名称</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzRequired>店面类型</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="type">
+                      <nz-option nzValue="super_admin" nzLabel="直营店"></nz-option>
+                      <nz-option nzValue="admin" nzLabel="外包店"></nz-option>
+                    </nz-select>
+                    <nz-form-explain *ngIf="shopFrontForm.get('type').dirty && shopFrontForm.get('type').errors">请选择店面类型</nz-form-explain>
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzRequired>店面负责人</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="shopkeeper">
+                      <nz-option nzValue="super_admin" nzLabel="长三"></nz-option>
+                      <nz-option nzValue="admin" nzLabel="李四"></nz-option>
+                    </nz-select>
+                    <nz-form-explain *ngIf="shopFrontForm.get('shopkeeper').dirty && shopFrontForm.get('shopkeeper').errors">请选择店面类型</nz-form-explain>
+                  </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired>联系电话</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="keeperphone" placeholder="请输入店面负责人联系电话">
+                    <nz-form-explain *ngIf="shopFrontForm.get('keeperphone').dirty && shopFrontForm.get('keeperphone').errors">请输入店面名称</nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+          </div>
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>店铺地址</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="address" placeholder="请输入店铺地址">
+                <nz-form-explain *ngIf="shopFrontForm.get('address').dirty && shopFrontForm.get('address').errors">请输入店铺地址</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>店铺人数</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="num" placeholder="请输入店铺人数">
+                <nz-form-explain *ngIf="shopFrontForm.get('num').dirty && shopFrontForm.get('num').errors">请输入店铺人数</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+    </form>
+</app-drawer>
