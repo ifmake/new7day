@@ -61,17 +61,20 @@ export class LoginComponent implements OnInit {
       username: this.validateForm.value.username,
       password: this.validateForm.value.password,
     };
+    if (!loginObj.username || !loginObj.password) {
+      this.message.create('warning', '请填写用户名或密码');
+      return;
+    }
     this.loginService.loginUser(loginObj).subscribe((res) => {
-      console.log(res);
       if  (res.token && res.token !== '') {
         // 数据存储
         this.storage.set('loginer', JSON.stringify(res));
         this.router.navigate(['material/product']);
         this.login.emit();
       } else {
-        for (const err in res) {
+        for (const err of res.error.non_field_errors) {
           if (err) {
-            this.message.create('error', res[err][0]);
+            this.message.create('error', err);
           }
         }
       }

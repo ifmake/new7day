@@ -44,7 +44,8 @@ export class HttpService {
         },
         error => {
           if (error) {
-            Object.assign(error, {error: true});
+            console.log(error);
+            // Object.assign(error, {error: true});
             Observer.next(error);
             Observer.complete();
           }

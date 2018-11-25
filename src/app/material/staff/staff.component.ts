@@ -56,10 +56,9 @@ export class StaffComponent extends MaterialCommon implements OnInit {
   }
   // 接口错误提示
   errorAlert(errors) {
-    for (const err in errors) {
-      if (err && typeof errors[err] === 'object') {
-        this.message.create('error', errors[err][0]);
-      }
+    console.log(errors);
+    for (const err of errors.error.code) {
+        this.message.create('error', err);
     }
   }
   // 数据查询
@@ -159,6 +158,7 @@ export class StaffComponent extends MaterialCommon implements OnInit {
   // 获取仓库列表
   getStoreList() {
     this.storeService.getStoreList(this.searchObj).subscribe(res => {
+      console.log(res);
       this.storeList = res.results;
     });
   }

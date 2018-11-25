@@ -40,6 +40,7 @@ export class StoreComponent extends MaterialCommon implements OnInit {
     this.storeForm = this.fb.group({
       id: [{value: '', disabled: false}],
       name: [{value: '', disabled: false}, [Validators.required]],
+      manager: [{value: '', disabled: false}, [Validators.required]],
       type: [{value: '', disabled: false}, [Validators.required]],
       cubage: [{value: '', disabled: false}],
       depot_keepers: [{value: ['1'], disabled: false}],
@@ -157,9 +158,10 @@ export class StoreComponent extends MaterialCommon implements OnInit {
         name = '',
         type = '',
         cubage = '',
+        manager = '',
         desc = ''} = res;
         const   depot_keepers = res.depot_keepers.map(keep => keep.id);
-        this.storeForm.setValue({id, name,  type, cubage, depot_keepers, desc});
+        this.storeForm.setValue({id, name,  type, cubage, depot_keepers, desc,  manager});
         console.log(depot_keepers);
     });
   }

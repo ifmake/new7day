@@ -1,0 +1,16 @@
+<!-- <label class="upload-btn"> 
+  <input type="file" (change)="uploadExcel($event)">
+  商品导入
+</label> -->
+ <nz-upload
+    [nzAction]="uploadUrl"
+    [nzHeaders]="excelUpload"
+    [nzBeforeUpload]="uploadBefore"
+    [nzShowUploadList] = "false"
+    (change)="listenUpload($event)"
+    [nzData]="uploadResult"
+    nzDirectory>
+    <button nz-button [nzType]="'primary'">
+      <i nz-icon type="upload"></i><span>商品导入</span>
+    </button>
+  </nz-upload>

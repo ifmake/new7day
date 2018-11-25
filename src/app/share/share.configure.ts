@@ -22,6 +22,7 @@ import { ImgListComponent } from './img-list/img-list.component';
 import { ProductTagsComponent } from './product-tags/product-tags.component';
 import { StockCostService } from '../common/service/product-service/product-cost.service';
 import { StockLoseService } from '../common/service/product-service/product-lose.service';
+import { UploadBtnComponent } from './upload-btn/upload-btn.component';
 
 // 布局组件
 const GridCompoennt = [
@@ -46,6 +47,7 @@ export  const moduleCommon = [
 export const componentCommon = [
     SearchComponent,
     DrawerComponent,
+    UploadBtnComponent,
     ImgUploadComponent,
     PaginationComponent,
     ProductCardComponent,

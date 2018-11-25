@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MaterialCommon } from '../material.common';
 import { Subject, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, debounceTime } from 'rxjs/operators';
 import { ProductService } from '../../common/service/product.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { SupplierService } from '../../common/service/supplier.service';
@@ -15,7 +15,8 @@ import { SupplierService } from '../../common/service/supplier.service';
 export class ProductComponent extends MaterialCommon implements OnInit {
   searchStream = new Subject<any>();
   dataList: any;
-
+  // 文件上传地址
+  uploadUrl: string;
   // 新增商品表单
   prodcutForm: FormGroup;
   constructor(
@@ -50,6 +51,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       img: [{value: '', disabled: false}],
       desc: [{value: '', disabled: false}],
     });
+    this.uploadUrl = 'http://47.93.0.160:8000/goods/goods/file_import/';
   }
 
   ngOnInit() {
@@ -149,6 +151,10 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         }
       });
     }
+  }
+  // 批量导入商品
+  uploadExcel(file) {
+    console.log(file);
   }
   // 删除商品
   deleteProduct(status, id) {

@@ -30,23 +30,25 @@ export class AppComponent {
     this.router.events.subscribe(route => {
       if (route instanceof NavigationStart) {
         const userInfo = JSON.parse(this.storage.get('loginer'));
-        this.loginer_name = userInfo.profile.name;
-        if (userInfo.token && userInfo.token !== '') {
-          this.Islogin = false;
-          if (userInfo.profile.role === 'super_admin') {
-            this.RightsMenus = SuperMenu;
+        if (userInfo) {
+          this.loginer_name = userInfo.profile.name;
+          if (userInfo.token && userInfo.token !== '') {
+            this.Islogin = false;
+            if (userInfo.profile.role === 'super_admin') {
+              this.RightsMenus = SuperMenu;
+            }
+            if (userInfo.profile.role === 'admin') {
+              this.RightsMenus = MangerMenu;
+            }
+            if (userInfo.profile.role === 'warekeeper') {
+              this.RightsMenus = StockManageMenu;
+            }
+            if (userInfo.profile.role === 'boss') {
+              this.RightsMenus = BossMenu;
+            }
+          } else {
+            this.Islogin = true;
           }
-          if (userInfo.profile.role === 'admin') {
-            this.RightsMenus = MangerMenu;
-          }
-          if (userInfo.profile.role === 'warekeeper') {
-            this.RightsMenus = StockManageMenu;
-          }
-          if (userInfo.profile.role === 'boss') {
-            this.RightsMenus = BossMenu;
-          }
-        } else {
-          this.Islogin = true;
         }
       }
     });
