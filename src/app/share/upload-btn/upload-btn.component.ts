@@ -27,19 +27,21 @@ export class UploadBtnComponent implements OnInit {
   ngOnInit() {}
   // 文件上传之前
   uploadBefore(file) {
-    console.log('是否舒服');
-    console.log(file);
     if (file.name.indexOf('xlsx') === -1) {
       alert('选择正确的文件格式');
       return;
     }
   }
-  // 文件上传结果
-  uploadResult(fileStatus) {
-    console.log(fileStatus);
-  }
   // 文件上传转台变更
-  listenUpload(file) {
-    console.log(file);
+  listenUpload(fileObj) {
+    if (fileObj.file.status !== 'uploading') {
+      if (fileObj.file && fileObj.file.status === 'done') {
+        this.message.create('success', '商品资料导入成功');
+        this.callBack.emit();
+      }
+      if (fileObj.file && fileObj.file.status === 'error') {
+        this.message.create('error', '商品资料导入失败，请重新导入');
+      }
+    }
   }
 }

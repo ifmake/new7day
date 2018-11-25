@@ -33,6 +33,7 @@ export const api_account = {
     list: () => `${API_PREFIX}/account/profile/`,
     detail: (id) => `${API_PREFIX}/account/profile/${id}/`,  // 查询或删除或修改地址
     create: () => `${API_PREFIX}/account/profile/`,
+    changePass: () => `${API_PREFIX}/account/change_password/`
 };
 
 /**

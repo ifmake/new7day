@@ -7,8 +7,8 @@
     [nzHeaders]="excelUpload"
     [nzBeforeUpload]="uploadBefore"
     [nzShowUploadList] = "false"
-    (change)="listenUpload($event)"
-    [nzData]="uploadResult"
+    [nzLimit] ="1"
+    (nzChange)="listenUpload($event)"
     nzDirectory>
     <button nz-button [nzType]="'primary'">
       <i nz-icon type="upload"></i><span>商品导入</span>

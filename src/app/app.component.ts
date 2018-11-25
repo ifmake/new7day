@@ -4,6 +4,9 @@ import { LocalStorage } from './common/storage/local.storage';
 import { SimpleReuseStrategy } from './common/storage/SimpleReuseStrategy';
 import { ActiveMenus, RightsMenus} from './common/interface/menu.interface';
 import { SuperMenu, MangerMenu, StockManageMenu, BossMenu} from './common/comom-constant/menu-rights';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd';
+import { AccountService } from './common/service/account.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +16,7 @@ import { SuperMenu, MangerMenu, StockManageMenu, BossMenu} from './common/comom-
 export class AppComponent {
   title = 'new7Day';
   Islogin: boolean;
-  count = 0;
+  count = 1;
   loginer_name: string;
   MenuIndex: number;
   RightsMenus: Array<RightsMenus> = [];
@@ -21,9 +24,15 @@ export class AppComponent {
   // 弹窗
   ModelTitle: string;
   ModelVisible: boolean;
+  modelType: string;
+  // 修改密码
+  changePassForm: FormGroup;
   constructor(
     private router: Router,
     private storage: LocalStorage,
+    private fb: FormBuilder,
+    private message: NzMessageService,
+    private accountService: AccountService,
   ) {
     this.ModelTitle = '退出登录';
     // 监听路由变化
@@ -53,6 +62,19 @@ export class AppComponent {
       }
     });
     this.Islogin = true;
+  }
+  // 对比新旧密码
+  confirmationValidator = (control: FormControl): { [ s: string ]: boolean } => {
+    if (!control.value) {
+      return { required: true };
+    } else if (control.value !== this.changePassForm.controls.password.value) {
+      return { confirm: true, error: true };
+    }
+  }
+  // 更新验证
+  updateConfirmValidator(): void {
+    /** wait for refresh value */
+    Promise.resolve().then(() => this.changePassForm.controls.confirm_password.updateValueAndValidity());
   }
   // 获取多窗口模式路由
   getMenus(menus) {
@@ -85,16 +107,62 @@ export class AppComponent {
     this.Islogin = false;
     this.ActiveMenus = [];
     this.router.navigate(['welcome']);
-    const userInfo = JSON.parse(this.storage.get('loginer'));
+  }
+  // 弹出确认弹窗
+  openModel(type) {
+    this.ModelVisible = true;
+    this.modelType = type;
+    if (type === 'changePass') {
+       this.changePassForm = this.fb.group({
+        old_password: [null, [ Validators.required ]],
+        password: [null, [ Validators.required ]],
+        confirm_password: [null, [ Validators.required, this.confirmationValidator]],
+       });
+    }
   }
 
-
   // 退出登录
-  loginOut() {
-    this.ModelVisible = false;
-    this.Islogin = true;
-    this.RightsMenus = [];
-    this.storage.remove('loginer');
+  confirmModel() {
+    if (this.modelType !== 'changePass') {
+      this.ModelVisible = false;
+      this.Islogin = true;
+      this.RightsMenus = [];
+      this.storage.remove('loginer');
+    } else {
+      for (const key in this.changePassForm.controls) {
+        if (key) {
+          this.changePassForm.controls[ key].markAsDirty();
+          this.changePassForm.controls[ key ].updateValueAndValidity();
+        }
+      }
+      if (!this.changePassForm.value.old_password) {
+        this.message.create('warning', '旧密码不能为空');
+        return;
+      }
+      if (!this.changePassForm.value.password) {
+        this.message.create('warning', '旧密码不能为空');
+        return;
+      }
+      if (this.changePassForm.value.confirm_password) {
+        if (this.changePassForm.value.confirm_password !== this.changePassForm.value.password) {
+          this.message.create('warning', '确认密码不一致');
+          return;
+        }
+      } else {
+        this.message.create('warning', '请再次输入新密码');
+        return;
+      }
+      this.accountService.changePassword(this.changePassForm.value).subscribe(res => {
+        console.log(res);
+        if (res.status === 'success') {
+          this.message.create('success', '密码修改成功,请重新登录');
+          setTimeout(() => {
+            this.modelType = 'loginOut';
+            this.confirmModel();
+          }, 2000);
+        }
+      });
+    }
   }
 
 }

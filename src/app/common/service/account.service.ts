@@ -30,4 +30,8 @@ export class AccountService {
   reviseAccount(id: string | number, body: any): any {
     return this._httpService.patch(api_account.detail(id), {body: body});
   }
+  // 修改密码
+ changePassword(body: any): any {
+    return this._httpService.post(api_account.changePass(), {body: body});
+ }
 }

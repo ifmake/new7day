@@ -5,7 +5,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./drawer.component.css']
 })
 export class DrawerComponent implements OnInit {
-  @Input()title = '新建';
+  @Input() title = '新建';
   @Input() visible: boolean;
   @Input() maskClose: boolean;
   @Input() width: number | string;
