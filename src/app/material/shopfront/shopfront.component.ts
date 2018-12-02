@@ -1,6 +1,10 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { MaterialCommon } from '../material.common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { switchMap } from 'rxjs/operators';
+import { ShopMaterialService } from 'src/app/common/service/shop-service/shop-material.service';
+import { AccountService } from 'src/app/common/service/account.service';
 
 @Component({
   selector: 'app-shopfront',
@@ -10,25 +14,39 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class ShopfrontComponent extends MaterialCommon implements OnInit {
   dataList: any;
   shopFrontForm: FormGroup;
+  searchUserObj: any;
   constructor(
     private fb: FormBuilder,
+    private shopService: ShopMaterialService,
+    private accountService: AccountService,
   ) {
     super();
     // 查询条件
     this.searchArray = [
       {key: 'name', index: 0, name: '店铺名称', show: true},
     ];
+    this.searchUserObj = {
+      page: 1,
+      page_size: 100,
+    };
+      // 数据列表查询
+      this.searchStream.pipe(switchMap(() => {
+        return this.shopService.getShopMaterialList(this.searchObj);
+      })).subscribe(res => {
+        this.listLoading = false;
+        this.dataList = res;
+      });
    }
 
   ngOnInit() {
-    this.listLoading = false;
+    this.searchStream.next();
     this.shopFrontForm = this.fb.group({
       name: [{ value: '', disabled: false }, [Validators.required]],
       type: [{ value: '', disabled: false }, [Validators.required]],
-      shopkeeper: [{ value: '', disabled: false }, [Validators.required]],
-      keeperphone: [{ value: '', disabled: false }, [Validators.required]],
+      contact_user: [{ value: '', disabled: false }, [Validators.required]],
+      contact_phone: [{ value: '', disabled: false }, [Validators.required]],
       address: [{ value: '', disabled: false }, [Validators.required]],
-      num: [{ value: '', disabled: false }, [Validators.required]],
+      staff_num: [{ value: '', disabled: false }, [Validators.required]],
     });
   }
   // 数据查询
@@ -53,10 +71,21 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
   addshop() {
     this.OpenDraw = true;
     this.formTitle = '店面新增';
+    // 获取员工
+    this.accountService.getAccountList(this.searchUserObj).subscribe(res => {
+      console.log(res);
+      this.userList = res['results'];
+    });
   }
   dataBack(msg) {
     if (msg.status) {
+        console.log(msg);
+        this.shopService.createShopMaterial(this.shopFrontForm.value).subscribe(res => {
+          console.log(res);
+          if (!res.error) {
 
+          }
+        });
     } else {
       this.OpenDraw = false;
     }

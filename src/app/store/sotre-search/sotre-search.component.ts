@@ -28,6 +28,7 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   getGoodsRecord: any;
   importOrderArr = [];
   exportOrderArr = [];
+  currentObj: any;
   constructor(
     private stockList: StockListService,
     public message: NzMessageService,
@@ -38,6 +39,9 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
       {name: '最近进货时间', content: '', type: 'time'},
       {name: '最近出货时间', content: '', type: 'time'},
     ];
+    this.currentObj = {
+      id: '',
+    };
     this.searchStream.pipe(switchMap(() => {
       return this.stockList.getStockList(this.searchObj);
     })).subscribe(res => {
@@ -93,10 +97,11 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
       page: 1,
       page_size: 10,
     };
+    this.currentObj = prod.id;
     this.stockList.getDetail(this.getGoodsRecord).subscribe(res => {
       if (!res.error) {
         console.log(res);
-        this.ProStockArr[0].content = res['results'][0].operator_account;
+        this.ProStockArr[0].content = res['results'][0].operator_account || '';
         this.ProStockArr[1].content = res['results'][0].record_time;
         this.ProStockArr[2].content = res['results'][0].record_time;
         if (res['results'].length > 0) {
@@ -119,7 +124,6 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   }
   // 记录单
   lookMoreRecord(type) {
-    console.log(type);
     this.OpenDrawList = true;
     this.recordType = type;
     if (type === 'import') {

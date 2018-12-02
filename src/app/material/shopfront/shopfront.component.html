@@ -64,8 +64,8 @@
                 <nz-form-label nzRequired>店面类型</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="type">
-                      <nz-option nzValue="super_admin" nzLabel="直营店"></nz-option>
-                      <nz-option nzValue="admin" nzLabel="外包店"></nz-option>
+                      <nz-option [nzValue]="'directly'" nzLabel="直营店"></nz-option>
+                      <nz-option [nzValue]="'join'" nzLabel="加盟店"></nz-option>
                     </nz-select>
                     <nz-form-explain *ngIf="shopFrontForm.get('type').dirty && shopFrontForm.get('type').errors">请选择店面类型</nz-form-explain>
                   </nz-form-control>
@@ -77,11 +77,10 @@
               <nz-form-item>
                 <nz-form-label nzRequired>店面负责人</nz-form-label>
                 <nz-form-control>
-                    <nz-select formControlName="shopkeeper">
-                      <nz-option nzValue="super_admin" nzLabel="长三"></nz-option>
-                      <nz-option nzValue="admin" nzLabel="李四"></nz-option>
+                    <nz-select formControlName="contact_user">
+                      <nz-option *ngFor="let usr of userList" [nzValue]="usr.id" [nzLabel]="usr.name"></nz-option>
                     </nz-select>
-                    <nz-form-explain *ngIf="shopFrontForm.get('shopkeeper').dirty && shopFrontForm.get('shopkeeper').errors">请选择店面类型</nz-form-explain>
+                    <nz-form-explain *ngIf="shopFrontForm.get('contact_user').dirty && shopFrontForm.get('contact_user').errors">请选择店面类型</nz-form-explain>
                   </nz-form-control>
               </nz-form-item>
             </div>
@@ -89,8 +88,8 @@
                 <nz-form-item>
                   <nz-form-label nzRequired>联系电话</nz-form-label>
                   <nz-form-control>
-                    <input nz-input formControlName="keeperphone" placeholder="请输入店面负责人联系电话">
-                    <nz-form-explain *ngIf="shopFrontForm.get('keeperphone').dirty && shopFrontForm.get('keeperphone').errors">请输入店面名称</nz-form-explain>
+                    <input nz-input formControlName="contact_phone" placeholder="请输入店面负责人联系电话">
+                    <nz-form-explain *ngIf="shopFrontForm.get('contact_phone').dirty && shopFrontForm.get('contact_phone').errors">请输入店面名称</nz-form-explain>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -109,8 +108,8 @@
             <nz-form-item>
               <nz-form-label nzRequired>店铺人数</nz-form-label>
               <nz-form-control>
-                <input nz-input formControlName="num" placeholder="请输入店铺人数">
-                <nz-form-explain *ngIf="shopFrontForm.get('num').dirty && shopFrontForm.get('num').errors">请输入店铺人数</nz-form-explain>
+                <input nz-input formControlName="staff_num" placeholder="请输入店铺人数">
+                <nz-form-explain *ngIf="shopFrontForm.get('staff_num').dirty && shopFrontForm.get('staff_num').errors">请输入店铺人数</nz-form-explain>
               </nz-form-control>
             </nz-form-item>
           </div>

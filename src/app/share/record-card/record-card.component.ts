@@ -14,6 +14,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
   @Input() recordListArr: any = [];
   @Input() recordType: string;
   @Input() formCard: boolean;
+  @Input() currentID: any;
   @Output() recordProduct: EventEmitter<any> = new EventEmitter<any>();
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   operateForm: FormGroup;
@@ -48,6 +49,8 @@ export class RecordCardComponent implements OnInit, OnChanges {
   this.searchStream.pipe(switchMap(() => {
     return this.stockService.getDetail(this.searchRecordObj);
   })).subscribe(res => {
+    console.log('sdifjsdfsdfsd11111111',this.searchRecordObj);
+    if (res['results'].length) {
     if (this.recordType === 'import') {
       for (let i = 0; i < res['results'].length; i++) {
         if (res['results'][i]['record_type'] === 'depot_in') {
@@ -61,6 +64,8 @@ export class RecordCardComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
   });
   }
 
@@ -69,6 +74,9 @@ export class RecordCardComponent implements OnInit, OnChanges {
   ngOnChanges(change) {
     // 记录查询
     if (!this.formCard) {
+      if (this.currentID) {
+        this.searchRecordObj.goods_id = this.currentID;
+      }
       this.searchStream.next();
     }
     // 进出货管理

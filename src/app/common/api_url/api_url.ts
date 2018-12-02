@@ -67,6 +67,19 @@ export const api_lose = {
     }
 };
 
+/**
+ * 店面资料模块
+ */
+export const api_shop = {
+    list: (id?: any) => {
+        if (id) {
+            return `${API_PREFIX}/shop/shop/${id}`;
+        } else {
+            return `${API_PREFIX}/shop/shop/`;
+        }
+    }
+};
+
 
 
 

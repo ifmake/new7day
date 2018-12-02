@@ -23,6 +23,7 @@ import { ProductTagsComponent } from './product-tags/product-tags.component';
 import { StockCostService } from '../common/service/product-service/product-cost.service';
 import { StockLoseService } from '../common/service/product-service/product-lose.service';
 import { UploadBtnComponent } from './upload-btn/upload-btn.component';
+import { ShopMaterialService } from '../common/service/shop-service/shop-material.service';
 
 // 布局组件
 const GridCompoennt = [
@@ -69,6 +70,7 @@ export const SERVICE = [
     StoreService,
     StockCostService,
     StockLoseService,
+    ShopMaterialService,
 ];
 // 指令
 export const DERECTIVE = [

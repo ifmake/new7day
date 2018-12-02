@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { LocalStorage } from './common/storage/local.storage';
 import { SimpleReuseStrategy } from './common/storage/SimpleReuseStrategy';
 import { ActiveMenus, RightsMenus} from './common/interface/menu.interface';
@@ -59,6 +59,17 @@ export class AppComponent {
             this.Islogin = true;
           }
         }
+      }
+      if (route instanceof NavigationEnd) {
+        console.log(route);
+        this.RightsMenus.map(menu => {
+          menu.childs.map(childMenu => {
+            if (route.url === childMenu.link) {
+              menu.select = true;
+            }
+          });
+        });
+        console.log(this.RightsMenus);
       }
     });
     this.Islogin = true;

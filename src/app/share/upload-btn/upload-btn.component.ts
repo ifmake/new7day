@@ -40,7 +40,12 @@ export class UploadBtnComponent implements OnInit {
         this.callBack.emit();
       }
       if (fileObj.file && fileObj.file.status === 'error') {
-        this.message.create('error', '商品资料导入失败，请重新导入');
+        for (const  code in fileObj.file.error.error) {
+          if (code) {
+            this.message.create('error', fileObj.file.error.error[code][0]);
+          }
+        }
+          this.message.create('error', '商品资料导入失败，请重新导入');
       }
     }
   }

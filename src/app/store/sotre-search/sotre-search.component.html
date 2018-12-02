@@ -74,6 +74,6 @@
     <app-product-record [name]="'发货记录'" [type]="operate_type.export" [recordArr]="exportOrderArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
     <!--二层弹窗-->
     <app-drawer [visible]="OpenDrawList" [maskClose]="drawerMaskClose" [title]="drawerListTitle" [width]="400" [NoOperate]="true" (callBack)="closeChildDraw($event)">
-      <app-record-card [recordListArr]="recordArr" [recordType]="recordType" ></app-record-card>
+      <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [currentID]="currentObj.id"></app-record-card>
     </app-drawer>
   </app-drawer>

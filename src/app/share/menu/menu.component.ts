@@ -15,7 +15,6 @@ export class MenuComponent implements OnInit , OnChanges {
   @Output() menus: EventEmitter<any> = new EventEmitter<any>();
   @Input() RightsMenus: Array<RightsMenus>;
   isCollapsed = false;
-  menuList: any;
   @Input()ActiveMenus: Array<ActiveMenus>;
   constructor(
     public router: Router,
@@ -23,7 +22,7 @@ export class MenuComponent implements OnInit , OnChanges {
     private titleService: Title
   ) {}
   ngOnChanges() {
-    this.menuList = this.RightsMenus;
+    console.log('是否变更')
   }
   ngOnInit() {
     this.router.events.pipe(
@@ -70,13 +69,13 @@ export class MenuComponent implements OnInit , OnChanges {
   }
   // 默认展开指定菜单
   unfoldActiveLink(route) {
-    if (this.menuList.length < 1) { return; }
-    for (let i = 0; i < this.menuList.length; i++) {
-      if (route.url.search(this.menuList[i].link) !== -1) {
-        this.menuList[i].select = true;
-        for (let j = 0; j < this.menuList[i].childs.length; j++) {
-          if (route.url === this.menuList[i].childs[j].link) {
-            this.menuList[i].childs[j].select = true;
+    if (this.RightsMenus.length < 1) { return; }
+    for (let i = 0; i < this.RightsMenus.length; i++) {
+      if (route.url.search(this.RightsMenus[i].link) !== -1) {
+        this.RightsMenus[i].select = true;
+        for (let j = 0; j < this.RightsMenus[i].childs.length; j++) {
+          if (route.url === this.RightsMenus[i].childs[j].link) {
+            this.RightsMenus[i].childs[j].select = true;
           }
         }
       }

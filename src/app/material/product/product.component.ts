@@ -151,10 +151,6 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       });
     }
   }
-  // 批量导入商品
-  uploadExcel(file) {
-    console.log(file);
-  }
   // 删除商品
   deleteProduct(status, id) {
     if (status.type) {
