@@ -28,11 +28,11 @@
         <tbody>
           <tr *ngFor="let data of productManageTable.data">
             <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
-            <th>{{data.code}}</th>
-            <td>{{data.code}}</td>
-            <td>{{data.age}}</td>
-            <td>{{data.gender}}</td>
-            <td>{{data.salary}}</td>
+            <td>{{data.type === 'direct'?'直营店':'加盟店'}}</td>
+            <td>{{data.contact_user_name}}</td>
+            <td>{{data.contact_phone}}</td>
+            <td>{{data.address}}</td>
+            <td>{{data.staff_num}}</td>
             <td nzRight="0px">
               <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">修改</nz-tag>
               <app-comfirm-alert [info]="'删除'" [title]="'是否确认删除该店铺'" (callBack)="deleteStaff($event,data.id)"></app-comfirm-alert>
@@ -64,8 +64,8 @@
                 <nz-form-label nzRequired>店面类型</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="type">
-                      <nz-option [nzValue]="'directly'" nzLabel="直营店"></nz-option>
-                      <nz-option [nzValue]="'join'" nzLabel="加盟店"></nz-option>
+                      <nz-option [nzValue]="'direct'" nzLabel="直营店"></nz-option>
+                      <nz-option [nzValue]="'extra'" nzLabel="加盟店"></nz-option>
                     </nz-select>
                     <nz-form-explain *ngIf="shopFrontForm.get('type').dirty && shopFrontForm.get('type').errors">请选择店面类型</nz-form-explain>
                   </nz-form-control>

@@ -73,7 +73,7 @@ export const api_lose = {
 export const api_shop = {
     list: (id?: any) => {
         if (id) {
-            return `${API_PREFIX}/shop/shop/${id}`;
+            return `${API_PREFIX}/shop/shop/${id}/`;
         } else {
             return `${API_PREFIX}/shop/shop/`;
         }

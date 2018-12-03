@@ -21,6 +21,7 @@ export const  SuperMenu = [
     {title: '资料管理', link: 'material', active: 'active', select: false, childs: [
       {title: '商品资料', link: '/material/product', active: 'active', select: false},
       {title: '仓库资料', link: '/material/store', active: 'active', select: false},
+      {title: '店面资料', link: '/material/shopfront', active: 'active', select: false},
       {title: '供应商资料', link: '/material/supplier', active: 'active', select: false},
       {title: '员工资料', link: '/material/staff', active: 'active', select: false}
     ]},
