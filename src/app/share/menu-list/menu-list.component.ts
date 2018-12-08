@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-menu-list',
   templateUrl: './menu-list.component.html',
   styleUrls: ['./menu-list.component.less']
 })
-export class MenuListComponent implements OnInit {
+export class MenuListComponent {
   @Input() MenuList: Array<any>;
   @Output() remove: EventEmitter<any> = new EventEmitter<any>();
   callData: any;
@@ -15,9 +15,6 @@ export class MenuListComponent implements OnInit {
       module: '',
       select: '',
     };
-  }
-
-  ngOnInit() {
   }
   // 移除菜单
   removeMenu(moduled, select) {

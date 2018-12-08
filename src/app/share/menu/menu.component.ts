@@ -58,6 +58,7 @@ export class MenuComponent implements OnInit , OnChanges {
           this.ActiveMenus.forEach(p => p.select = p.title === title);
           return;
         } else {
+          console.log(menu);
           this.ActiveMenus.push(menu);
         }
         this.menus.emit(this.ActiveMenus);

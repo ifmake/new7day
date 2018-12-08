@@ -28,7 +28,7 @@ export const storeRouter: Routes = [
     // 成本核算
     {
         path: 'cost',
-        data: { title: '成本核算', module: 'store/cost', power: 'show' },
+        data: { title: '成本核算', module: 'store/cost', power: 'hide' },
         loadChildren: './store-cost/store-cost.module#StoreCostModule'
     },
     // 进出货记录

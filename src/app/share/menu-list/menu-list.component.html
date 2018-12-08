@@ -1,6 +1,6 @@
 <div class="rzl_menu_list">
     <div class="rzl_menu" *ngFor="let menu of MenuList" >
-        <a class="rzl_menu_ink" routerLink="/{{menu.module}}" [class.active]="menu.select">{{ menu.title }}</a>
-        <span class="rzl_remove" (click)="removeMenu(menu.module,menu.select)">×</span>
+        <a *ngIf="menu.power==='show'" class="rzl_menu_ink" routerLink="/{{menu.module}}" [class.active]="menu.select">{{ menu.title }}</a>
+        <span  *ngIf="menu.power==='show'"  class="rzl_remove" (click)="removeMenu(menu.module,menu.select)">×</span>
     </div>
 </div>

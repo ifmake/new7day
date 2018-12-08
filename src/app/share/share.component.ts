@@ -10,6 +10,7 @@ export class ShareCommon  {
     supplierList = [];
     productList = [];
     userList = [];
+    shopList = [];
     listLoading: boolean;
     // 查询参数
     searchObj: any;

@@ -9,75 +9,7 @@
     <nz-tab
       *ngFor="let type of costTypes"
       [nzTitle]="type.name">
-      <!--成本走势-->
-        <div class="all_cost" *ngIf="selectedIndex === 0">
-          <div class="rzl_chart_filter">
-            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'成本类型'">
-              <nz-tag *ngFor="let store of storeList;let i = index" name="store" nzMode="checkable" [nzChecked]="store.checked" (nzCheckedChange)="checkChange(store,i)">{{store.name}}</nz-tag>
-            </app-row-grid>
-            <!-- <app-row-grid [T_row]="3" [C_row]="21" [Title]="'查询类型'">
-              <nz-tag *ngFor ="let search of searchTypeList;let i = index" nzMode="checkable" [nzChecked]="search.checked" (nzCheckedChange)="checkChange($event,i)">{{search.name}}</nz-tag>
-            </app-row-grid> -->
-            <app-row-grid [T_row]="3" [C_row]="21" [Title]="'时间选择'">
-              <nz-year-picker [(ngModel)]="yearDate" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询年份"></nz-year-picker>
-            </app-row-grid>
-          </div>
-          <!--成本折线走势图-->
-          <div  echarts [options]="LineOptions"
-                [autoResize]="autoResize"
-                [merge]="updateOption"
-                style="height: 500px"
-                (chartInit)="onChartOninit($event)"
-                (chartClick)="onChartEvent($event)"
-                >
-          </div>
-          <!--成本占比图-->
-          <div *ngIf="IsPieChart" echarts [options]="PieOption" theme="default" style="height:400px;margin-top: 50px"></div>
-        </div>
-        <!--商品成本-->
-        <div class="product_cost" *ngIf="selectedIndex === 1">
-           <!--条件查询-->
-            <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
-            <div class="product_cost_list">
-            <nz-table #productManageTable 
-            [nzData]="dataList?.resluts"  
-            [nzShowPagination]="false"
-            [nzScroll]="{x:'800px'}">
-                <thead>
-                  <tr>
-                    <th nzWidht="100px" nzLeft="0px">商品名称</th>
-                    <th nzLeft="118px">商品总成本</th>
-                    <th>商品总量</th>
-                    <th>发货成本</th>
-                    <th>发货数量</th>
-                    <th>损耗成本</th>
-                    <th>损耗数量</th>
-                    <th>规格</th>
-                    <!-- <th>所属仓库</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let data of productManageTable.data">
-                    <td nzWidht="100px" nzLeft="0px">{{data.goods__name}}</td>
-                    <td nzLeft="118px" [ngStyle]="{color:'red'}">{{data.cost}}</td>
-                    <td>{{data.count || 0}}</td>
-                    <td>{{data.used_cost || 0}}</td>
-                    <td>{{data.used_count || 0}}</td>
-                    <td>{{data.damaged_cost || 0}}</td>
-                    <td>{{data.damaged_count || 0}}</td>
-                    <td>{{data.unit}}</td>
-                    <!-- <td>总仓库</td> -->
-                  </tr>
-                </tbody>
-              </nz-table>
-            </div>
-            <!--分页-->
-          <app-pagination 
-            [nzTotal]="dataList?.count || 0"
-            [nzPageSize]="searchObj.page_size"
-            (nzPageIndexChange)="changPageIndex($event)"
-            (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
-        </div>
     </nz-tab>
   </nz-tabset>
 </nz-spin>
+<router-outlet></router-outlet>

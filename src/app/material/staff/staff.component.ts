@@ -46,6 +46,7 @@ export class StaffComponent extends MaterialCommon implements OnInit {
       role: [{ value: '', disabled: false }, [Validators.required]],
       code: [{ value: '', disabled: false }, [Validators.required]],
       address: [{ value: '', disabled: false }],
+      birth: [{ value: '', disabled: false }],
       salary: [{ value: '1500', disabled: false }],
       depot: [{ value: '', disabled: false }],
       gender: [{ value: 1, disabled: false }],
@@ -97,8 +98,9 @@ export class StaffComponent extends MaterialCommon implements OnInit {
         depot = '',
         gender = '',
         role = '',
+        birth = null,
         desc = ''} = res;
-        this.accountForm.setValue({id, name,  phone, code, salary, address, role, depot, gender, desc});
+        this.accountForm.setValue({id, name,  phone, code, salary, address, birth, role, depot, gender, desc});
     });
   }
   // 确认添加

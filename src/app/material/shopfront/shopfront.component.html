@@ -64,8 +64,8 @@
                 <nz-form-label nzRequired>店面类型</nz-form-label>
                 <nz-form-control>
                     <nz-select formControlName="type">
-                      <nz-option [nzValue]="'direct'" nzLabel="直营店"></nz-option>
-                      <nz-option [nzValue]="'extra'" nzLabel="加盟店"></nz-option>
+                      <nz-option  [nzValue]="'direct'" [nzLabel]="'直营店'"></nz-option>
+                      <nz-option  [nzValue]="'extra'" [nzLabel]="'加盟店'"></nz-option>
                     </nz-select>
                     <nz-form-explain *ngIf="shopFrontForm.get('type').dirty && shopFrontForm.get('type').errors">请选择店面类型</nz-form-explain>
                   </nz-form-control>

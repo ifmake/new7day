@@ -61,7 +61,6 @@ export class AppComponent {
         }
       }
       if (route instanceof NavigationEnd) {
-        console.log(route);
         this.RightsMenus.map(menu => {
           menu.childs.map(childMenu => {
             if (route.url === childMenu.link) {
@@ -69,7 +68,6 @@ export class AppComponent {
             }
           });
         });
-        console.log(this.RightsMenus);
       }
     });
     this.Islogin = true;

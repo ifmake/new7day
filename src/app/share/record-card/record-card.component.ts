@@ -4,6 +4,7 @@ import { StockListService } from 'src/app/common/service/product-service/product
 import { NzMessageService } from 'ng-zorro-antd';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { ShopMaterialService } from 'src/app/common/service/shop-service/shop-material.service';
 
 @Component({
   selector: 'app-record-card',
@@ -26,7 +27,8 @@ export class RecordCardComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     public message: NzMessageService,
-    private stockService: StockListService
+    private stockService: StockListService,
+    private shopService: ShopMaterialService,
   ) {
     this.operateForm = this.fb.group({
       goods_id: [{value: '', disabled: false}, [Validators.required]],
@@ -35,6 +37,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
       unit: [{value: null, disabled: false}, [Validators.required]],
       source: [{value: null, disabled: false}, [Validators.required]],
       operate_depot: [{value: null, disabled: false}, [Validators.required]],
+      shop: [{value: null, disabled: false}],
     });
     this.storelist = [
       {label: '总仓库', value: '1'},
@@ -49,7 +52,6 @@ export class RecordCardComponent implements OnInit, OnChanges {
   this.searchStream.pipe(switchMap(() => {
     return this.stockService.getDetail(this.searchRecordObj);
   })).subscribe(res => {
-    console.log('sdifjsdfsdfsd11111111',this.searchRecordObj);
     if (res['results'].length) {
     if (this.recordType === 'import') {
       for (let i = 0; i < res['results'].length; i++) {
@@ -87,10 +89,12 @@ export class RecordCardComponent implements OnInit, OnChanges {
         {label: '分仓库', value: 2},
       ];
     } else {
-      this.sourceslist = [
-        {label: '分仓库', value: 3},
-        {label: '店面', value: 4},
-      ];
+      this.shopService.getShopMaterialList({ page: 1, page_size: 10}).subscribe(res => {
+        console.log(res);
+        if (!res.error) {
+          this.sourceslist = res.results;
+        }
+      });
     }
     if (this.recordListArr.length  > 0 && this.recordListArr.length  < 2) {
       const formObj = {
@@ -99,7 +103,8 @@ export class RecordCardComponent implements OnInit, OnChanges {
         unit: this.recordListArr[0].unit,
         count: '',
         source: '',
-        operate_depot: '1'
+        operate_depot: '1',
+        shop: ''
       };
       this.operateForm.setValue(formObj);
       console.log(this.operateForm.value);
@@ -121,6 +126,11 @@ export class RecordCardComponent implements OnInit, OnChanges {
         this.operateForm.controls[ i ].markAsDirty();
         this.operateForm.controls[ i ].updateValueAndValidity();
       }
+    }
+    if (this.recordType === 'depot_out' && !this.operateForm.value.shop) {
+       this.message.create('warning', '选择店面出货');
+       console.log(this.operateForm.value);
+       return;
     }
       this.operateForm.patchValue({goods_id: recode.id});
       this.operateForm.value.count = parseInt(this.operateForm.value.count, 10);

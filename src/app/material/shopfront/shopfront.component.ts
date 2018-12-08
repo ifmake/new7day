@@ -89,6 +89,10 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
     });
   }
   dataBack(msg) {
+    if (!msg.status) {
+      this.OpenDraw = false;
+      return;
+    }
     for (const i in this.shopFrontForm.controls) {
       if (i) {
         this.shopFrontForm.controls[i].markAsDirty();
@@ -116,7 +120,6 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
       return;
     }
     if (!this.shopFrontForm.value.id) {
-      if (msg.status) {
         this.shopService.createShopMaterial(this.shopFrontForm.value).subscribe(res => {
           if (!res.error) {
             this.message.create('success', '操作成功');
@@ -129,10 +132,6 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
           }
         });
     } else {
-      this.OpenDraw = false;
-    }
-    } else {
-      if (msg.status) {
         this.shopService.reviseShopMaterial(this.shopFrontForm.value.id, this.shopFrontForm.value).subscribe(res => {
           if (!res.error) {
             this.message.create('success', '操作成功');
@@ -144,9 +143,6 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
             this.errorAlert(res.error);
           }
         });
-      } else {
-        this.OpenDraw = false;
-      }
     }
   }
   // 查看店铺详情

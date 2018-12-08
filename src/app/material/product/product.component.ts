@@ -59,6 +59,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
   }
   // 接口错误提示
   errorAlert(errors) {
+    console.log(errors);
     for (const err in errors) {
       if (err && typeof errors[err] === 'object') {
         this.message.create('error', errors[err][0]);
