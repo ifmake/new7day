@@ -37,7 +37,7 @@ export class StoreCostComponent extends ShareCommon implements OnInit {
       this.selectedIndex = 1;
       this.searchStream.next();
       this.costTypes = [
-        {name: '商品成本', type: 'product_cost', index: 1},
+        {name: '商品成本', type: 'product_cost', index: 0, link: '/store/cost/product_final'},
       ];
     }
     this.router.navigate([this.costTypes[0].link]);
