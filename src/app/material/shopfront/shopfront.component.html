@@ -2,7 +2,7 @@
  <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
 <!--操作层-->  
 <app-handle-layout>
-      <button nz-button [nzType]="'primary'" (click)="addshop()">新增店铺</button>
+      <button nz-button [nzType]="'primary'" (click)="addshop('')">新增店铺</button>
 </app-handle-layout>
 <!--列表展示层-->
 <div class="search-result-list">
@@ -77,7 +77,7 @@
               <nz-form-item>
                 <nz-form-label nzRequired>店面负责人</nz-form-label>
                 <nz-form-control>
-                    <nz-select formControlName="contact_user">
+                    <nz-select formControlName="contact_user" (ngModelChange)="changeStaff($event)">
                       <nz-option *ngFor="let usr of userList" [nzValue]="usr.id" [nzLabel]="usr.name"></nz-option>
                     </nz-select>
                     <nz-form-explain *ngIf="shopFrontForm.get('contact_user').dirty && shopFrontForm.get('contact_user').errors">请选择店面类型</nz-form-explain>

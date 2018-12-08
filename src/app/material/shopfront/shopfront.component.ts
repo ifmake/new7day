@@ -80,13 +80,26 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
   }
 
   // 弹出模态框
-  addshop() {
+  addshop(id) {
     this.OpenDraw = true;
-    this.formTitle = '店面新增';
+    if (id) {
+      this.formTitle = '店面修改';
+    } else {
+      this.formTitle = '店面新增';
+      this.shopFrontForm.reset();
+    }
     // 获取员工
     this.accountService.getAccountList(this.searchUserObj).subscribe(res => {
       this.userList = res['results'];
     });
+  }
+  // 选择店面负责人
+  changeStaff(staffID) {
+    if (staffID) {
+      this.accountService.getAccountDetail(staffID).subscribe(res => {
+        this.shopFrontForm.patchValue({contact_phone: res.phone});
+      });
+    }
   }
   dataBack(msg) {
     if (!msg.status) {
@@ -147,8 +160,7 @@ export class ShopfrontComponent extends MaterialCommon implements OnInit {
   }
   // 查看店铺详情
   reviseDetail(id) {
-    this.addshop();
-    this.formTitle = '店面修改';
+    this.addshop(id);
     this.shopService.getShopMaterial(id).subscribe(res => {
       if (!res.error) {
         const {
