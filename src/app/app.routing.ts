@@ -17,6 +17,12 @@ export const rootRouter: Routes = [
         loadChildren: './store/store.module#StoreModule',
         canActivate: [LoginGuard],
     },
+    {
+        path: 'income',
+        data: { title: '收支管理', module: 'store', power: 'show' },
+        loadChildren: './income/income.module#IncomeModule',
+        canActivate: [LoginGuard],
+    },
     // { path: 'login', loadChildren: './share/login/login.module#LoginModule'},
     // { path: 'store_manage', loadChildren: './store-manage/store-manage.module#StoreManageModule'},
 ];

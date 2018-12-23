@@ -16,6 +16,8 @@ export class ShareCommon  {
     searchObj: any;
     // 表单异步多选控制
     selectLoading: boolean;
+    // 日期配置
+    yearDate: 'yyyy-MM-dd';
     constructor() {
         this.formTitle = '新建';
         this.selectLoading = true;

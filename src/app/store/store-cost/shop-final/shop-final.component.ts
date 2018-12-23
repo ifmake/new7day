@@ -74,9 +74,13 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
            data: [],
            type: 'line',
          };
+        const shopLineSearch = {
+          page: 1,
+          page_size: 10,
+          Shop : this.shopList[i].id,
+        };
         this.shopLines.push(shoplineOBj);
-        this.searchObj.Shop = this.shopList[i].id;
-        this.shopLinesPromise.push(this.costService.getMonthAdjust(this.searchObj));
+        this.shopLinesPromise.push(this.costService.getMonthAdjust(shopLineSearch));
        }
        forkJoin(this.shopLinesPromise).subscribe(result => {
         for (let i = 0; i < result.length; i++) {
@@ -105,7 +109,7 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
             }
           },
           legend: {
-            data: ['总成本', '总数量', '损耗成本', '使用成本', '使用数量' ]
+            data: ['迷你店', '奎星店', '重百店']
           },
           yAxis: {
             type: 'value'
@@ -125,23 +129,27 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
     console.log(this.lineChart);
   }
   onChartEvent(chart) {
+    console.log(chart);
     this.IsPieChart = true;
     const index = chart.dataIndex + 1;
-    const costTypeArr = ['出货成本', '库存', '损耗' ];
+    const costTypeArr = ['每月货物成本', '人工成本', '损耗成本', '杂费支出' ];
     const DataArr = [];
     costTypeArr.map(name => {
       const DataObj = {
         value: null,
         name: name,
       };
-      if (name === '出货成本') {
-        DataObj.value = this.useCostArr[chart.dataIndex];
+      if (name === '每月货物成本') {
+        DataObj.value = chart.value;
       }
-      if (name === '库存') {
-        DataObj.value = this.costArr[chart.dataIndex] - this.useCostArr[chart.dataIndex];
+      if (name === '人工成本') {
+        DataObj.value = 10;
       }
-      if (name === '损耗') {
-        DataObj.value = this.damagedCostArr[chart.dataIndex];
+      if (name === '损耗成本') {
+        DataObj.value = 0;
+      }
+      if (name === '杂费支出') {
+        DataObj.value = 10;
       }
       DataArr.push(DataObj);
     });

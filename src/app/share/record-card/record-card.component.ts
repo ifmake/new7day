@@ -5,11 +5,13 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ShopMaterialService } from 'src/app/common/service/shop-service/shop-material.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-record-card',
   templateUrl: './record-card.component.html',
-  styleUrls: ['./record-card.component.less']
+  styleUrls: ['./record-card.component.less'],
+  providers: [DatePipe]
 })
 export class RecordCardComponent implements OnInit, OnChanges {
   @Input() recordListArr: any = [];
@@ -24,11 +26,13 @@ export class RecordCardComponent implements OnInit, OnChanges {
   searchStream = new Subject<any>();
   searchRecordObj: any;
   recordLokkArr: any = [];
+  dateFormat: 'yyyy-MM-dd';
   constructor(
     private fb: FormBuilder,
     public message: NzMessageService,
     private stockService: StockListService,
     private shopService: ShopMaterialService,
+    private datePipe: DatePipe,
   ) {
     this.operateForm = this.fb.group({
       goods_id: [{value: '', disabled: false}, [Validators.required]],
@@ -37,6 +41,8 @@ export class RecordCardComponent implements OnInit, OnChanges {
       unit: [{value: null, disabled: false}, [Validators.required]],
       source: [{value: null, disabled: false}, [Validators.required]],
       operate_depot: [{value: null, disabled: false}, [Validators.required]],
+      production_date: [{value: null, disabled: false}, [Validators.required]],
+      expiration_date: [{value: null, disabled: false}, [Validators.required]],
       shop: [{value: null, disabled: false}],
     });
     this.storelist = [
@@ -104,7 +110,9 @@ export class RecordCardComponent implements OnInit, OnChanges {
         count: '',
         source: '',
         operate_depot: '1',
-        shop: ''
+        shop: '',
+        production_date: '',
+        expiration_date: '',
       };
       this.operateForm.setValue(formObj);
       console.log(this.operateForm.value);
@@ -132,10 +140,26 @@ export class RecordCardComponent implements OnInit, OnChanges {
        console.log(this.operateForm.value);
        return;
     }
+    if (this.recordType === 'depot_in') {
+      if (!this.operateForm.value.production_date) {
+        this.message.create('warning', '生产日期必选');
+        return;
+      }
+      if (!this.operateForm.value.expiration_date) {
+        this.message.create('warning', '过期日期必选');
+        return;
+      }
+    }
       this.operateForm.patchValue({goods_id: recode.id});
       this.operateForm.value.count = parseInt(this.operateForm.value.count, 10);
       this.operateForm.value.price = parseInt(this.operateForm.value.price, 10);
-      const stockForm  = Object.assign({}, recode, {goods_info: [this.operateForm.value], order_type: this.recordType});
+      this.operateForm.value.production_date = this.datePipe.transform(this.operateForm.value.production_date, 'yyyy-MM-dd');
+      this.operateForm.value.expiration_date = this.datePipe.transform(this.operateForm.value.expiration_date, 'yyyy-MM-dd');
+      const GoodInfoObj = this.operateForm.value;
+      if (this.recordType === 'depot_in') {
+        delete GoodInfoObj.shop;
+      }
+      const stockForm  = Object.assign({}, recode, {goods_info: [GoodInfoObj], order_type: this.recordType});
       this.stockService.stockAndSend(stockForm).subscribe(results => {
         if (!results.error) {
           this.callBack.emit(results);
