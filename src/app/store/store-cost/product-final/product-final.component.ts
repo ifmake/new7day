@@ -30,6 +30,7 @@ export class ProductFinalComponent extends ShareCommon implements OnInit {
   }
 
   ngOnInit() {
+    this.searchStream.next();
   }
 
   /**

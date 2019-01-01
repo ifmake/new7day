@@ -10,7 +10,7 @@ import { ShopMaterialService } from 'src/app/common/service/shop-service/shop-ma
   templateUrl: './shop-final.component.html',
   styleUrls: ['./shop-final.component.less']
 })
-export class ShopFinalComponent  extends ShareCommon implements OnInit {
+export class ShopFinalComponent extends ShareCommon implements OnInit {
   // 整体成本走势
   yearDate: any;
   // 月度成本统计
@@ -30,11 +30,11 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
   damagedCostArr = [];
   damagedCountArr = [];
   lineChart: any;
-   // 当前店面
-   currentShop: string;
-   shopLinesPromise: any;
-   shopLines = [];
-   nameArr = ['总成本', '总数量', '损耗成本', '使用成本', '使用数量' ];
+  // 当前店面
+  currentShop: string;
+  shopLinesPromise: any;
+  shopLines = [];
+  nameArr = ['总成本', '总数量', '损耗成本', '使用成本', '使用数量'];
   // 值为空推0
   getZero(value) {
     if (value === null || value === '') {
@@ -48,50 +48,49 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
     private costService: StockCostService,
     private shopService: ShopMaterialService,
   ) {
-      super();
-        // 月度成本统计
-        this.monthSearch = {
-          page: 1,
-          page_size: 10,
-        };
-        this.yearDate = new Date().getFullYear().toString();
-        // 成本走势
-        this.storeList = [
-          {name: '货物成本', checked: true},
-        ];
-       // 总成本走势
-      this.autoResize = true;
-   }
+    super();
+    // 月度成本统计
+    this.monthSearch = {
+      page: 1,
+      page_size: 10,
+    };
+    this.yearDate = new Date().getFullYear().toString();
+    // 成本走势
+    this.storeList = [
+      { name: '货物成本', checked: true },
+    ];
+    // 总成本走势
+    this.autoResize = true;
+  }
 
   ngOnInit() {
-      // 获取店面列表
-      this.shopService.getShopMaterialList({page: 1, page_size: 10}).subscribe(res => {
-        this.shopLinesPromise = [];
-        this.shopList = res.results;
-       for (let i = 0; i < this.shopList.length; i ++) {
-         const shoplineOBj =  {
-           name : this.shopList[i].name,
-           data: [],
-           type: 'line',
-         };
+    this.shopService.getShopMaterialList({ page: 1, page_size: 10 }).subscribe(res => {
+      this.shopLinesPromise = [];
+      this.shopList = res.results;
+      for (let i = 0; i < this.shopList.length; i++) {
+        const shoplineOBj = {
+          name: this.shopList[i].name,
+          data: [],
+          type: 'line',
+        };
         const shopLineSearch = {
           page: 1,
           page_size: 10,
-          Shop : this.shopList[i].id,
+          Shop: this.shopList[i].id,
         };
         this.shopLines.push(shoplineOBj);
         this.shopLinesPromise.push(this.costService.getMonthAdjust(shopLineSearch));
-       }
-       forkJoin(this.shopLinesPromise).subscribe(result => {
+      }
+      forkJoin(this.shopLinesPromise).subscribe(result => {
         for (let i = 0; i < result.length; i++) {
-            const Data: any = result[i];
-            this.MonthArr = [];
-            this.costArr = [];
-            Data.map(data => {
-              this.MonthArr.push(`${data.month}月份`);
-              this.costArr.push(this.getZero(data.cost));
-            });
-            this.shopLines[i].data = [...this.costArr];
+          const Data: any = result[i];
+          this.MonthArr = [];
+          this.costArr = [];
+          Data.map(data => {
+            this.MonthArr.push(`${data.month}月份`);
+            this.costArr.push(this.getZero(data.cost));
+          });
+          this.shopLines[i].data = [...this.costArr];
         }
         this.LineOptions = {
           title: {
@@ -117,12 +116,69 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
           series: [...this.shopLines]
         };
       });
+    });
+  }
+  // 数据刷新
+  searchData() {
+    // 获取店面列表
+    this.shopService.getShopMaterialList({ page: 1, page_size: 10 }).subscribe(res => {
+      this.shopLinesPromise = [];
+      this.shopList = res.results;
+      for (let i = 0; i < this.shopList.length; i++) {
+        const shoplineOBj = {
+          name: this.shopList[i].name,
+          data: [],
+          type: 'line',
+        };
+        const shopLineSearch = {
+          page: 1,
+          page_size: 10,
+          Shop: this.shopList[i].id,
+        };
+        this.shopLines.push(shoplineOBj);
+        this.shopLinesPromise.push(this.costService.getMonthAdjust(shopLineSearch));
+      }
+      forkJoin(this.shopLinesPromise).subscribe(result => {
+        for (let i = 0; i < result.length; i++) {
+          const Data: any = result[i];
+          this.MonthArr = [];
+          this.costArr = [];
+          Data.map(data => {
+            this.MonthArr.push(`${data.month}月份`);
+            this.costArr.push(this.getZero(data.cost));
+          });
+          this.shopLines[i].data = [...this.costArr];
+        }
+        this.LineOptions = {
+          title: {
+            text: '仓库成本（点击当月查看占比图）'
+          },
+          xAxis: {
+            type: 'category',
+            text: '元',
+            data: this.MonthArr
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              animation: false
+            }
+          },
+          legend: {
+            data: ['迷你店', '奎星店', '重百店']
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [...this.shopLines]
+        };
       });
+    });
   }
 
-   /**
-   * 成本走势
-   */
+  /**
+  * 成本走势
+  */
   // 图片初始化
   onChartOninit(chart) {
     this.lineChart = chart;
@@ -132,7 +188,7 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
     console.log(chart);
     this.IsPieChart = true;
     const index = chart.dataIndex + 1;
-    const costTypeArr = ['每月货物成本', '人工成本', '损耗成本', '杂费支出' ];
+    const costTypeArr = ['每月货物成本', '人工成本', '损耗成本', '杂费支出'];
     const DataArr = [];
     costTypeArr.map(name => {
       const DataObj = {
@@ -154,7 +210,7 @@ export class ShopFinalComponent  extends ShareCommon implements OnInit {
       DataArr.push(DataObj);
     });
 
-   this.PieOption = {
+    this.PieOption = {
       title: {
         text: `${index}月份成本占比`,
         x: 'center'

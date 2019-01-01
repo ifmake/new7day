@@ -125,6 +125,10 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
   }
 
   ngOnInit() {
+    this.searchData();
+  }
+  // 数据刷新
+  searchData() {
     this.monthCostStream.next();
   }
   /**

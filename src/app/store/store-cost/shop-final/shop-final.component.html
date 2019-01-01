@@ -7,6 +7,7 @@
       </app-row-grid>
       <app-row-grid [T_row]="3" [C_row]="9" [Title]="'时间选择'">
         <nz-year-picker [(ngModel)]="yearDate" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询年份"></nz-year-picker>
+        <button nz-button [nzType]="'primary'" (click)="searchData()" style="margin-left:20px">刷新</button>
       </app-row-grid>
     </div>
     <!--店面成本折线走势图-->
