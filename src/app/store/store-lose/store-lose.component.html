@@ -1,3 +1,123 @@
-<p>
-  store-lose works!
-</p>
+
+
+  <!--条件查询-->
+  <app-search [seachArray]="searchArray"  (callBack)="searchData($event)"></app-search>
+  <!--操作层-->  
+  <app-handle-layout>
+      <button nz-button [nzType]="'primary'" (click)="add()">报损</button>
+   </app-handle-layout>
+  <div class="search-result-list">
+      <nz-table #productManageTable 
+      [nzData]="dataList?.results" 
+      [nzPageSize]="10"
+      [nzScroll]="{x:'1500px'}"
+      [nzShowPagination]="false"
+      [nzPageSize] = "dataList?.page_size"
+      [nzLoading]="listLoading">
+          <thead>
+            <tr>
+              <th nzWidht="100px" nzLeft="0px">商品名称</th>
+              <th>报损数量</th>
+              <th>商品价格</th>
+              <th>所属仓库</th>
+              <th>规格</th>
+              <th>报损时间</th>
+              <th>操作人</th>
+              <th>报损原因</th>
+              <th nzWidth="100px" nzRight="0px">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of productManageTable.data">
+              <td nzWidht="100px" nzLeft="0px">{{data.goods_name}}</td>
+              <td>{{data.count}}</td>
+              <td>{{data.price}}</td>
+              <td>{{data.damaged_depot_name}}</td>
+              <td>{{data.goods_unit}}</td>
+              <td>{{data.report_time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.operator_name}}</td>
+              <td>{{data.remarks}}</td>
+              <td nzRight="0px">
+                <nz-tag [nzColor]="'blue'" (click) ="reviseDetail(data.id)">查看详情</nz-tag>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <app-pagination 
+        [nzTotal]="dataList?.count || 0" 
+        [nzPageSize]="searchObj.page_size"
+        (nzPageIndexChange)="changPageIndex($event)" 
+        (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+  </div>
+  <!--模态框-->
+  <app-drawer [visible]="OpenDraw" [title]="title" [NoOperate]="look" (callBack)="dataBack($event)">
+      <form nz-form [formGroup]="loseFrom">
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-form-label nzRequired>报损商品名称</nz-form-label>
+                  <nz-select style="width: 100%;" formControlName="goods" (ngModelChange)="selectProduct($event)" (nzScrollToBottom)="loadMore()" (nzOnSearch)="searchProd($event)" [nzShowSearch]="true"
+                    (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择报损商品" nzAllowClear>
+                    <nz-option *ngFor="let store of productList" [nzValue]="store.id" [nzLabel]="store.name"></nz-option>
+                    <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                      <i nz-icon type="loading" class="loading-icon"></i> Loading Data...
+                    </nz-option>
+                  </nz-select>
+                  <nz-form-explain *ngIf="loseFrom.get('goods').dirty && loseFrom.get('goods').errors">商品必须填写</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-control>
+                <nz-form-label nzRequired>所属仓库</nz-form-label>
+                <nz-select style="width: 100%;" formControlName="damaged_depot" (ngModelChange)="selectProduct($event)" [nzShowSearch]="true"  nzPlaceHolder="选择报损商品" nzAllowClear>
+                    <nz-option *ngFor="let store of storeList" [nzValue]="store.id" [nzLabel]="store.name"></nz-option>
+                    <!-- <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                      <i nz-icon type="loading" class="loading-icon"></i> Loading Data...
+                    </nz-option> -->
+                  </nz-select>
+                  <nz-form-explain *ngIf="loseFrom.get('damaged_depot').dirty && loseFrom.get('damaged_depot').errors">仓库必须填写</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row nzGutter="8">
+              <div nz-col nzSpan="12">
+              <nz-form-item>
+                  <nz-form-control >
+                    <nz-form-label nzRequired>商品价格</nz-form-label>
+                    <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
+                      <input nz-input formControlName="price" name="errorValid" placeholder="请输入报损数量">
+                    </nz-input-group>
+                    <nz-form-explain *ngIf="loseFrom.get('price').dirty && loseFrom.get('price').errors">价格必须填写</nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+                <ng-template #addOnAfterIconTemplate>
+                    <span>{{productSpec}}</span>
+                  </ng-template>
+                </div>
+             
+              <div nz-col nzSpan="12">
+                  <nz-form-item>
+                      <nz-form-label nzRequired>报损数量</nz-form-label>
+                      <nz-form-control>
+                          <input formControlName="count" nz-input placeholder="请输入报损数量">
+                          <nz-form-explain *ngIf="loseFrom.get('count').dirty && loseFrom.get('count').errors">报损数量必须填写</nz-form-explain>
+                      </nz-form-control>
+                    </nz-form-item>
+              </div>
+            </div>
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzRequired>报损原因</nz-form-label>
+                <nz-form-control>
+                  <textarea nz-input formControlName="remarks" placeholder="请输入报损原因" [nzAutosize]="{ minRows: 4, maxRows: 4 }"></textarea>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </form>
+  </app-drawer>

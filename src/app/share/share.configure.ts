@@ -21,6 +21,9 @@ import { RowGridComponent } from './grid/row-grid/row-grid.component';
 import { ImgListComponent } from './img-list/img-list.component';
 import { ProductTagsComponent } from './product-tags/product-tags.component';
 import { StockCostService } from '../common/service/product-service/product-cost.service';
+import { StockLoseService } from '../common/service/product-service/product-lose.service';
+import { UploadBtnComponent } from './upload-btn/upload-btn.component';
+import { ShopMaterialService } from '../common/service/shop-service/shop-material.service';
 
 // 布局组件
 const GridCompoennt = [
@@ -45,6 +48,7 @@ export  const moduleCommon = [
 export const componentCommon = [
     SearchComponent,
     DrawerComponent,
+    UploadBtnComponent,
     ImgUploadComponent,
     PaginationComponent,
     ProductCardComponent,
@@ -65,6 +69,8 @@ export const SERVICE = [
     ProductService,
     StoreService,
     StockCostService,
+    StockLoseService,
+    ShopMaterialService,
 ];
 // 指令
 export const DERECTIVE = [

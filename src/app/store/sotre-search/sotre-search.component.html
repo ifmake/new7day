@@ -11,14 +11,16 @@
  <div class="search-result-list">
      <nz-table #productManageTable 
      [nzData]="dataList?.results"  
+     (nzCurrentPageDataChange)="currentPageDataChange($event)"
      [nzShowPagination]="false"
      [nzScroll]="{x:'1500px'}"
      [nzLoading]="listLoading">
          <thead>
            <tr>
-             <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="false" (nzCheckedChange)="checkAll($event)"></th>
+             <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
              <th nzLeft="112px">库存状态</th>
+             <th nzLeft="112px">过期状态</th>
              <th>商品编码</th>
              <th>所属仓库</th>
              <th>库存</th>
@@ -35,12 +37,15 @@
            <tr *ngFor="let data of productManageTable.data">
              <td nzShowCheckbox [(nzChecked)]="data.is_book" (nzCheckedChange)="checkAll($event)"></td>
              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
-             <td nzLeft="112px" [ngStyle]="{color:(data.stock_status==='warn'?'red':'rgb(81, 247, 81)')}">{{data.stock_status==='warn'?'缺货':'正常'}}</td>
+             <td nzLeft="112px" [ngStyle]="{color:(data.stock_status===0?'red':'rgb(81, 247, 81)')}">{{data.stock_status===0?'缺货':'正常'}}</td>
+             <td nzLeft="112px" *ngIf="data.date_status === 0 " >过期</td>
+             <td nzLeft="112px" *ngIf="data.date_status !== 0 &&  data.date_status !== 1 " style="color:rgb(81, 247, 81)">正常</td>
+             <td nzLeft="112px" *ngIf="data.date_status === 1 " style="color:red">即将过期</td>
              <td>{{data.code}}</td>
              <td>{{data.storage}}</td>
-             <td>{{data.stock}}</td>
-             <td>{{data.maker}}</td>
-             <td>{{data.in_price}}</td>
+             <td>{{data.current_depot_stock}}</td>
+             <td>{{data.last_operator_name}}</td>
+             <td>{{data.last_price}}</td>
              <td>{{data.sale_price}}</td>
              <td>{{data.company}}</td>
              <td>{{data.unit}}</td>
@@ -61,18 +66,18 @@
        (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
  </div>
 <!--进出货弹窗-->
- <app-model [OpenModel]="ModelVisible" [title]="ModelTitle" (close)="modelCancel()" [width]="600">
+ <app-model [OpenModel]="ModelVisible" [title]="ModelTitle" (close)="modelCancel()" (callBack)="stocCallBack($event)" [width]="600">
     <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [formCard]="true" (callBack)="stocCallBack($event)" ></app-record-card>
 </app-model>
 <!--进货出货详情-->
 <app-drawer [visible]="OpenDraw" [maskClose]="drawerMaskClose" [title]="drawerTitle" [width]="720" [NoOperate]="true" (callBack)="closeDraw($event)">
     <!--商品基本信息-->
-    <app-text-grid *ngFor="let pro of ProStockArr" [name]="pro.name" [content]="pro.content"></app-text-grid>
+    <app-text-grid *ngFor="let pro of ProStockArr" [name]="pro.name" [content]="pro.content" [type]="pro.type"></app-text-grid>
     <!--进发货-->
-    <app-product-record [name]="'进货记录'" [type]="operate_type.import" [recordArr]="recordArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
-    <app-product-record [name]="'发货记录'" [type]="operate_type.export" [recordArr]="recordArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
+    <app-product-record [name]="'进货记录'" [type]="operate_type.import" [recordArr]="importOrderArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
+    <app-product-record [name]="'发货记录'" [type]="operate_type.export" [recordArr]="exportOrderArr" (loadMore)="lookMoreRecord($event)"></app-product-record>
     <!--二层弹窗-->
     <app-drawer [visible]="OpenDrawList" [maskClose]="drawerMaskClose" [title]="drawerListTitle" [width]="400" [NoOperate]="true" (callBack)="closeChildDraw($event)">
-      <app-record-card [recordListArr]="recordArr" [recordType]="recordType" ></app-record-card>
+      <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [currentID]="currentObj.id"></app-record-card>
     </app-drawer>
   </app-drawer>

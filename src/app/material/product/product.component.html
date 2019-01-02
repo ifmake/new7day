@@ -4,6 +4,7 @@
   <!--操作层-->  
   <app-handle-layout>
     <button nz-button [nzType]="'primary'" (click)="add()">新增商品</button>
+    <app-upload-btn [uploadUrl]="uploadUrl" (callBack)="searchStream.next()"></app-upload-btn>
   </app-handle-layout>
   <div class="search-result-list">
       <nz-table #productManageTable 
@@ -74,7 +75,7 @@
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>商品编码</nz-form-label>
+                <nz-form-label nzRequired>商品编码</nz-form-label>
                 <nz-form-control>
                   <nz-input-group>
                     <input type="text" formControlName="code" nz-input placeholder="请输入商品编码">
@@ -104,13 +105,22 @@
           <div nz-row nzGutter="8">
               <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label nzRequired>规格</nz-form-label>
+                  <nz-form-label nzRequired>规格(如：元/袋)</nz-form-label>
                   <nz-form-control>
                       <input nz-input formControlName="unit" placeholder="请输入规格">
                       <nz-form-explain *ngIf="prodcutForm.get('unit').dirty && prodcutForm.get('unit').errors">请输入规格</nz-form-explain>
                   </nz-form-control>
                 </nz-form-item>
               </div>
+              <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label>预警库存</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="warn_stock" placeholder="请输入预警库存(默认值为10)">
+                        <nz-form-explain *ngIf="prodcutForm.get('warn_stock').dirty && prodcutForm.get('warn_stock').errors">请输入预警库存</nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
             </div>
             <div nz-row nzGutter="8">
                 <nz-form-item>

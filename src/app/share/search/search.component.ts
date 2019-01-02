@@ -11,6 +11,7 @@ export class SearchComponent implements OnInit {
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   validateForm: FormGroup;
   isCollapse = true;
+  dateFormat: string;
 
   toggleCollapse(): void {
     this.isCollapse = !this.isCollapse;
@@ -22,12 +23,14 @@ export class SearchComponent implements OnInit {
     this.validateForm.reset();
     this.searchData();
   }
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+    this.dateFormat = 'yyyy-MM-DD';
+  }
 
   ngOnInit() {
     this.validateForm = this.fb.group({});
     for (let i = 0; i < this.seachArray.length ; i++) {
-      this.validateForm.addControl(this.seachArray[i].key, new FormControl(''));
+      this.validateForm.addControl(this.seachArray[i].key, new FormControl(this.seachArray[i].value || ''));
     }
     this.seachArray.forEach((c, index) => {
       c.show = this.isCollapse ? (index < 3) : true;

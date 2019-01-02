@@ -8,12 +8,16 @@ export class ShareCommon  {
     // 基准数据列表;
     storeList = [];
     supplierList = [];
+    productList = [];
     userList = [];
+    shopList = [];
     listLoading: boolean;
     // 查询参数
     searchObj: any;
     // 表单异步多选控制
     selectLoading: boolean;
+    // 日期配置
+    yearDate: 'yyyy-MM-dd';
     constructor() {
         this.formTitle = '新建';
         this.selectLoading = true;

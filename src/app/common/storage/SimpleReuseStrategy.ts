@@ -34,7 +34,7 @@ export class SimpleReuseStrategy implements RouteReuseStrategy {
     }
     /**避免路由冲突 */
     private getRouteUrl(route: ActivatedRouteSnapshot) {
-        // tslint:disable-next-line:max-line-length
-        return route['_routerState'].url.replace(/\//g, '_') + '_' + (route.routeConfig.loadChildren || route.routeConfig.component.toString().split('(')[0].split(' ')[1] );
+        return route['_routerState'].url.replace(/\//g, '_') + '_' + (route.routeConfig.loadChildren
+        || route.routeConfig.component.toString().split('(')[0].split(' ')[1] );
     }
 }

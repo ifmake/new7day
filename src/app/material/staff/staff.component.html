@@ -18,7 +18,7 @@
             <tr>
               <th nzWidht="100px" nzLeft="0px">姓名</th>
               <th>员工编号</th>
-              <th>年龄</th>
+              <th>出生日期</th>
               <th>性别</th>
               <th>家庭住址</th>
               <th>联系电话</th>
@@ -30,8 +30,8 @@
             <tr *ngFor="let data of productManageTable.data">
               <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
               <td>{{data.code}}</td>
-              <td>{{data.age}}</td>
-              <td>{{data.gender}}</td>
+              <td>{{data.birth | date:'yyyy-MM-dd'}}</td>
+              <td>{{data.gender===1?'男':'女'}}</td>
               <td>{{data.address}}</td>
               <td>{{data.phone}}</td>
               <td>{{data.salary}}</td>
@@ -49,7 +49,7 @@
         (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
   </div>
   <!--模态框-->
-  <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
+  <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)" [title]="formTitle">
       <form nz-form [formGroup]="accountForm">
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
@@ -65,7 +65,7 @@
             </div>
             <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label  nzRequired>联系电话(登录密码)</nz-form-label>
+                  <nz-form-label  nzRequired>联系电话(登录账号)</nz-form-label>
                   <nz-form-control>
                       <nz-input-group>
                           <input  formControlName="phone" id="'phoneNumber'" placeholder="请输入电话号码" nz-input>
@@ -92,7 +92,7 @@
                 </div>
                 <div nz-col nzSpan="12">
                     <nz-form-item>
-                      <nz-form-label  nzRequired>员工编号(登录账号)</nz-form-label>
+                      <nz-form-label  nzRequired>员工编号</nz-form-label>
                       <nz-form-control>
                           <nz-input-group>
                               <input  formControlName="code" name="code" placeholder="请输入员工编号" nz-input>
@@ -106,7 +106,7 @@
           <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>家庭住址</nz-form-label>
+                <nz-form-label nzRequired>家庭住址</nz-form-label>
                 <nz-form-control>
                     <input nz-input formControlName="address" placeholder="请输入家庭住址">
                   </nz-form-control>
@@ -114,10 +114,11 @@
             </div>
             <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label>年龄</nz-form-label>
+                  <nz-form-label nzRequired>出生日期:</nz-form-label>
                   <nz-form-control>
                     <nz-input-group>
-                      <input type="text" formControlName="address" nz-input placeholder="请输入员工年龄">
+                      <nz-date-picker [nzStyle]="{'width':'324px'}" formControlName="birth"></nz-date-picker>
+                      <!-- <input type="text" formControlName="birth" nz-input placeholder="请输入员工年龄"> -->
                     </nz-input-group>
                   </nz-form-control>
                 </nz-form-item>
@@ -135,7 +136,7 @@
                 </div>
               <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label>薪资水平（元/月）</nz-form-label>
+                  <nz-form-label nzRequired>薪资水平（元/月）</nz-form-label>
                   <nz-form-control>
                       <input nz-input formControlName="salary" placeholder="请输入薪资水平">
                   </nz-form-control>
@@ -146,7 +147,7 @@
             <div nz-row nzGutter="8">
               <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label>性别</nz-form-label>
+                  <nz-form-label nzRequired>性别</nz-form-label>
                   <nz-radio-group formControlName="gender">
                     <label nz-radio [nzValue]="1">男</label>
                     <label nz-radio [nzValue]="2">女</label>

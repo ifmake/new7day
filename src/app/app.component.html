@@ -5,7 +5,7 @@
     <div class="logo">
     </div>
     <div class="menu">
-      <app-menu [Islogin]="Islogin" [ActiveMenus]="ActiveMenus" (menus)="getMenus($event)"></app-menu>
+      <app-menu [Islogin]="Islogin" [RightsMenus]="RightsMenus" [ActiveMenus]="ActiveMenus" (menus)="getMenus($event)"></app-menu>
     </div>
   </nz-sider>
   <nz-layout>
@@ -13,10 +13,10 @@
       <div class="user-name">
         欢迎用户
         <nz-badge [nzCount]="count">
-          <a class="head-example">root</a>
+          <a class="head-example">{{loginer_name}}</a>
         </nz-badge>
-        <span class="login_out" (click)="loginOut()">退出</span>|
-        <span class="login_out">修改密码</span>
+        <span class="login_out" (click)="openModel('loginOut')">退出</span>|
+        <span class="login_out" (click)="openModel('changePass')">修改密码</span>
       </div>
     </nz-header>
     <nz-content class="content">
@@ -28,3 +28,39 @@
     <nz-footer style="text-align: center;">新七天仓库管理系统</nz-footer>
   </nz-layout>
 </nz-layout>
+
+<app-model [OpenModel]="ModelVisible" [type]="true" [title]="ModelTitle" (close)="ModelVisible = false" (callBack)="confirmModel()" [width]="600">
+  <h2 *ngIf="modelType === 'loginOut'">是否确认退出登录账户<span class="red">{{loginer_name}}</span></h2>
+  <div class="change-pass" *ngIf="modelType === 'changePass'">
+    <form nz-form [formGroup]="changePassForm" (ngSubmit)="confirmModel()">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="oldpassword" nzRequired>旧密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input type="password" id="oldpassword" formControlName="old_password">
+          <nz-form-explain *ngIf="changePassForm.get('old_password').dirty && changePassForm.get('old_password').errors">请输入旧密码</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="newpassword" nzRequired>新密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input type="password" id="newpassword" formControlName="password" (ngModelChange)="updateConfirmValidator()">
+          <nz-form-explain *ngIf="changePassForm.get('password').dirty && changePassForm.get('password').errors">请输入新密码</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>确认密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input type="password" formControlName="confirm_password" id="checkPassword">
+          <nz-form-explain *ngIf="changePassForm.get('confirm_password').dirty && changePassForm.get('confirm_password').errors">
+            <ng-container *ngIf="changePassForm.get('confirm_password').hasError('required')">
+              请确认你的密码！
+            </ng-container>
+            <ng-container *ngIf="changePassForm.get('confirm_password').hasError('confirm')">
+              两次密码输入不一致
+            </ng-container>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</app-model>

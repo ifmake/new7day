@@ -3,6 +3,7 @@ import { ProductComponent } from './product/product.component';
 import { StoreComponent } from './store/store.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { StaffComponent } from './staff/staff.component';
+import { ShopfrontComponent } from './shopfront/shopfront.component';
 
 export const materialRouter: Routes = [
     // 商品资料
@@ -19,9 +20,16 @@ export const materialRouter: Routes = [
     {
         path: 'supplier',
         data: { title: '供应商资料', module: 'material/supplier', power: 'show' },
-        component: SupplierComponent},
+        component: SupplierComponent
+    },
     {
         path: 'staff',
         data: { title: '员工资料', module: 'material/staff', power: 'show' },
-        component: StaffComponent},
+        component: StaffComponent
+    },
+    {
+        path: 'shopfront',
+        data: { title: '店面资料', module: 'material/shopfront', power: 'show' },
+        component: ShopfrontComponent
+    },
 ];

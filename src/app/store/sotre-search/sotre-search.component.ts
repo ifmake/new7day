@@ -3,6 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import { StoreCommon } from '../store_common.compoennt';
 import { StockListService } from '../../common/service/product-service/production-stock.service';
 import { switchMap } from 'rxjs/operators';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-sotre-search',
@@ -13,42 +14,51 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
   ObserverList: Observable<any>;
   dataList: any;
+  displayData: any = [];
   searchArray: any = [];
   allChecked: boolean;
+  indeterminate: boolean;
   // 进货组件
   ModelVisible: boolean;
   ModelTitle = '进货管理';
-  recordArr: any;
   recordType: string;
+  recordArr = [];
   // 商品详情组件
-   ProStockArr = [
-    {name: '所属仓库', content: '总仓库'},
-    {name: '操作人', content: '测试用户'},
-    {name: '最近进货时间', content: '2018-10-12'},
-    {name: '最近出货时间', content: '2018-10-10'},
-  ];
+  ProStockArr: any;
+  getGoodsRecord: any;
+  importOrderArr = [];
+  exportOrderArr = [];
+  currentObj: any;
   constructor(
-    private stockList: StockListService
+    private stockList: StockListService,
+    public message: NzMessageService,
   ) {
     super();
-    this.recordArr = [];
+    this.ProStockArr = [
+      {name: '操作人', content: '', type: 'string'},
+      {name: '最近进货时间', content: '', type: 'time'},
+      {name: '最近出货时间', content: '', type: 'time'},
+    ];
+    this.currentObj = {
+      id: '',
+    };
     this.searchStream.pipe(switchMap(() => {
       return this.stockList.getStockList(this.searchObj);
     })).subscribe(res => {
+      console.log(res);
       this.listLoading = false;
       this.dataList = res;
     });
 
     this.searchArray = [
-      {key: 'name', index: 0, name: '名称', show: true},
-      {key: 'stock', index: 3, name: '库存', show: true},
-      {key: 'store', index: 4, name: '所属仓库', show: true},
-      {key: 'maker', index: 5, name: '操作人', show: true},
-      {key: 'status', index: 5, name: '库存状态', show: true},
+      {key: 'search', index: 0, name: '名称', show: true},
+      // {key: 'stock', index: 3, name: '库存', show: true},
+      {key: 'depot', index: 4, name: '所属仓库', show: true},
+      {key: 'last_operator_name', index: 5, name: '操作人', show: true},
+      {key: 'stock_status', index: 5, name: '库存状态', show: true},
       // {key: 'effect_datfrom', index: 3, name: '进货时间起', show: false, isTime: true},
       // {key: 'effect_dateto', index: 4, name: '进货时间止', show: false, isTime: true}
     ];
-    
   }
 
   ngOnInit() {
@@ -61,21 +71,63 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     this.searchStream.next();
   }
   // 选中商品
+  // 刷新状态
+  refreshStatus(): void {
+    const allChecked = this.displayData.every(value => value.is_book === true);
+    const allUnChecked = this.displayData.every(value => !value.is_book);
+    this.allChecked = allChecked;
+    this.indeterminate = (!allChecked) && (!allUnChecked);
+  }
+  // 选中所有
   checkAll(prods) {
-    console.log(prods);
+    this.displayData.forEach(data => data.is_book = prods);
+    this.refreshStatus();
+  }
+  currentPageDataChange(datas) {
+    this.displayData = datas;
   }
   // 查看详情
   lookDetail(prod) {
-    console.log(prod);
     this.OpenDraw = true;
     this.drawerTitle = prod.name;
-    this.stockList.getDetail(prod.id).subscribe(res => {
-      console.log(res);
+    this.exportOrderArr = [];
+    this.importOrderArr = [];
+    this.getGoodsRecord = {
+      goods_id: prod.id,
+      page: 1,
+      page_size: 10,
+    };
+    this.currentObj = prod.id;
+    this.stockList.getDetail(this.getGoodsRecord).subscribe(res => {
+      if (!res.error) {
+        console.log(res);
+        if (res['results'].length > 0 ) {
+
+     
+        this.ProStockArr[0].content = res['results'][0].operator_account || '';
+        this.ProStockArr[1].content = res['results'][0].record_time;
+        this.ProStockArr[2].content = res['results'][0].record_time;
+        if (res['results'].length > 0) {
+          for (let i = 0; i < res['results'].length; i++) {
+            if (res['results'][i].record_type === 'depot_out') {
+              this.exportOrderArr.push(res['results'][i]);
+            } else {
+              this.importOrderArr.push(res['results'][i]);
+            }
+          }
+          if (this.exportOrderArr.length > 4) {
+            this.exportOrderArr = this.exportOrderArr.splice(0, 4);
+          }
+          if (this.importOrderArr.length > 4) {
+            this.importOrderArr = this.importOrderArr.splice(0, 4);
+          }
+        }
+      }
+      }
     });
   }
   // 记录单
   lookMoreRecord(type) {
-    console.log(type);
     this.OpenDrawList = true;
     this.recordType = type;
     if (type === 'import') {
@@ -102,8 +154,8 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   // 进出货
   cancelProduct(prod, type) {
     this.ModelVisible = true;
-    this.recordArr = [];
     this.recordType = type;
+    this.recordArr = [];
     this.recordArr.push(prod);
     if (type === 'depot_in') {
       this.ModelTitle = '商品进货';
@@ -113,9 +165,13 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   }
   // 进出货回调
   stocCallBack(recode) {
-    console.log(recode);
-    this.modelCancel();
-    this.searchStream.next();
+    if (recode) {
+      this.message.create('success', '操作成功');
+      this.modelCancel();
+      setTimeout(() => {
+        this.searchStream.next();
+      }, 500);
+    }
   }
 
 }

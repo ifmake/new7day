@@ -1,11 +1,12 @@
 <!--静态展示-->
 <div  *ngIf="!formCard">
-  <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" [nzTitle]="record.name" [nzExtra]="staticTemplate">
-    <app-text-grid [name]="'进价'" [content]="record.import_price"></app-text-grid>
-    <app-text-grid [name]="'数量'" [content]="record.sum"></app-text-grid>
+  <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordLokkArr" [nzTitle]="record.goods_name" [nzExtra]="staticTemplate">
+    <app-text-grid [name]="'进价'" [content]="record.price || 0"></app-text-grid>
+    <app-text-grid [name]="'数量'" [content]="record.count || 0"></app-text-grid>
     <app-text-grid [name]="'单位'" [content]="record.unit"></app-text-grid>
-    <app-text-grid [name]="'进货时间'" [content]="record.time"></app-text-grid>
-    <app-text-grid [name]="'操作人'" [content]="record.maker"></app-text-grid>
+    <app-text-grid [name]="'进货时间'" [content]="record.record_time | date:'yyyy-MM-dd HH:mm:ss'"></app-text-grid>
+    <app-text-grid [name]="'过期时间'" [content]="record.expiration_date || ''"></app-text-grid>
+    <app-text-grid [name]="'操作人'" [content]="record.operator_account"></app-text-grid>
   </nz-card>
   <ng-template  #staticTemplate>
       <span appTextHover *ngIf="recordType === 'depot_in'" (click)="operateRecord('depot_in')">进货</span>
@@ -16,37 +17,68 @@
 <div  *ngIf="formCard">
     <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" [nzTitle]="record.name" [nzExtra]="activeTemplate">
         <form nz-form [formGroup]="operateForm">
-            <nz-form-item>
-                <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">进价</nz-form-label>
-                <nz-form-control  [nzSpan]="18">
-                  <input nz-input formControlName="price" name="errorValid">
-                  <nz-form-explain *ngIf="operateForm.get('price').dirty && operateForm.get('price').errors">必须填写</nz-form-explain>
-                </nz-form-control>
-              </nz-form-item>
-              <nz-form-item>
-                  <nz-form-label nzRequired [nzSpan]="5">数量</nz-form-label>
-                  <nz-form-control  [nzSpan]="18">
-                    <input nz-input formControlName="count" name="errorValid">
-                    <nz-form-explain *ngIf="operateForm.get('count').dirty && operateForm.get('count').errors">必须是数字必须填写</nz-form-explain>
-                  </nz-form-control>
-              </nz-form-item>
-              <nz-form-item>
-                  <nz-form-label nzRequired [nzSpan]="5">规格</nz-form-label>
-                  <nz-form-control  [nzSpan]="18">
-                    <input nz-input formControlName="unit" name="errorValid">
-                    <nz-form-explain *ngIf="operateForm.get('unit').dirty && operateForm.get('unit').errors">必须是数字必须填写</nz-form-explain>
-                  </nz-form-control>
-                </nz-form-item>
-                <nz-form-item>
-                    <nz-form-label nzRequired [nzSpan]="5">{{recordType === 'depot_in'?'进货源':'出货源'}}</nz-form-label>
-                    <nz-form-control  [nzSpan]="18" >
-                        <nz-select name="select-error" [ngModel]="'Option 1'" [ngModelOptions]="{standalone: true}">
-                            <nz-option *ngFor="let option of sourceslist" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-                            <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">必须是数字必须填写</nz-form-explain>
-                          </nz-select>  
-                    </nz-form-control>
-                  </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">单价</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
+                  <input nz-input formControlName="price" name="price">
+                </nz-input-group>
+                <nz-form-explain *ngIf="operateForm.get('price').dirty && operateForm.get('price').errors">必须填写</nz-form-explain>
+              </nz-form-control>
+            <ng-template #addOnAfterIconTemplate>
+              <span>{{operateForm.controls.unit.value}}</span>
+            </ng-template>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzRequired [nzSpan]="5">数量</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <input nz-input formControlName="count" name="count">
+              <nz-form-explain *ngIf="operateForm.get('count').dirty && operateForm.get('count').errors">必须是数字必须填写</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+              <nz-form-label nzRequired [nzSpan]="5">{{recordType === 'depot_in'?'进货仓库':'出货仓库'}}</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <nz-select name="operate_depot" formControlName="operate_depot">
+                  <nz-option *ngFor="let option of storelist" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                  <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">必须是数字必须填写</nz-form-explain>
+                </nz-select>
+              </nz-form-control>
+          </nz-form-item>
+          <nz-form-item *ngIf="recordType === 'depot_in'">
+            <nz-form-label nzRequired [nzSpan]="5">进货源</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-select name="select-error" [ngModel]="'Option 1'" [ngModelOptions]="{standalone: true}">
+                <nz-option *ngFor="let option of sourceslist" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+                <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">必须是数字必须填写</nz-form-explain>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item *ngIf="recordType === 'depot_out'">
+              <nz-form-label nzRequired [nzSpan]="5">出货源（店面）</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <nz-select name="shop" nzPlaceHolder="请选择出货店面" formControlName="shop">
+                  <nz-option *ngFor="let option of sourceslist" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+                  <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">选择店面</nz-form-explain>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="recordType === 'depot_in'">
+              <nz-form-label nzRequired [nzSpan]="5">生产日期</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                  <nz-date-picker nzPlaceHolder="选择生产日期" [nzFormat]="dateFormat" formControlName="production_date" ></nz-date-picker>
+                  <nz-form-explain *ngIf="operateForm.get('production_date').dirty && operateForm.get('production_date').errors">填写生产日期</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="recordType === 'depot_in'">
+              <nz-form-label nzRequired [nzSpan]="5">过期日期</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                  <nz-date-picker nzPlaceHolder="选择过期日期" [nzFormat]="dateFormat" formControlName="expiration_date" ></nz-date-picker>
+                  <nz-form-explain *ngIf="operateForm.get('expiration_date').dirty && operateForm.get('expiration_date').errors">填写过期时间</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
         </form>
+        
         <ng-template  #activeTemplate>
             <!-- <span appTextHover  >清空</span> -->
             <button nz-button nzType="dashed" (click)="clearForm(record)">清空</button>
@@ -55,7 +87,6 @@
             <!-- <span appTextHover (click)="submitForm(record)">确认</span> -->
         </ng-template>
     </nz-card>
-  
   </div>
 
 

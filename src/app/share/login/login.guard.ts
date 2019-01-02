@@ -16,10 +16,8 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
       const IsLogin = JSON.parse(this.storage.get('loginer'));
       if (IsLogin.token && IsLogin.token !== '') {
-        this.router.navigate(['material/product']);
         return true;
       } else {
-        this.router.navigate(['login']);
         return false;
       }
   }

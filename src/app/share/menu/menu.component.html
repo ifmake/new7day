@@ -8,7 +8,7 @@
   </div>
   <!--一级菜单-->
   <ul nz-menu [nzMode]="'inline'" nzTheme='dark'  [nzInlineCollapsed]="false" [nzSelectable]="true" class="menu-list">
-    <li nz-submenu *ngFor="let menu of menuList" [nzOpen]="menu.select">
+    <li nz-submenu *ngFor="let menu of RightsMenus" [nzOpen]="menu.select">
       <span title>
         <i class="anticon anticon-appstore"></i>
         <span>{{menu.title}}</span>

@@ -11,7 +11,6 @@ export class StatusAlertComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges() {
-    console.log('sdfsdfsd');
     setTimeout(() => {
       this.type = '';
     }, 2000);

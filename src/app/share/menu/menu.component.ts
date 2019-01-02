@@ -2,17 +2,18 @@ import { Component, OnInit, Input, OnChanges, Output, EventEmitter} from '@angul
 import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 import { filter, map, mergeMap} from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
-import { ActiveMenus } from 'src/app/common/interface/menu.interface';
+import { ActiveMenus, RightsMenus } from 'src/app/common/interface/menu.interface';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.less']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit , OnChanges {
 
   @Input() Islogin: boolean;
   @Output() menus: EventEmitter<any> = new EventEmitter<any>();
+  @Input() RightsMenus: Array<RightsMenus>;
   isCollapsed = false;
   menuList = [
     {title: '资料管理', link: 'material', active: 'active', select: false, childs: [
@@ -35,6 +36,9 @@ export class MenuComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title
   ) {}
+  ngOnChanges() {
+    console.log('是否变更');
+  }
   ngOnInit() {
     this.router.events.pipe(
       filter(event => {
@@ -69,6 +73,7 @@ export class MenuComponent implements OnInit {
           this.ActiveMenus.forEach(p => p.select = p.title === title);
           return;
         } else {
+          console.log(menu);
           this.ActiveMenus.push(menu);
         }
         this.menus.emit(this.ActiveMenus);
@@ -80,12 +85,13 @@ export class MenuComponent implements OnInit {
   }
   // 默认展开指定菜单
   unfoldActiveLink(route) {
-    for (let i = 0; i < this.menuList.length; i++) {
-      if (route.url.search(this.menuList[i].link) !== -1) {
-        this.menuList[i].select = true;
-        for (let j = 0; j < this.menuList[i].childs.length; j++) {
-          if (route.url === this.menuList[i].childs[j].link) {
-            this.menuList[i].childs[j].select = true;
+    if (this.RightsMenus.length < 1) { return; }
+    for (let i = 0; i < this.RightsMenus.length; i++) {
+      if (route.url.search(this.RightsMenus[i].link) !== -1) {
+        this.RightsMenus[i].select = true;
+        for (let j = 0; j < this.RightsMenus[i].childs.length; j++) {
+          if (route.url === this.RightsMenus[i].childs[j].link) {
+            this.RightsMenus[i].childs[j].select = true;
           }
         }
       }

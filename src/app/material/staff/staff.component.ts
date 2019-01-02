@@ -46,6 +46,7 @@ export class StaffComponent extends MaterialCommon implements OnInit {
       role: [{ value: '', disabled: false }, [Validators.required]],
       code: [{ value: '', disabled: false }, [Validators.required]],
       address: [{ value: '', disabled: false }],
+      birth: [{ value: '', disabled: false }],
       salary: [{ value: '1500', disabled: false }],
       depot: [{ value: '', disabled: false }],
       gender: [{ value: 1, disabled: false }],
@@ -56,10 +57,9 @@ export class StaffComponent extends MaterialCommon implements OnInit {
   }
   // 接口错误提示
   errorAlert(errors) {
-    for (const err in errors) {
-      if (err && typeof errors[err] === 'object') {
-        this.message.create('error', errors[err][0]);
-      }
+    console.log(errors);
+    for (const err of errors.error.code) {
+        this.message.create('error', err);
     }
   }
   // 数据查询
@@ -98,8 +98,9 @@ export class StaffComponent extends MaterialCommon implements OnInit {
         depot = '',
         gender = '',
         role = '',
+        birth = null,
         desc = ''} = res;
-        this.accountForm.setValue({id, name,  phone, code, salary, address, role, depot, gender, desc});
+        this.accountForm.setValue({id, name,  phone, code, salary, address, birth, role, depot, gender, desc});
     });
   }
   // 确认添加
@@ -159,6 +160,7 @@ export class StaffComponent extends MaterialCommon implements OnInit {
   // 获取仓库列表
   getStoreList() {
     this.storeService.getStoreList(this.searchObj).subscribe(res => {
+      console.log(res);
       this.storeList = res.results;
     });
   }

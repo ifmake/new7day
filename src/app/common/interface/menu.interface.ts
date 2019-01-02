@@ -7,3 +7,10 @@ export interface ActiveMenus {
     power: string;
     select: boolean;
 }
+export interface RightsMenus {
+    title: string;
+    link: string;
+    active: string;
+    select: boolean;
+    childs: Array<any>;
+}

@@ -1,0 +1,24 @@
+
+<!--店面成本走势-->
+<div class="all_cost">
+    <div class="rzl_chart_filter">
+      <app-row-grid [T_row]="3" [C_row]="21" [Title]="'成本类型'">
+        <nz-tag *ngFor="let store of storeList;let i = index" name="store" nzMode="checkable" [nzChecked]="store.checked" (nzCheckedChange)="checkChange(store,i)">{{store.name}}</nz-tag>
+      </app-row-grid>
+      <app-row-grid [T_row]="3" [C_row]="9" [Title]="'时间选择'">
+        <nz-year-picker [(ngModel)]="yearDate" (ngModelChange)="checkChange($event,1)" nzPlaceHolder="选择查询年份"></nz-year-picker>
+        <button nz-button [nzType]="'primary'" (click)="searchData()" style="margin-left:20px">刷新</button>
+      </app-row-grid>
+    </div>
+    <!--店面成本折线走势图-->
+    <div  echarts [options]="LineOptions"
+          [autoResize]="autoResize"
+          [merge]="updateOption"
+          style="height: 500px"
+          (chartInit)="onChartOninit($event)"
+          (chartClick)="onChartEvent($event)"
+          >
+    </div>
+    <!--店面成本占比图-->
+    <div *ngIf="IsPieChart" echarts [options]="PieOption" theme="default" style="height:400px;margin-top: 50px"></div>
+  </div>

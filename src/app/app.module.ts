@@ -13,6 +13,7 @@ import { RouterModule, RouteReuseStrategy } from '@angular/router';
 import { rootRouter } from './app.routing';
 import { SimpleReuseStrategy } from './common/storage/SimpleReuseStrategy';
 import { MenuListComponent } from './share/menu-list/menu-list.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 registerLocaleData(zh);
 
@@ -21,6 +22,7 @@ registerLocaleData(zh);
     AppComponent,
     MenuComponent,
     MenuListComponent,
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,

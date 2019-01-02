@@ -1,0 +1,23 @@
+.upload-btn{
+    height: 20px;
+    width: auto;
+    color:#fff;
+    padding: 6px 15px;
+    overflow: hidden;
+    position: relative;
+    background: #2593fc;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 14px;
+    touch-action: manipulation;
+    cursor: pointer;
+    animation: all linear 0.1s;
+    &:hover{
+        background: rgba(37, 147, 252, 0.8)
+    }
+    input[type="file"] {
+        position: absolute;
+        top:-100px;
+        display: none
+    }
+}

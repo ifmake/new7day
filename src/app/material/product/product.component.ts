@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MaterialCommon } from '../material.common';
 import { Subject, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, debounceTime } from 'rxjs/operators';
 import { ProductService } from '../../common/service/product.service';
 import { NzMessageService } from 'ng-zorro-antd';
 import { SupplierService } from '../../common/service/supplier.service';
@@ -15,7 +15,8 @@ import { SupplierService } from '../../common/service/supplier.service';
 export class ProductComponent extends MaterialCommon implements OnInit {
   searchStream = new Subject<any>();
   dataList: any;
-
+  // 文件上传地址
+  uploadUrl: string;
   // 新增商品表单
   prodcutForm: FormGroup;
   constructor(
@@ -32,10 +33,9 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       this.dataList = res;
     });
     this.searchArray = [
-      {key: 'name', index: 0, name: '名称', show: true},
+      {key: 'search', index: 0, name: '名称', show: true},
       {key: 'code', index: 1, name: '编码', show: true},
       {key: 'spec', index: 2, name: '规格', show: true},
-      {key: 'search', index: 3, name: '模糊查询', show: true},
     ];
     // 新增商品表单
     this.prodcutForm = this.fb.group({
@@ -43,6 +43,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       short_name: [{value: '', disabled: false}, [Validators.required]],
       id: [{value: '', disabled: false}],
       code: [{value: '', disabled: false}],
+      warn_stock: [{value: '', disabled: false}],
       in_price: [{value: '', disabled: false}],
       sale_price: [{value: '', disabled: false}],
       unit: [{value: '', disabled: false}, [Validators.required]],
@@ -50,6 +51,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
       img: [{value: '', disabled: false}],
       desc: [{value: '', disabled: false}],
     });
+    this.uploadUrl = 'http://47.93.0.160:8000/goods/goods/file_import/';
   }
 
   ngOnInit() {
@@ -57,6 +59,7 @@ export class ProductComponent extends MaterialCommon implements OnInit {
   }
   // 接口错误提示
   errorAlert(errors) {
+    console.log(errors);
     for (const err in errors) {
       if (err && typeof errors[err] === 'object') {
         this.message.create('error', errors[err][0]);
@@ -68,7 +71,6 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     Object.assign(this.searchObj, serachObj);
     this.searchStream.next();
   }
-  // 数据查询
   refresh(keys) {
     Object.assign(this.searchObj, keys);
     this.searchStream.next();
@@ -117,6 +119,10 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         this.message.create('error', '规格不能为空');
         return;
       }
+      if (this.prodcutForm.value.warn_stock < 1) {
+        this.message.create('error', '预警库存不能小于1');
+        return;
+      }
       this.saveProduct();
     } else {
       this.OpenDraw = false;
@@ -162,7 +168,6 @@ export class ProductComponent extends MaterialCommon implements OnInit {
     this.OpenDraw = true;
     this.formTitle = '商品修改';
     this.productService.getProductDetail(id).subscribe(res => {
-      console.log(res);
       const {
         id = '',
         name = '',
@@ -171,10 +176,11 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         in_price = '',
         sale_price = '',
         unit = '',
+        warn_stock = '',
         brand = '',
         img = '',
         desc = ''} = res;
-        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, unit,  brand , img, desc});
+        this.prodcutForm.setValue({id, name, short_name, code, in_price, sale_price, unit, warn_stock, brand , img, desc});
         console.log(this.prodcutForm);
     });
   }
