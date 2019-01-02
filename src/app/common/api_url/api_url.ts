@@ -1,6 +1,6 @@
 
 
-const API_PREFIX = 'http://47.93.0.160:8000';
+const API_PREFIX = 'http://47.93.0.160:9000';
 
 // 用户登录资料管理
 export const login_api = {
