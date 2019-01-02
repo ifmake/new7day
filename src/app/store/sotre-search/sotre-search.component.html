@@ -20,7 +20,7 @@
              <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
              <th nzLeft="112px">库存状态</th>
-             <th nzLeft="112px">过期状态</th>
+             <th nzLeft="212px">过期状态</th>
              <th>商品编码</th>
              <th>所属仓库</th>
              <th>库存</th>
@@ -38,9 +38,9 @@
              <td nzShowCheckbox [(nzChecked)]="data.is_book" (nzCheckedChange)="checkAll($event)"></td>
              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
              <td nzLeft="112px" [ngStyle]="{color:(data.stock_status===0?'red':'rgb(81, 247, 81)')}">{{data.stock_status===0?'缺货':'正常'}}</td>
-             <td nzLeft="112px" *ngIf="data.date_status === 0 " >过期</td>
-             <td nzLeft="112px" *ngIf="data.date_status !== 0 &&  data.date_status !== 1 " style="color:rgb(81, 247, 81)">正常</td>
-             <td nzLeft="112px" *ngIf="data.date_status === 1 " style="color:red">即将过期</td>
+             <td nzLeft="212px" *ngIf="data.date_status === 0 " >过期</td>
+             <td nzLeft="212px" *ngIf="data.date_status !== 0 &&  data.date_status !== 1 " style="color:rgb(81, 247, 81)">正常</td>
+             <td nzLeft="212px" *ngIf="data.date_status === 1 " style="color:red">即将过期</td>
              <td>{{data.code}}</td>
              <td>{{data.storage}}</td>
              <td>{{data.current_depot_stock}}</td>
