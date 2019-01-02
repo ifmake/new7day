@@ -5,6 +5,7 @@
     <app-text-grid [name]="'数量'" [content]="record.count || 0"></app-text-grid>
     <app-text-grid [name]="'单位'" [content]="record.unit"></app-text-grid>
     <app-text-grid [name]="'进货时间'" [content]="record.record_time | date:'yyyy-MM-dd HH:mm:ss'"></app-text-grid>
+    <app-text-grid [name]="'过期时间'" [content]="record.expiration_date || ''"></app-text-grid>
     <app-text-grid [name]="'操作人'" [content]="record.operator_account"></app-text-grid>
   </nz-card>
   <ng-template  #staticTemplate>
