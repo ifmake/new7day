@@ -1,6 +1,6 @@
 
 
-const API_PREFIX = 'http://47.93.0.160:8000';
+const API_PREFIX = 'http://47.93.0.160:9000';
 
 // 用户登录资料管理
 export const login_api = {
@@ -78,6 +78,22 @@ export const api_shop = {
         } else {
             return `${API_PREFIX}/shop/shop/`;
         }
+    }
+};
+
+/**
+ * 店面收支情况
+ */
+export const api_shop_income = {
+    list: (id?: any) => {
+        if (id) {
+            return `${API_PREFIX}/shop/shop/income/${id}/`;
+        } else {
+            return `${API_PREFIX}/shop/shop/income/`;
+        }
+    },
+    stats: () => {
+        return `${API_PREFIX}/shop/shop/income/stats`;
     }
 };
 

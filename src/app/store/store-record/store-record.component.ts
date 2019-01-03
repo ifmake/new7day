@@ -40,6 +40,7 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
   }
   // 数据查询
   searchData(serachObj) {
+     this.listLoading = false;
     Object.assign(this.searchObj, serachObj);
     this.searchStream.next();
   }
@@ -59,6 +60,7 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
   // 删除订单
   deleteOrder(data) {
     console.log(data);
+    this.listLoading = true;
     this.stockListService.deleteOrder(data.order).subscribe(res => {
       console.log(res);
       if (res) {
