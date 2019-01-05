@@ -38,7 +38,7 @@
              <td nzWidht="100px" nzLeft="0px">{{data.name}}</td>
              <td nzLeft="112px" [ngStyle]="{color:(data.stock_status===0?'red':'rgb(81, 247, 81)')}">{{data.stock_status===0?'缺货':'正常'}}</td>
              <td>{{data.code}}</td>
-             <td>总仓库</td>
+             <td>分仓库</td>
              <td>{{data.current_depot_stock}}</td>
              <td>{{data.last_operator_name}}</td>
              <td>{{data.last_price}}</td>
@@ -63,7 +63,7 @@
  </div>
 <!--进出货弹窗-->
  <app-model [OpenModel]="ModelVisible" [title]="ModelTitle" (close)="modelCancel()" (callBack)="stocCallBack($event)" [width]="600">
-    <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [formCard]="true" [IsMaster]="true" (callBack)="stocCallBack($event)" ></app-record-card>
+    <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [formCard]="true" [IsMaster]="false" (callBack)="stocCallBack($event)" ></app-record-card>
 </app-model>
 <!--进货出货详情-->
 <app-drawer [visible]="OpenDraw" [maskClose]="drawerMaskClose" [title]="drawerTitle" [width]="720" [NoOperate]="true" (callBack)="closeDraw($event)">

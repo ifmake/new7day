@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { StockListService } from 'src/app/common/service/product-service/production-stock.service';
 import { StoreCommon } from '../store_common.compoennt';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-store-record',
   templateUrl: './store-record.component.html',
-  styleUrls: ['./store-record.component.less']
+  styleUrls: ['./store-record.component.less'],
+  providers: [DatePipe]
 })
 export class StoreRecordComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
@@ -18,19 +20,25 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     public message: NzMessageService,
     private stockListService: StockListService,
     private router: Router,
+    private datePipe: DatePipe,
   ) {
     super();
     this.searchArray = [
       {key: 'search', index: 0, name: '商品名称', show: true},
       {key: 'operator_account', index: 5, name: '操作人', show: true},
-      {key: 'expiration_date', index: 3, name: '过期日期', show: false, isTime: true},
+      {key: 'expiration_date', index: 3, name: '商品过期日', show: false, isTime: true},
     ];
     // 列表查询
     this.searchStream.pipe(switchMap(() => {
       return this.stockListService.getRecordList(this.searchObj);
     })).subscribe(res => {
-      this.listLoading = false;
-      this.dataList = res;
+      if (!res['error']) {
+        this.listLoading = false;
+        this.dataList = res;
+      } else {
+        this.message.create('error', '查询出错');
+        this.listLoading = false;
+      }
       console.log(res);
     });
   }
@@ -40,7 +48,10 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
   }
   // 数据查询
   searchData(serachObj) {
-     this.listLoading = false;
+    this.listLoading = false;
+    if (serachObj.expiration_date) {
+      serachObj.expiration_date = this.datePipe.transform(serachObj.expiration_date, 'yyyy-MM-dd');
+    }
     Object.assign(this.searchObj, serachObj);
     this.searchStream.next();
   }
@@ -63,12 +74,23 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     this.listLoading = true;
     this.stockListService.deleteOrder(data.order).subscribe(res => {
       console.log(res);
-      if (res) {
+      if (!res.error) {
         this.message.create('success', '删除成功');
-        this.searchStream.next();
       } else {
-        this.message.create('error', '删除失败');
+        this.message.create('error', res.error.error + '查询是否为第一条数据');
       }
+      this.searchStream.next();
     });
+  }
+  // 生成订单状态
+  orderStatus(time) {
+    const nowTime = new Date().getTime();
+    const expirationDate = new Date(time).getTime();
+    const condition =  new Map([
+      [0, () => {}],
+      [1, () => {}],
+      [2, () => {}],
+    ]);
+    return time;
   }
 }

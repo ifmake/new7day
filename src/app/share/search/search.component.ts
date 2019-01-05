@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
     this.searchData();
   }
   constructor(private fb: FormBuilder) {
-    this.dateFormat = 'yyyy-MM-DD';
+    this.dateFormat = 'yyyy-MM-dd';
   }
 
   ngOnInit() {

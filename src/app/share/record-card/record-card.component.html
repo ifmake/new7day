@@ -21,7 +21,7 @@
             <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">单价</nz-form-label>
               <nz-form-control [nzSpan]="18">
                 <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
-                  <input nz-input formControlName="price" name="price">
+                  <input nz-input formControlName="price" name="price" [readonly]="recordType !== 'depot_in'">
                 </nz-input-group>
                 <nz-form-explain *ngIf="operateForm.get('price').dirty && operateForm.get('price').errors">必须填写</nz-form-explain>
               </nz-form-control>
@@ -39,18 +39,36 @@
           <nz-form-item>
               <nz-form-label nzRequired [nzSpan]="5">{{recordType === 'depot_in'?'进货仓库':'出货仓库'}}</nz-form-label>
               <nz-form-control [nzSpan]="18">
-                <nz-select name="operate_depot" formControlName="operate_depot">
+                <nz-select name="operate_depot" formControlName="operate_depot" (ngModelChange)="getOperateStore($event)">
                   <nz-option *ngFor="let option of storelist" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
                   <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">必须是数字必须填写</nz-form-explain>
                 </nz-select>
               </nz-form-control>
           </nz-form-item>
-          <nz-form-item *ngIf="recordType === 'depot_in'">
-            <nz-form-label nzRequired [nzSpan]="5">进货源</nz-form-label>
+          <nz-form-item *ngIf="!IsMaster && recordType === 'depot_in'">
+            <nz-form-label nzRequired [nzSpan]="5">进货类型</nz-form-label>
             <nz-form-control [nzSpan]="18">
-              <nz-select name="select-error" [ngModel]="'Option 1'" [ngModelOptions]="{standalone: true}">
+              <nz-radio-group [(ngModel)]="selectDepotInType" [ngModelOptions]="{standalone: true}">
+                <label nz-radio nzValue="B">总仓库进货</label>
+                <label nz-radio nzValue="A">供应商进货</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item *ngIf="recordType === 'depot_in' && !IsMaster && selectDepotInType !== 'A'">
+            <nz-form-label nzRequired [nzSpan]="5">仓库进货</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-select name="select-error" formControlName="from_depot">
+                <nz-option  nzLabel="总仓库" [nzValue]="1"></nz-option>
+                <nz-form-explain *ngIf="operateForm.get('from_depot').dirty && operateForm.get('from_depot').errors">必须是数字必须填写</nz-form-explain>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item *ngIf="recordType === 'depot_in' && selectDepotInType === 'A'">
+            <nz-form-label nzRequired [nzSpan]="5">供应商</nz-form-label>
+            <nz-form-control [nzSpan]="18">
+              <nz-select name="select-error" formControlName="supplier">
                 <nz-option *ngFor="let option of sourceslist" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
-                <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">必须是数字必须填写</nz-form-explain>
+                <nz-form-explain *ngIf="operateForm.get('supplier').dirty && operateForm.get('supplier').errors">必须是数字必须填写</nz-form-explain>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -58,7 +76,7 @@
               <nz-form-label nzRequired [nzSpan]="5">出货源（店面）</nz-form-label>
               <nz-form-control [nzSpan]="18">
                 <nz-select name="shop" nzPlaceHolder="请选择出货店面" formControlName="shop">
-                  <nz-option *ngFor="let option of sourceslist" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+                  <nz-option *ngFor="let option of shopList" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
                   <nz-form-explain *ngIf="operateForm.get('source').dirty && operateForm.get('source').errors">选择店面</nz-form-explain>
                 </nz-select>
               </nz-form-control>

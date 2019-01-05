@@ -1,3 +1,19 @@
-<p>
-  shop-income works!
-</p>
+<nz-tabset (nzSelectChange) ="selectTab($event)">
+  <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate" >
+    <ng-template #titleTemplate>
+      {{ tab.name }}
+    </ng-template>
+    <!--店面收入单-->
+    <div *ngIf="currentIndex===0" class="list">
+        <app-income-bill></app-income-bill>
+    </div>
+    <!--店面货物盘点-->
+    <div *ngIf="currentIndex===1" class="list">
+      店面货物盘点
+    </div>
+     <!--店面收入统计表-->
+    <div *ngIf="currentIndex===2" class="list">
+      店面收入统计表
+    </div>
+  </nz-tab>
+</nz-tabset>

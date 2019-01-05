@@ -2,11 +2,19 @@
 <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
   <div nz-row [nzGutter]="24">
     <div nz-col [nzSpan]="8" *ngFor="let control of seachArray" [style.display]="control.show?'block':'none'">
-      <nz-form-item nzFlex >
+      <nz-form-item nzFlex *ngIf="!control.isSelect">
         <nz-form-label [nzFor]="control.name">{{control.name}}</nz-form-label>
         <nz-form-control>
           <input *ngIf="!control.isTime"  nz-input placeholder="请输入关键字" [formControlName]="control.key" [attr.id]="'field'+control.index">
           <nz-date-picker  *ngIf="control.isTime" [nzFormat]="dateFormat" [formControlName]="control.key" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item nzFlex *ngIf="control.isSelect">
+        <nz-form-label [nzFor]="control.name">{{control.name}}</nz-form-label>
+        <nz-form-control>
+          <nz-select [formControlName]="control.key"  style="width: 170px;">
+            <nz-option [nzCustomContent]="false" *ngFor="let item of control?.selectArr" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
     </div>
