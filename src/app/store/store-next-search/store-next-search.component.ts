@@ -4,14 +4,13 @@ import { StoreCommon } from '../store_common.compoennt';
 import { StockListService } from '../../common/service/product-service/production-stock.service';
 import { switchMap } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
-import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-sotre-search',
-  templateUrl: './sotre-search.component.html',
-  styleUrls: ['./sotre-search.component.css']
+  templateUrl: './store-next-search.component.html',
+  styleUrls: ['./store-next-search.component.less']
 })
-export class SotreSearchComponent extends StoreCommon implements OnInit {
+export class StoreNextSearchComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
   ObserverList: Observable<any>;
   dataList: any;
@@ -33,7 +32,6 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
   constructor(
     private stockList: StockListService,
     public message: NzMessageService,
-    private router: Router,
   ) {
     super();
     this.ProStockArr = [
@@ -44,10 +42,11 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     this.currentObj = {
       id: '',
     };
-    this.searchObj.depot = 1;
+    this.searchObj.depot = 2;
     this.searchStream.pipe(switchMap(() => {
       return this.stockList.getStockList(this.searchObj);
     })).subscribe(res => {
+      console.log(res);
       this.listLoading = false;
       this.dataList = res;
     });
@@ -63,11 +62,6 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
 
   ngOnInit() {
     this.searchStream.next();
-    this.router.events.subscribe(res => {
-      if (res instanceof NavigationStart) {
-        this.searchStream.next();
-      }
-    });
   }
 
   // 数据过滤
@@ -105,6 +99,7 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     this.currentObj = prod.id;
     this.stockList.getDetail(this.getGoodsRecord).subscribe(res => {
       if (!res.error) {
+        console.log(res);
         if (res['results'].length > 0 ) {
         this.ProStockArr[0].content = res['results'][0].operator_account || '';
         this.ProStockArr[1].content = res['results'][0].record_time;

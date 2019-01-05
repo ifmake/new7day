@@ -3,14 +3,20 @@ import { SotreSearchComponent } from './sotre-search/sotre-search.component';
 import { StoreImportComponent } from './store-import/store-import.component';
 import { StoreLoseComponent } from './store-lose/store-lose.component';
 import { StoreRecordComponent } from './store-record/store-record.component';
+import { StoreNextSearchComponent } from './store-next-search/store-next-search.component';
 
 export const storeRouter: Routes = [
     { path: '', redirectTo: 'search', pathMatch: 'full'},
     // 库存查询
     {
         path: 'search',
-        data: { title: '库存查询', module: 'store/search', power: 'show' },
+        data: { title: '总仓库管理', module: 'store/search', power: 'show' },
         component: SotreSearchComponent
+    },
+    {
+        path: 'next_search',
+        data: { title: '分仓库管理', module: 'store/next_search', power: 'show' },
+        component: StoreNextSearchComponent
     },
     // 进出货管理
     {

@@ -13,10 +13,12 @@
            <tr>
              <th nzWidht="100px" nzLeft="0px">商品名称</th>
              <th>订单类型</th>
+             <th>货物状态</th>
              <th>进价</th>
              <th>数量</th>
              <th>成本（元）</th>
              <th>规格</th>
+             <th>商品过期日</th>
              <th>操作人</th>
              <th>操作时间</th> 
              <th nzWidth="100px" nzRight="0px">操作</th>
@@ -25,11 +27,13 @@
          <tbody>
            <tr *ngFor="let data of RecordTable.data">
              <td nzWidht="100px" nzLeft="0px">{{data.goods_name}}</td>
-             <td>{{data.record_type==='depot_in'?'进货':'出货'}}</td>
+             <td>{{data.record_type==='depot_in'?(!data.from_depot?'进货':'仓库转移'):'出货'}}</td>
+             <td>{{orderStatus(data.expiration_date)}}</td>
              <td>{{data.price}}</td>
              <td>{{data.count}}</td>
              <td>{{data.amount}}</td>
              <td>{{data.unit}}</td>
+             <td>{{data.expiration_date}}</td>
              <td>{{data.operator_account}}</td>
              <td>{{data.record_time| date:'yyyy-MM-dd HH:mm:ss'}}</td>
              <td nzRight="0px">
