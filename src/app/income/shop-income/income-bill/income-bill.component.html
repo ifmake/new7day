@@ -1,0 +1,64 @@
+
+  <!--操作层-->  
+  <app-handle-layout>
+      <button nz-button [nzType]="'primary'" (click)="add()">新增店面收入</button>
+      <button nz-button [nzType]="'primary'" (click)="refresh()">刷新</button>
+  </app-handle-layout>
+  <div class="search-result-list">
+      <nz-table 
+      #ShopIncome 
+      [nzData]="dataList?.results" 
+      [nzScroll]="{x:'500px'}"
+      [nzShowPagination]="false"
+      [nzPageSize] = "dataList?.page_size"
+      [nzLoading]="listLoading">
+          <thead>
+            <tr>
+              <th nzWidht="100px" nzLeft="0px">店面</th>
+              <th>店面收入</th>
+              <th>操作时间</th>
+              <th>操作人</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of ShopIncome.data">
+              <td nzWidht="100px" nzLeft="0px">{{data.shop_name}}</td>
+              <td>{{data.income}}</td>
+              <td>{{data.update_time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+              <td>{{data.operator_name}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <app-pagination 
+        [nzTotal]="dataList?.count || 0" 
+        [nzPageSize]="searchObj.page_size"
+        (nzPageIndexChange)="changPageIndex($event)" 
+        (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+  </div>
+  <!--模态框-->
+  <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
+      <form nz-form [formGroup]="shopIncomeForm">
+          <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label nzRequired>选择店面</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="shop" nzPlaceHolder="请选择店面">
+                      <nz-option *ngFor ="let shop of shopList" [nzLabel]="shop.name" [nzValue]="shop.id"></nz-option>
+                    </nz-select>
+                    <nz-form-explain *ngIf="shopIncomeForm.get('shop').dirty && shopIncomeForm.get('shop').errors">请选择店面</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+                <nz-form-item>
+                    <nz-form-label>店面收入</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="income" placeholder="请输入店面收入">
+                        <nz-form-explain *ngIf="shopIncomeForm.get('income').dirty && shopIncomeForm.get('income').errors">请输入店面收入</nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+            </div>
+          </div>
+        </form>
+  </app-drawer>

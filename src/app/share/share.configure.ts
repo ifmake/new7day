@@ -24,6 +24,7 @@ import { StockCostService } from '../common/service/product-service/product-cost
 import { StockLoseService } from '../common/service/product-service/product-lose.service';
 import { UploadBtnComponent } from './upload-btn/upload-btn.component';
 import { ShopMaterialService } from '../common/service/shop-service/shop-material.service';
+import { ShopIncomeService } from '../common/service/shop-service/shop-income.service';
 
 // 布局组件
 const GridCompoennt = [
@@ -71,6 +72,7 @@ export const SERVICE = [
     StockCostService,
     StockLoseService,
     ShopMaterialService,
+    ShopIncomeService,
 ];
 // 指令
 export const DERECTIVE = [

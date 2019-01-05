@@ -87,13 +87,13 @@ export const api_shop = {
 export const api_shop_income = {
     list: (id?: any) => {
         if (id) {
-            return `${API_PREFIX}/shop/shop/income/${id}/`;
+            return `${API_PREFIX}/shop/income/`;
         } else {
-            return `${API_PREFIX}/shop/shop/income/`;
+            return `${API_PREFIX}/shop/income/`;
         }
     },
     stats: () => {
-        return `${API_PREFIX}/shop/shop/income/stats`;
+        return `${API_PREFIX}/shop/income/stats/`;
     }
 };
 

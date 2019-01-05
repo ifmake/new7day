@@ -18,15 +18,20 @@ export class RecordCardComponent implements OnInit, OnChanges {
   @Input() recordType: string;
   @Input() formCard: boolean;
   @Input() currentID: any;
+  // 进出货表单
+  @Input() IsMaster: boolean; // 是否为总仓库
   @Output() recordProduct: EventEmitter<any> = new EventEmitter<any>();
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   operateForm: FormGroup;
   sourceslist = [];
+  shopList = [];
   storelist = [];
   searchStream = new Subject<any>();
   searchRecordObj: any;
   recordLokkArr: any = [];
   dateFormat: 'yyyy-MM-dd';
+  isMasterStore: boolean;
+  selectDepotInType = 'A';  // 进货类型
   constructor(
     private fb: FormBuilder,
     public message: NzMessageService,
@@ -43,12 +48,11 @@ export class RecordCardComponent implements OnInit, OnChanges {
       operate_depot: [{value: null, disabled: false}, [Validators.required]],
       production_date: [{value: null, disabled: false}, [Validators.required]],
       expiration_date: [{value: null, disabled: false}, [Validators.required]],
+      from_depot: [{value: null, disabled: false}],
+      supplier: [{value: null, disabled: false}],
       shop: [{value: null, disabled: false}],
     });
-    this.storelist = [
-      {label: '总仓库', value: '1'},
-      {label: '分仓库', value: '2'},
-    ];
+
     this.searchRecordObj = {
       goods_id: '',
       page: 1,
@@ -80,6 +84,19 @@ export class RecordCardComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(change) {
+    // 是否为总仓库
+    if (this.IsMaster) {
+      this.storelist = [
+        {label: '总仓库', value: '1'},
+      ];
+      this.operateForm.patchValue({operate_depot: '1'});
+    } else {
+      this.selectDepotInType  = 'A';
+      this.storelist = [
+        {label: '分仓库', value: '2'},
+      ];
+      this.operateForm.patchValue({operate_depot: '2'});
+    }
     // 记录查询
     if (!this.formCard) {
       if (this.currentID) {
@@ -90,15 +107,19 @@ export class RecordCardComponent implements OnInit, OnChanges {
     // 进出货管理
     if (this.recordType === 'depot_in') {
       this.sourceslist = [
-        {label: '供货商', value: 0},
-        {label: '总仓库', value: 1},
-        {label: '分仓库', value: 2},
+        {label: '供货商', value: 1},
+    
       ];
     } else {
       this.shopService.getShopMaterialList({ page: 1, page_size: 10}).subscribe(res => {
         console.log(res);
         if (!res.error) {
-          this.sourceslist = res.results;
+          const AllShopList = res.results;
+          if (this.IsMaster) {
+            this.shopList = AllShopList.filter((shop) => shop.type !== 'direct');
+          } else {
+            this.shopList = AllShopList;
+          }
         }
       });
     }
@@ -109,11 +130,18 @@ export class RecordCardComponent implements OnInit, OnChanges {
         unit: this.recordListArr[0].unit,
         count: '',
         source: '',
-        operate_depot: '1',
+        operate_depot: '',
         shop: '',
         production_date: '',
         expiration_date: '',
+        from_depot: null,
+        supplier: null,
       };
+      if (this.IsMaster) {
+        formObj.operate_depot = '1';
+      } else {
+        formObj.operate_depot = '2';
+      }
       this.operateForm.setValue(formObj);
       console.log(this.operateForm.value);
     }
@@ -126,6 +154,15 @@ export class RecordCardComponent implements OnInit, OnChanges {
   clearForm() {
     this.operateForm.controls.count.reset();
     this.operateForm.controls.price.reset();
+  }
+  // 获取操作仓库
+  getOperateStore(store) {
+    if (store === 1) {
+      console.log('总仓库');
+      this.isMasterStore = true;
+    } else {
+      this.isMasterStore = false;
+    }
   }
   // 表单提交
   submitForm(recode) {
