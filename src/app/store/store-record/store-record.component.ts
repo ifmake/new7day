@@ -94,7 +94,7 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     if (time) {
       if (nowTime > expirationDate) {
         return '货物已过期';
-      } else if (expirationDate < nowTime + 10 * 24 * 60 * 1000 * 1000) {
+      } else if (expirationDate < nowTime + 10 * 24 * 60 * 60 * 1000) {
         return '即将过期';
       } else {
         return '正常';
