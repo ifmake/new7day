@@ -50,7 +50,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
       expiration_date: [{value: null, disabled: false}, [Validators.required]],
       from_depot: [{value: null, disabled: false}],
       supplier: [{value: null, disabled: false}],
-      shop: [{value: null, disabled: false}],
+      shop: [{value: '', disabled: false}],
     });
 
     this.searchRecordObj = {
@@ -108,7 +108,6 @@ export class RecordCardComponent implements OnInit, OnChanges {
     if (this.recordType === 'depot_in') {
       this.sourceslist = [
         {label: '供货商', value: 1},
-    
       ];
     } else {
       this.shopService.getShopMaterialList({ page: 1, page_size: 10}).subscribe(res => {

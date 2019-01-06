@@ -17,6 +17,7 @@
              <th>进价</th>
              <th>数量</th>
              <th>成本（元）</th>
+             <th>发货店面</th>
              <th>规格</th>
              <th>商品过期日</th>
              <th>操作人</th>
@@ -28,10 +29,11 @@
            <tr *ngFor="let data of RecordTable.data">
              <td nzWidht="100px" nzLeft="0px">{{data.goods_name}}</td>
              <td>{{data.record_type==='depot_in'?(!data.from_depot?'进货':'仓库转移'):'出货'}}</td>
-             <td>{{orderStatus(data.expiration_date)}}</td>
+             <td [ngStyle]="{color:(orderStatus(data.expiration_date) ==='即将过期'?'red':'rgb(81, 247, 81)')}">{{orderStatus(data.expiration_date)}}</td>
              <td>{{data.price}}</td>
              <td>{{data.count}}</td>
              <td>{{data.amount}}</td>
+             <td>{{data.shop_name|| "----"}}</td>
              <td>{{data.unit}}</td>
              <td>{{data.expiration_date}}</td>
              <td>{{data.operator_account}}</td>

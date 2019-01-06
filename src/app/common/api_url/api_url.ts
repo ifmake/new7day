@@ -1,6 +1,9 @@
+import { environment } from 'src/environments/environment';
 
-
-const API_PREFIX = 'http://47.93.0.160:8000';
+// tslint:disable-next-line:no-unused-expression
+const API_PREFIX = environment.API_PREFIX;
+// const API_PREFIX = 'http://192.168.1.4:8000';
+// const API_PREFIX = envToken;
 
 // 用户登录资料管理
 export const login_api = {

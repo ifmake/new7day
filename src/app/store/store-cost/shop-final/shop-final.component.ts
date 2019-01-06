@@ -64,59 +64,7 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
   }
 
   ngOnInit() {
-    this.shopService.getShopMaterialList({ page: 1, page_size: 10 }).subscribe(res => {
-      this.shopLinesPromise = [];
-      this.shopList = res.results;
-      for (let i = 0; i < this.shopList.length; i++) {
-        const shoplineOBj = {
-          name: this.shopList[i].name,
-          data: [],
-          type: 'line',
-        };
-        const shopLineSearch = {
-          page: 1,
-          page_size: 10,
-          shop: this.shopList[i].id,
-        };
-        this.shopLines.push(shoplineOBj);
-        this.shopLinesPromise.push(this.costService.getMonthAdjust(shopLineSearch));
-      }
-      forkJoin(this.shopLinesPromise).subscribe(result => {
-        for (let i = 0; i < result.length; i++) {
-          const Data: any = result[i];
-          this.MonthArr = [];
-          this.costArr = [];
-          Data.map(data => {
-            this.MonthArr.push(`${data.month}月份`);
-            this.costArr.push(this.getZero(data.cost));
-          });
-          this.shopLines[i].data = [...this.costArr];
-        }
-        this.LineOptions = {
-          title: {
-            text: '仓库成本（点击当月查看占比图）'
-          },
-          xAxis: {
-            type: 'category',
-            text: '元',
-            data: this.MonthArr
-          },
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              animation: false
-            }
-          },
-          legend: {
-            data: ['迷你店', '奎星店', '重百店']
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [...this.shopLines]
-        };
-      });
-    });
+    this.searchData();
   }
   // 数据刷新
   searchData() {
@@ -145,10 +93,11 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
           this.costArr = [];
           Data.map(data => {
             this.MonthArr.push(`${data.month}月份`);
-            this.costArr.push(this.getZero(data.cost));
+            this.costArr.push(this.getZero(data.used_cost));
           });
           this.shopLines[i].data = [...this.costArr];
         }
+        console.log(this.shopLines);
         this.LineOptions = {
           title: {
             text: '仓库成本（点击当月查看占比图）'
@@ -165,7 +114,7 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
             }
           },
           legend: {
-            data: ['迷你店', '奎星店', '重百店']
+            data: ['奎星店', '迷你店', '重百店']
           },
           yAxis: {
             type: 'value'

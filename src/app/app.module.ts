@@ -33,7 +33,7 @@ registerLocaleData(zh);
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },
-    { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy }
+    { provide: RouteReuseStrategy, useClass: SimpleReuseStrategy },
   ],
   bootstrap: [AppComponent]
 })
