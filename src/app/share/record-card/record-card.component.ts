@@ -197,10 +197,11 @@ export class RecordCardComponent implements OnInit, OnChanges {
       }
       const stockForm  = Object.assign({}, recode, {goods_info: [GoodInfoObj], order_type: this.recordType});
       this.stockService.stockAndSend(stockForm).subscribe(results => {
+        console.log(results);
         if (!results.error) {
           this.callBack.emit(results);
         } else {
-          this.message.create('warning', results.error);
+          this.message.create('warning', results.error.error);
         }
       });
   }
