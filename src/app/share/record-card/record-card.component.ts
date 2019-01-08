@@ -187,7 +187,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
       }
     }
       this.operateForm.patchValue({goods_id: recode.id});
-      this.operateForm.value.count = parseInt(this.operateForm.value.count, 10);
+      this.operateForm.value.count = parseFloat(this.operateForm.value.count);
       this.operateForm.value.price = parseFloat(this.operateForm.value.price);
       this.operateForm.value.production_date = this.datePipe.transform(this.operateForm.value.production_date, 'yyyy-MM-dd');
       this.operateForm.value.expiration_date = this.datePipe.transform(this.operateForm.value.expiration_date, 'yyyy-MM-dd');

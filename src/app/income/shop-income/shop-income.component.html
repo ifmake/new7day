@@ -5,11 +5,11 @@
     </ng-template>
     <!--店面收入单-->
     <div *ngIf="currentIndex===0" class="list">
-        <app-income-bill></app-income-bill>
+      <app-inventory></app-inventory>
     </div>
     <!--店面货物盘点-->
     <div *ngIf="currentIndex===1" class="list">
-      店面货物盘点
+      <app-income-bill></app-income-bill>
     </div>
      <!--店面收入统计表-->
     <div *ngIf="currentIndex===2" class="list">

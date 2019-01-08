@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { incomeRouter } from './income.routing';
 import { IncomeComponent } from './income.component';
 import { IncomeBillComponent } from './shop-income/income-bill/income-bill.component';
+import { InventoryComponent } from './shop-income/inventory/inventory.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import { IncomeBillComponent } from './shop-income/income-bill/income-bill.compo
     ShareModule,
     RouterModule.forChild(incomeRouter)
   ],
-  declarations: [ShopIncomeComponent, IncomeComponent, IncomeBillComponent]
+  declarations: [ShopIncomeComponent, IncomeComponent, IncomeBillComponent, InventoryComponent]
 })
 export class IncomeModule { }

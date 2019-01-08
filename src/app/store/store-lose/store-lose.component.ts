@@ -127,7 +127,7 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
     this.productStream.next();
   }
   loadMore() {
-    this.searchProdObj.page_size ++ 
+    this.searchProdObj.page_size  = this.searchProdObj.page_size + 5 ;
     this.productStream.next();
   }
   // 报损

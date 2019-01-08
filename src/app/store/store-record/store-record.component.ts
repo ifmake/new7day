@@ -25,6 +25,13 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     super();
     this.searchArray = [
       {key: 'search', index: 0, name: '商品名称', show: true},
+      {key: 'shop', index: 5, name: '出货店面', show: true, isSelect: true, selectArr: [
+        {value: 3, label: '迷你店'},
+        {value: 5, label: '重百店'},
+        {value: 6, label: '奎星店'},
+        {value: 7, label: '白沙店'},
+        {value: 8, label: '德感店'},
+      ]},
       {key: 'operator_account', index: 5, name: '操作人', show: true},
       {key: 'expiration_date', index: 3, name: '商品过期日', show: false, isTime: true},
     ];
@@ -83,14 +90,9 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     });
   }
   // 生成订单状态
-  orderStatus(time) {
+  orderStatus(time, count) {
     const nowTime = new Date().getTime();
     const expirationDate = new Date(time).getTime();
-    // const condition =  new Map([
-    //   [0, () => {}],
-    //   [1, () => {}],
-    //   [2, () => {}],
-    // ]);
     if (time) {
       if (nowTime > expirationDate) {
         return '货物已过期';

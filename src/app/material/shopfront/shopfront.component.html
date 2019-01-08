@@ -80,7 +80,7 @@
                     <nz-select formControlName="contact_user" (ngModelChange)="changeStaff($event)">
                       <nz-option *ngFor="let usr of userList" [nzValue]="usr.id" [nzLabel]="usr.name"></nz-option>
                     </nz-select>
-                    <nz-form-explain *ngIf="shopFrontForm.get('contact_user').dirty && shopFrontForm.get('contact_user').errors">请选择店面类型</nz-form-explain>
+                    <nz-form-explain *ngIf="shopFrontForm.get('contact_user').dirty && shopFrontForm.get('contact_user').errors">请选择店面负责人</nz-form-explain>
                   </nz-form-control>
               </nz-form-item>
             </div>

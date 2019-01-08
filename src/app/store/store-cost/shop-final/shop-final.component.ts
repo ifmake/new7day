@@ -114,7 +114,7 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
             }
           },
           legend: {
-            data: ['奎星店', '迷你店', '重百店']
+            data: ['奎星店', '迷你店', '重百店', '德感店', '白沙店']
           },
           yAxis: {
             type: 'value'

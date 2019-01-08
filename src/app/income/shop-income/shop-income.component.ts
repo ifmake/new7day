@@ -13,12 +13,12 @@ export class ShopIncomeComponent extends ShareCommon implements OnInit {
     super();
     this.tabs = [
       {
-        active: true,
-        name  : '店面收入单',
-      },
-      {
         active: false,
         name  : '店面月季库存盘点',
+      },
+      {
+        active: true,
+        name  : '店面收入单',
       },
       {
         active: false,

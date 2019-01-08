@@ -1,0 +1,94 @@
+
+  <!--操作层-->  
+  <app-handle-layout>
+    <button nz-button [nzType]="'primary'" (click)="add()">新增盘点库存</button>
+    <button nz-button [nzType]="'primary'" (click)="refresh()">刷新</button>
+</app-handle-layout>
+<div class="search-result-list">
+    <nz-table 
+    #ShopIncome 
+    [nzData]="dataList?.results" 
+    [nzScroll]="{x:'500px'}"
+    [nzShowPagination]="false"
+    [nzPageSize] = "dataList?.page_size"
+    [nzLoading]="listLoading">
+        <thead>
+          <tr>
+            <th nzWidht="100px" nzLeft="0px">店面</th>
+            <th>商品名称</th>
+            <th>价格</th>
+            <th>数量</th>
+            <th>操作时间</th>
+            <th>操作人</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ShopIncome.data">
+            <td nzWidht="100px" nzLeft="0px">{{data.shop_name}}</td>
+            <td>{{data.goods_name}}</td>
+            <td>{{data.price}}</td>
+            <td>{{data.stock}}</td>
+            <td>{{data.update_time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{data.operator_name}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+      <app-pagination 
+      [nzTotal]="dataList?.count || 0" 
+      [nzPageSize]="searchObj.page_size"
+      (nzPageIndexChange)="changPageIndex($event)" 
+      (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
+</div>
+<!--模态框-->
+<app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
+    <form nz-form [formGroup]="shopInventoryForm">
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>选择店面</nz-form-label>
+              <nz-form-control>
+                  <nz-select formControlName="shop" nzPlaceHolder="请选择店面">
+                    <nz-option *ngFor ="let shop of shopList" [nzLabel]="shop.name" [nzValue]="shop.id"></nz-option>
+                  </nz-select>
+                  <nz-form-explain *ngIf="shopInventoryForm.get('shop').dirty && shopInventoryForm.get('shop').errors">请选择店面</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-control>
+                <nz-form-label nzRequired>货物</nz-form-label>
+                <nz-select style="width: 100%;" formControlName="goods" (ngModelChange)="selectProduct($event)" (nzScrollToBottom)="loadMore()" (nzOnSearch)="searchProd($event)" [nzShowSearch]="true"
+                  (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择报损商品" nzAllowClear>
+                  <nz-option *ngFor="let store of productList" [nzValue]="store.id" [nzLabel]="store.name"></nz-option>
+                  <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+                    <i nz-icon type="loading" class="loading-icon"></i> Loading Data...
+                  </nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="shopInventoryForm.get('goods').dirty && shopInventoryForm.get('goods').errors">货物必须填写</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row nzGutter="8">
+          <div nz-col nzSpan="12">
+            <nz-form-item>
+                <nz-form-label>货物剩余数量</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="stock" placeholder="请输入商品剩余数量">
+                    <nz-form-explain *ngIf="shopInventoryForm.get('stock').dirty && shopInventoryForm.get('stock').errors">商品剩余数量</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+              <nz-form-label>货物价格</nz-form-label>
+              <nz-form-control>
+                  <input nz-input formControlName="price" placeholder="请输入商品价格">
+                  <nz-form-explain *ngIf="shopInventoryForm.get('price').dirty && shopInventoryForm.get('price').errors">请输入商品价格</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+      </div>
+        </div>
+      </form>
+</app-drawer>

@@ -99,6 +99,21 @@ export const api_shop_income = {
         return `${API_PREFIX}/shop/income/stats/`;
     }
 };
+/**
+ * 店面库存盘点
+ */
+export const api_shop_inventory = {
+    list: (id?: any) => {
+        if (id) {
+            return `${API_PREFIX}/shop/inventory/`;
+        } else {
+            return `${API_PREFIX}/shop/inventory/`;
+        }
+    },
+    stats: () => {
+        return `${API_PREFIX}/shop/income/inventory/`;
+    }
+};
 
 
 

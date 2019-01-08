@@ -17,7 +17,7 @@
 <div  *ngIf="formCard">
     <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" [nzTitle]="record.name" [nzExtra]="activeTemplate">
         <form nz-form [formGroup]="operateForm">
-          <nz-form-item>
+          <nz-form-item *ngIf="recordType === 'depot_in'">
             <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">单价</nz-form-label>
               <nz-form-control [nzSpan]="18">
                 <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
