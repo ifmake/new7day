@@ -62,6 +62,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
   this.searchStream.pipe(switchMap(() => {
     return this.stockService.getDetail(this.searchRecordObj);
   })).subscribe(res => {
+    console.log(res);
     if (res['results'].length) {
     if (this.recordType === 'import') {
       for (let i = 0; i < res['results'].length; i++) {
@@ -84,6 +85,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
   ngOnChanges(change) {
+    console.log(change);
     // 是否为总仓库
     if (this.IsMaster) {
       this.storelist = [
@@ -99,6 +101,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
     }
     // 记录查询
     if (!this.formCard) {
+      console.log('商品Id', this.currentID);
       if (this.currentID) {
         this.searchRecordObj.goods_id = this.currentID;
       }

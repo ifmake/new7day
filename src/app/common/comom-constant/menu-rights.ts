@@ -35,6 +35,9 @@ export const  SuperMenu = [
       {title: '成本核算', link: '/store/cost', active: 'active', select: false},
       {title: '报损管理', link: '/store/lose', active: 'active', select: false},
     ]},
+    {title: '收支留存', link: 'income', active: 'active', select: false, childs: [
+      {title: '店面收支', link: '/income/shop', active: 'active', select: false},
+    ]},
   ];
 // 管理员权限
 export const  MangerMenu = [

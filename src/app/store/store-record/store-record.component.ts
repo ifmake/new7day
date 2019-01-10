@@ -32,6 +32,8 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
         {value: 7, label: '白沙店'},
         {value: 8, label: '德感店'},
       ]},
+      {key: 'start_time', index: 3, name: '操作日期起', show: false, isTime: true},
+      {key: 'end_time', index: 3, name: '操作日期止', show: false, isTime: true},
       {key: 'operator_account', index: 5, name: '操作人', show: true},
       {key: 'expiration_date', index: 3, name: '商品过期日', show: false, isTime: true},
     ];
@@ -58,6 +60,12 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     this.listLoading = false;
     if (serachObj.expiration_date) {
       serachObj.expiration_date = this.datePipe.transform(serachObj.expiration_date, 'yyyy-MM-dd');
+    }
+    if (serachObj.start_time) {
+      serachObj.start_time = this.datePipe.transform(serachObj.start_time, 'yyyy-MM-dd');
+    }
+    if (serachObj.end_time) {
+      serachObj.end_time = this.datePipe.transform(serachObj.end_time, 'yyyy-MM-dd');
     }
     Object.assign(this.searchObj, serachObj);
     this.searchStream.next();

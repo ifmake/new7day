@@ -102,7 +102,7 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
       page: 1,
       page_size: 10,
     };
-    this.currentObj = prod.id;
+    this.currentObj.id = prod.id;
     this.stockList.getDetail(this.getGoodsRecord).subscribe(res => {
       if (!res.error) {
         if (res['results'].length > 0 ) {
