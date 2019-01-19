@@ -13,7 +13,7 @@
                 <p>进价：<span class="red">{{item.price || 0}}</span></p>
                 <p *ngIf="type==='import'">进货数量：<span class="red">{{item.count}}</span></p>
                 <p *ngIf="type==='export'">发货数量：<span class="red">{{item.count}}</span></p>
-                <p>单位：{{item.unit}}</p>
+                <!-- <p>单位：{{item.unit}}</p> -->
                 <p>进货时间：{{item.record_time | date:'MM/dd HH:mm'}}</p>
               </div>
             </ng-template>

@@ -62,21 +62,8 @@ export class RecordCardComponent implements OnInit, OnChanges {
   this.searchStream.pipe(switchMap(() => {
     return this.stockService.getDetail(this.searchRecordObj);
   })).subscribe(res => {
-    console.log(res);
     if (res['results'].length) {
-    if (this.recordType === 'import') {
-      for (let i = 0; i < res['results'].length; i++) {
-        if (res['results'][i]['record_type'] === 'depot_in') {
-          this.recordLokkArr.push(res['results'][i]);
-        }
-      }
-    } else {
-      for (let i = 0; i < res['results'].length; i++) {
-        if (res['results'][i]['record_type'] === 'depot_out') {
-          this.recordLokkArr.push(res['results'][i]);
-        }
-      }
-    }
+    this.recordLokkArr = res['results'];
   }
 
   });

@@ -62,7 +62,7 @@
        (nzPageSizeChange)="PageSizeChange($event)"></app-pagination>
  </div>
 <!--进出货弹窗-->
- <app-model [OpenModel]="ModelVisible" [title]="ModelTitle" (close)="modelCancel()" (callBack)="stocCallBack($event)" [width]="600">
+ <app-model [OpenModel]="ModelVisible" [title]="ModelTitle" (close)="modelCancel()" (callBack)="stocCallBack($event)" [width]="800">
     <app-record-card [recordListArr]="recordArr" [recordType]="recordType" [formCard]="true" [IsMaster]="true" (callBack)="stocCallBack($event)" ></app-record-card>
 </app-model>
 <!--进货出货详情-->

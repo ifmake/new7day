@@ -148,20 +148,20 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
         DataObj.value = chart.value;
       }
       if (name === '人工成本') {
-        DataObj.value = 10;
+        DataObj.value = 0;
       }
       if (name === '损耗成本') {
         DataObj.value = 0;
       }
       if (name === '杂费支出') {
-        DataObj.value = 10;
+        DataObj.value = 0;
       }
       DataArr.push(DataObj);
     });
 
     this.PieOption = {
       title: {
-        text: `${index}月份成本占比`,
+        text: `${chart.seriesName}${index}月份成本占比`,
         x: 'center'
       },
       tooltip: {

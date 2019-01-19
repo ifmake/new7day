@@ -114,11 +114,14 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
     }
   }
   // 查询指定商品
-  selectProduct(prod) {
+  selectProduct(prod, type) {
     if (prod) {
+      if ( type === 'product') {
         this.productService.getProductDetail(prod).subscribe(res => {
+          this.loseFrom.patchValue({price: res.last_price});
           this.productSpec = res['unit'];
         });
+      }
     }
   }
   // 查询更多商品
@@ -170,7 +173,8 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
     this.loseFrom.value.price = parseInt(this.loseFrom.value.price, 10);
      this.stockLoseService.createLose(this.loseFrom.value).subscribe(res => {
       if (res.error) {
-        this.message.create('error', '格式不正确');
+        console.log(res);
+        this.message.create('error', res.error.error);
       } else {
         this.message.create('success', '添加成功');
         setTimeout(() => {

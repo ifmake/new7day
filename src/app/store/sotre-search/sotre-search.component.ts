@@ -105,6 +105,7 @@ export class SotreSearchComponent extends StoreCommon implements OnInit {
     this.currentObj.id = prod.id;
     this.stockList.getDetail(this.getGoodsRecord).subscribe(res => {
       if (!res.error) {
+        console.log(res);
         if (res['results'].length > 0 ) {
         this.ProStockArr[0].content = res['results'][0].operator_account || '';
         this.ProStockArr[1].content = res['results'][0].record_time;

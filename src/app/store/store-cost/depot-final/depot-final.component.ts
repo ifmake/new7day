@@ -32,6 +32,7 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
    useCountArr = [];
    damagedCostArr = [];
    damagedCountArr = [];
+   exchangeCostArr = [];
    lineChart: any;
        // 值为空推0
     getZero(value) {
@@ -64,6 +65,7 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
         this.useCountArr = [];
         this.damagedCostArr = [];
         this.damagedCountArr = [];
+        this.exchangeCostArr = [];
         Data.map(data => {
           this.MonthArr.push(`${data.month}月份`);
           this.costArr.push(this.getZero(data.cost));
@@ -72,6 +74,7 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
           this.useCountArr.push(this.getZero(data.used_count));
           this.damagedCostArr.push(this.getZero(data.damaged_cost));
           this.damagedCountArr.push(this.getZero(data.damaged_count));
+          this.exchangeCostArr.push(this.getZero(data.move_cost));
         });
       }
       this.LineOptions = {
@@ -90,7 +93,7 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
           }
         },
         legend: {
-          data: ['总成本', '总数量', '损耗成本', '使用成本', '使用数量' ]
+          data: ['总成本', '总数量', '损耗成本', '使用成本', '使用数量', '转移成本' ]
         },
         yAxis: {
           type: 'value'
@@ -109,6 +112,11 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
           {
             name: '损耗成本',
             data: this.damagedCostArr,
+            type: 'line',
+          },
+          {
+            name: '转移成本',
+            data: this.exchangeCostArr,
             type: 'line',
           },
         ]
