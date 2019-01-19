@@ -45,6 +45,8 @@ export class ProductFinalComponent extends ShareCommon implements OnInit {
             if (keys[key]) {
             this.searchObj[key] =
             new Date(keys[key]).getFullYear() + '-' + (new Date(keys[key]).getMonth() + 1) + '-' + new Date(keys[key]).getDate();
+            } else {
+              this.searchObj[key] = '';
             }
           } else {
             this.searchObj[key] = keys[key];
