@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 export class StoreRecordComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
   dataList: any;
+  currentMonth: string;
   constructor(
     public message: NzMessageService,
     private stockListService: StockListService,
@@ -23,6 +24,7 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     private datePipe: DatePipe,
   ) {
     super();
+    this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.searchArray = [
       {key: 'search', index: 0, name: '商品名称', show: true},
       {key: 'shop', index: 5, name: '出货店面', show: true, isSelect: true, selectArr: [
@@ -32,11 +34,12 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
         {value: 7, label: '白沙店'},
         {value: 8, label: '德感店'},
       ]},
-      {key: 'start_time', index: 3, name: '操作日期起', show: false, isTime: true},
+      {key: 'start_time', value: this.currentMonth, index: 3, name: '操作日期起', show: false, isTime: true},
       {key: 'end_time', index: 3, name: '操作日期止', show: false, isTime: true},
       {key: 'operator_account', index: 5, name: '操作人', show: true},
       {key: 'expiration_date', index: 3, name: '商品过期日', show: false, isTime: true},
     ];
+    this.searchObj.start_time = this.currentMonth;
     // 列表查询
     this.searchStream.pipe(switchMap(() => {
       return this.stockListService.getRecordList(this.searchObj);

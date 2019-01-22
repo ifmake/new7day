@@ -57,9 +57,11 @@
               <nz-form-item>
                 <nz-form-control>
                   <nz-form-label nzRequired>报损商品名称</nz-form-label>
-                  <nz-select style="width: 100%;" formControlName="goods" (ngModelChange)="selectProduct($event,'product')" (nzScrollToBottom)="loadMore()" (nzOnSearch)="searchProd($event)" [nzShowSearch]="true"
-                    (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择报损商品" nzAllowClear>
-                    <nz-option *ngFor="let store of productList" [nzValue]="store.id" [nzLabel]="store.name"></nz-option>
+                  <nz-select style="width: 100%;" formControlName="goods" name="goods" nzAllowClear nzShowSearch (nzScrollToBottom)="loadMore()" (nzOnSearch)="searchProd($event)" [nzServerSearch]="true"
+                    (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择报损商品" >
+                    <ng-container  *ngFor="let store of productList">
+                      <nz-option *ngIf="!isLoading"  [nzValue]="store.id" [nzLabel]="store.name"></nz-option>
+                    </ng-container>
                     <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
                       <i nz-icon type="loading" class="loading-icon"></i> Loading Data...
                     </nz-option>

@@ -74,6 +74,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
   }
    // 查询更多商品
    searchProd(msg) {
+    this.isLoading = true;
     this.searchProdObj.search = msg;
     this.productStream.next();
   }

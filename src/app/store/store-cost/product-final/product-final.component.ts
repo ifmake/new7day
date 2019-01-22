@@ -10,16 +10,20 @@ import { StockCostService } from 'src/app/common/service/product-service/product
 })
 export class ProductFinalComponent extends ShareCommon implements OnInit {
   // 商品成本
-  searchArray = [
-    {key: 'search', index: 0, name: '商品名称', show: true},
-    {key: 'start_time', index: 0, name: '核算时间起', show: true, isTime: true, },
-    {key: 'end_time', index: 0, name: '核算时间止', show: true, isTime: true, value: new Date()},
-  ];
+  currentMonth: string;
+  searchArray: any;
   dataList: any;
   constructor(
     private costService: StockCostService,
   ) {
     super();
+    this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
+    this.searchArray  = [
+      {key: 'search', index: 0, name: '商品名称', show: true},
+      {key: 'start_time', value: this.currentMonth, index: 0, name: '核算时间起', show: true, isTime: true, },
+      {key: 'end_time', index: 0, name: '核算时间止', show: true, isTime: true, value: new Date()},
+    ];
+    this.searchObj.start_time = this.currentMonth;
      // 商品成本
      this.searchStream.pipe(switchMap(() => {
       return this.costService.getCostList(this.searchObj);
