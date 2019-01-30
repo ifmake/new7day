@@ -6,6 +6,7 @@
      <nz-table #productManageTable 
      [nzData]="dataList?.resluts"  
      [nzShowPagination]="false"
+     [nzLoading]="listLoading"
      [nzScroll]="{x:'800px'}">
          <thead>
            <tr>
