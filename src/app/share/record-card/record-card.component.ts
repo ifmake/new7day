@@ -32,6 +32,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
   dateFormat: 'yyyy-MM-dd';
   isMasterStore: boolean;
   selectDepotInType = 'A';  // 进货类型
+  IsBtnLoading: boolean;
   constructor(
     private fb: FormBuilder,
     public message: NzMessageService,
@@ -155,6 +156,11 @@ export class RecordCardComponent implements OnInit, OnChanges {
   }
   // 表单提交
   submitForm(recode) {
+    if (this.IsBtnLoading === true) {
+      this.message.create('warning', '请勿重复提交');
+      return;
+    }
+    this.IsBtnLoading = true;
     for (const i in this.operateForm.controls) {
       if (i) {
         this.operateForm.controls[ i ].markAsDirty();
@@ -187,7 +193,7 @@ export class RecordCardComponent implements OnInit, OnChanges {
       }
       const stockForm  = Object.assign({}, recode, {goods_info: [GoodInfoObj], order_type: this.recordType});
       this.stockService.stockAndSend(stockForm).subscribe(results => {
-        console.log(results);
+        this.IsBtnLoading = false;
         if (!results.error) {
           this.callBack.emit(results);
         } else {

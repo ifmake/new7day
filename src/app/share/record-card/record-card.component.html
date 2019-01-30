@@ -101,7 +101,7 @@
             <!-- <span appTextHover  >清空</span> -->
             <button nz-button nzType="dashed" (click)="clearForm(record)">清空</button>
             <nz-divider nzType="vertical"></nz-divider>
-            <button nz-button nzType="primary" (click)="submitForm(record)">确认</button>
+            <button nz-button nzType="primary" (click)="submitForm(record)" [nzLoading]="IsBtnLoading">确认</button>
             <!-- <span appTextHover (click)="submitForm(record)">确认</span> -->
         </ng-template>
     </nz-card>
