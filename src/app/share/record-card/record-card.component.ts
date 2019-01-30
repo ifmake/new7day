@@ -114,6 +114,9 @@ export class RecordCardComponent implements OnInit, OnChanges {
       });
     }
     if (this.recordListArr.length  > 0 && this.recordListArr.length  < 2) {
+      const NowDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+      const MaxTime = new Date().getTime() + 90 * 24 * 3600 * 1000;
+      const NowMaxDate = new Date(MaxTime).getFullYear() + '-' + (new Date(MaxTime).getMonth() + 1) + '-' + new Date(MaxTime).getDate();
       const formObj = {
         goods_id: this.recordListArr[0].id,
         price: this.recordListArr[0].last_price,
@@ -122,10 +125,10 @@ export class RecordCardComponent implements OnInit, OnChanges {
         source: '',
         operate_depot: '',
         shop: '',
-        production_date: '',
-        expiration_date: '',
+        production_date: NowDate,
+        expiration_date: NowMaxDate,
         from_depot: null,
-        supplier: null,
+        supplier: 1,
       };
       if (this.IsMaster) {
         formObj.operate_depot = '1';
@@ -152,6 +155,18 @@ export class RecordCardComponent implements OnInit, OnChanges {
       this.isMasterStore = true;
     } else {
       this.isMasterStore = false;
+    }
+  }
+  // 切换表单进货来源
+  depotInTpye(type) {
+    console.log(type);
+    console.log(this.operateForm.value);
+    if (type === 'A') {
+      this.operateForm.patchValue({supplier: 1});
+      this.operateForm.patchValue({from_depot: null});
+    } else {
+      this.operateForm.patchValue({from_depot: 1});
+      this.operateForm.patchValue({supplier: null});
     }
   }
   // 表单提交

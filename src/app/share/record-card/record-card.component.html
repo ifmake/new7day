@@ -48,7 +48,7 @@
           <nz-form-item *ngIf="!IsMaster && recordType === 'depot_in'">
             <nz-form-label nzRequired [nzSpan]="5">进货类型</nz-form-label>
             <nz-form-control [nzSpan]="18">
-              <nz-radio-group [(ngModel)]="selectDepotInType" [ngModelOptions]="{standalone: true}">
+              <nz-radio-group [(ngModel)]="selectDepotInType" [ngModelOptions]="{standalone: true}" (ngModelChange)="depotInTpye($event)">
                 <label nz-radio nzValue="B">总仓库进货</label>
                 <label nz-radio nzValue="A">供应商进货</label>
               </nz-radio-group>

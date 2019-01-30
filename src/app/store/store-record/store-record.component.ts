@@ -27,17 +27,22 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
     this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.searchArray = [
       {key: 'search', index: 0, name: '商品名称', show: true},
-      {key: 'shop', index: 5, name: '出货店面', show: true, isSelect: true, selectArr: [
+      {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
         {value: 3, label: '迷你店'},
         {value: 5, label: '重百店'},
         {value: 6, label: '奎星店'},
         {value: 7, label: '白沙店'},
         {value: 8, label: '德感店'},
       ]},
-      {key: 'start_time', value: this.currentMonth, index: 3, name: '操作日期起', show: false, isTime: true},
-      {key: 'end_time', index: 3, name: '操作日期止', show: false, isTime: true},
-      {key: 'operator_account', index: 5, name: '操作人', show: true},
-      {key: 'expiration_date', index: 3, name: '商品过期日', show: false, isTime: true},
+      {key: 'record_type', index: 2, name: '操作类型', show: true, isSelect: true, selectArr: [
+        {value: 'depot_in', label: '进货'},
+        {value: 'depot_out', label: '出货'},
+      ]},
+      {key: 'goods_name', index: 3, name: '商品全称', show: true},
+      {key: 'start_time', value: this.currentMonth, index: 4, name: '操作日期起', show: false, isTime: true},
+      {key: 'end_time', index: 5, name: '操作日期止', show: false, isTime: true},
+      {key: 'operator_account', index: 6, name: '操作人', show: true},
+      {key: 'expiration_date', index: 7, name: '商品过期日', show: false, isTime: true},
     ];
     this.searchObj.start_time = this.currentMonth;
     // 列表查询
