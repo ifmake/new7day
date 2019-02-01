@@ -29,6 +29,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
   OpenDraw: boolean;
   productSpec: string;
   currentMonth = '';
+  uploadUrl = '';
   constructor(
     private productService: ProductService,
     private shopService: ShopMaterialService,
@@ -38,11 +39,13 @@ export class InventoryComponent extends ShareCommon implements OnInit {
     public message: NzMessageService,
   ) {
     super();
+    this.uploadUrl = 'http://47.93.0.160:9000/shop/inventory/file_import/';
     this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.productSpec = '选择商品';
     this.searchArray = [
-      {key: 'month', index: 0, name: '选择月份', show: true},
-      {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
+      {key: 'search', index: 0, name: '商品查询', show: true},
+      {key: 'month', index: 1, name: '选择月份', show: true},
+      {key: 'shop', index: 2, name: '出货店面', show: true, isSelect: true, selectArr: [
         {value: 3, label: '迷你店'},
         {value: 5, label: '重百店'},
         {value: 6, label: '奎星店'},
