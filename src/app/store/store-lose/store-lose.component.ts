@@ -126,6 +126,7 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
   }
   // 查询更多商品
   searchProd(msg) {
+    console.log(msg);
     this.isLoading = true;
     this.searchProdObj.search = msg;
     this.productStream.next();
@@ -161,6 +162,10 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
       }
       if (!this.loseFrom.value.remarks) {
         this.message.create('error', '报损原因必填');
+        return;
+      }
+      if(parseInt(this.loseFrom.value.price) === 0) {
+        this.message.create('error', '报损价能为0');
         return;
       }
       this.saveSupplier();
