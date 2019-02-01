@@ -97,6 +97,9 @@ export const api_shop_income = {
     },
     stats: () => {
         return `${API_PREFIX}/shop/income/stats/`;
+    },
+    download: () => {
+        return `${API_PREFIX}/shop/shop/month_use_export`;
     }
 };
 /**

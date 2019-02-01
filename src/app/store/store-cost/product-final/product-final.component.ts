@@ -20,6 +20,13 @@ export class ProductFinalComponent extends ShareCommon implements OnInit {
     this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.searchArray  = [
       {key: 'search', index: 0, name: '商品名称', show: true},
+      {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
+        {value: 3, label: '迷你店'},
+        {value: 5, label: '重百店'},
+        {value: 6, label: '奎星店'},
+        {value: 7, label: '白沙店'},
+        {value: 8, label: '德感店'},
+      ]},
       {key: 'start_time', value: this.currentMonth, index: 0, name: '核算时间起', show: true, isTime: true, },
       {key: 'end_time', index: 0, name: '核算时间止', show: true, isTime: true, value: new Date()},
     ];

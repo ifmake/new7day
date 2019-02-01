@@ -15,7 +15,7 @@
 </div>
 <!--表单卡片-->
 <div  *ngIf="formCard">
-    <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" [nzTitle]="record.name" [nzExtra]="activeTemplate">
+    <nz-card nzHoverable class="rzl_record_list" *ngFor="let record of recordListArr" nzTitle="{{record.name + '(' + operateForm.controls.unit.value + ')' }}" [nzExtra]="activeTemplate">
         <form nz-form [formGroup]="operateForm">
           <nz-form-item *ngIf="recordType === 'depot_in'">
             <nz-form-label nzRequired [nzSpan]="5" style="text-algin:left">单价</nz-form-label>
@@ -32,9 +32,10 @@
           <nz-form-item>
             <nz-form-label nzRequired [nzSpan]="5">数量</nz-form-label>
             <nz-form-control [nzSpan]="18">
-              <input nz-input formControlName="count" name="count">
+                <input nz-input formControlName="count" name="count">
               <nz-form-explain *ngIf="operateForm.get('count').dirty && operateForm.get('count').errors">必须是数字必须填写</nz-form-explain>
             </nz-form-control>
+          
           </nz-form-item>
           <nz-form-item>
               <nz-form-label nzRequired [nzSpan]="5">{{recordType === 'depot_in'?'进货仓库':'出货仓库'}}</nz-form-label>

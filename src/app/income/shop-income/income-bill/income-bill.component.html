@@ -1,8 +1,10 @@
 
+    <!--条件查询-->
+    <app-search [seachArray]="searchArray"  (callBack)="refresh($event)" (selectChanges)="selectChanges($event)"></app-search>
   <!--操作层-->  
   <app-handle-layout>
       <button nz-button [nzType]="'primary'" (click)="add()">新增店面收入</button>
-      <button nz-button [nzType]="'primary'" (click)="refresh()">刷新</button>
+      <button nz-button [nzType]="'primary'" (click)="downloadBill()">导出店面成本统计数据</button>
   </app-handle-layout>
   <div class="search-result-list">
       <nz-table 

@@ -15,6 +15,8 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
   dataList: any;
   shopIncomeForm: FormGroup;
   OpenDraw: boolean;
+  searchArray = [];
+  shop_id = '';
   constructor(
     private shopIncomeService: ShopIncomeService,
     private shopService: ShopMaterialService,
@@ -22,6 +24,15 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
     public message: NzMessageService,
   ) {
     super();
+    this.searchArray = [
+      {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
+        {value: 3, label: '迷你店'},
+        {value: 5, label: '重百店'},
+        {value: 6, label: '奎星店'},
+        {value: 7, label: '白沙店'},
+        {value: 8, label: '德感店'},
+      ]},
+    ];
      // 获取列表数据
      this.searchStream.pipe(switchMap(() => {
       return this.shopIncomeService.getShopIncomeList(this.searchObj);
@@ -40,8 +51,13 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
     this.searchStream.next();
   }
   // 数刷新
-  refresh() {
+  refresh(keys) {
+    Object.assign(this.searchObj, keys);
     this.searchStream.next();
+  }
+  // 选择框变更
+  selectChanges(change) {
+    this.shop_id  = change;
   }
   // 分页查询
   changPageIndex(page) {
@@ -94,6 +110,14 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
       } else {
         this.message.create('success', '收入失败，请重新收入');
       }
+    });
+  }
+  // 导出当月店面数据
+  downloadBill() {
+    this.shopIncomeService.shopMonthExport({shop: this.shop_id}).subscribe(res => {
+      const blob = new Blob([res], {type: 'application/ms-excel'});
+      const objectUrl = URL.createObjectURL(blob);
+      window.open(objectUrl) ;
     });
   }
 }

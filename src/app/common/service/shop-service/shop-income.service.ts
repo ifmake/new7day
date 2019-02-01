@@ -30,4 +30,8 @@ export class ShopIncomeService {
     deleteShop(id: string | number): any {
         return this._httpService.delete(api_shop_income.list(id));
     }
+    // 导出店面上月统计数据
+    shopMonthExport(keys: Object): any {
+        return this._httpService.get(api_shop_income.download(), {params: keys, responseType: 'blob' });
+    }
 }

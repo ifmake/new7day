@@ -18,6 +18,7 @@ export class ShareCommon  {
     selectLoading: boolean;
     // 日期配置
     yearDate: 'yyyy-MM-dd';
+    searchArray = [];
     constructor() {
         this.formTitle = '新建';
         this.selectLoading = true;

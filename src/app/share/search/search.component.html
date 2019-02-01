@@ -12,7 +12,7 @@
       <nz-form-item nzFlex *ngIf="control.isSelect">
         <nz-form-label [nzFor]="control.name">{{control.name}}</nz-form-label>
         <nz-form-control>
-          <nz-select [formControlName]="control.key"  style="width: 170px;">
+          <nz-select [formControlName]="control.key"  style="width: 170px;" (ngModelChange)="selectChange($event)">
             <nz-option [nzCustomContent]="false" *ngFor="let item of control?.selectArr" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
           </nz-select>
         </nz-form-control>

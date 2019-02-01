@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, DoCheck, AfterViewChecked } from '@angular/core';
 
 @Component({
   selector: 'app-product-record',

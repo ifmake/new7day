@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 export class SearchComponent implements OnInit {
   @Input() seachArray: any;
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectChanges: EventEmitter<any> = new EventEmitter<any>();
   validateForm: FormGroup;
   isCollapse = true;
   dateFormat: string;
@@ -45,5 +46,8 @@ export class SearchComponent implements OnInit {
     }
     this.callBack.emit(this.validateForm.value);
   }
-
+  // select Change
+  selectChange(change) {
+    this.selectChanges.emit(change);
+  }
 }

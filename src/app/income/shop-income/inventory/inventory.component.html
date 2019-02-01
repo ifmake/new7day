@@ -1,8 +1,8 @@
-
+ <!--条件查询-->
+ <app-search [seachArray]="searchArray"  (callBack)="refresh($event)"></app-search>
   <!--操作层-->  
   <app-handle-layout>
     <button nz-button [nzType]="'primary'" (click)="add()">新增盘点库存</button>
-    <button nz-button [nzType]="'primary'" (click)="refresh()">刷新</button>
 </app-handle-layout>
 <div class="search-result-list">
     <nz-table 
@@ -42,6 +42,20 @@
 <!--模态框-->
 <app-drawer [visible]="OpenDraw" (callBack)="dataBack($event)">
     <form nz-form [formGroup]="shopInventoryForm">
+        <div nz-row nzGutter="8">
+            <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired>选择盘点月份</nz-form-label>
+                  <nz-form-control>
+                      <nz-month-picker formControlName="inventoryMonth" nzPlaceHolder="选择盘点月份"></nz-month-picker>
+                      <!-- <nz-select formControlName="shop" nzPlaceHolder="请选择店面">
+                        <nz-option *ngFor ="let shop of shopList" [nzLabel]="shop.name" [nzValue]="shop.id"></nz-option>
+                      </nz-select> -->
+                      <nz-form-explain *ngIf="shopInventoryForm.get('inventoryMonth').dirty && shopInventoryForm.get('inventoryMonth').errors">请选择店面</nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+        </div>
         <div nz-row nzGutter="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
