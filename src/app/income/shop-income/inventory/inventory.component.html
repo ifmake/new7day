@@ -45,13 +45,10 @@
         <div nz-row nzGutter="8">
             <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label nzRequired>选择盘点月份</nz-form-label>
+                  <nz-form-label nzRequired>选择盘点月份(1-12月份)</nz-form-label>
                   <nz-form-control>
-                      <nz-month-picker formControlName="inventoryMonth" nzPlaceHolder="选择盘点月份"></nz-month-picker>
-                      <!-- <nz-select formControlName="shop" nzPlaceHolder="请选择店面">
-                        <nz-option *ngFor ="let shop of shopList" [nzLabel]="shop.name" [nzValue]="shop.id"></nz-option>
-                      </nz-select> -->
-                      <nz-form-explain *ngIf="shopInventoryForm.get('inventoryMonth').dirty && shopInventoryForm.get('inventoryMonth').errors">请选择店面</nz-form-explain>
+                      <input nz-input formControlName="month" placeholder="请输入盘点月份">
+                      <nz-form-explain *ngIf="shopInventoryForm.get('month').dirty && shopInventoryForm.get('month').errors">请选择店面</nz-form-explain>
                   </nz-form-control>
                 </nz-form-item>
               </div>
@@ -72,7 +69,7 @@
             <nz-form-item>
               <nz-form-control>
                 <nz-form-label nzRequired>货物</nz-form-label>
-                <nz-select style="width: 100%;" formControlName="goods" (nzScrollToBottom)="loadMore()" (nzOnSearch)="searchProd($event)" [nzServerSearch]="true"
+                <nz-select style="width: 100%;" formControlName="goods" (nzScrollToBottom)="loadMore()" (nzOnSearch)="searchProd($event)" (ngModelChange)="selectProduct($event)" [nzServerSearch]="true"
                   (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择报损商品" nzAllowClear nzShowSearch>
                   <ng-container  *ngFor="let store of productList">
                       <nz-option [nzValue]="store.id" [nzLabel]="store.name"></nz-option>
@@ -100,9 +97,14 @@
           <nz-form-item>
               <nz-form-label>货物价格</nz-form-label>
               <nz-form-control>
-                  <input nz-input formControlName="price" placeholder="请输入商品价格">
+                  <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
+                    <input nz-input formControlName="price" placeholder="请输入商品价格">
+                  </nz-input-group>
                   <nz-form-explain *ngIf="shopInventoryForm.get('price').dirty && shopInventoryForm.get('price').errors">请输入商品价格</nz-form-explain>
               </nz-form-control>
+              <ng-template #addOnAfterIconTemplate>
+                  <span>{{this.productSpec}}</span>
+                </ng-template>
             </nz-form-item>
       </div>
         </div>

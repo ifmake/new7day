@@ -17,6 +17,7 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
   OpenDraw: boolean;
   searchArray = [];
   shop_id = '';
+  expot_month = new Date().getMonth();
   constructor(
     private shopIncomeService: ShopIncomeService,
     private shopService: ShopMaterialService,
@@ -25,6 +26,7 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
   ) {
     super();
     this.searchArray = [
+      {key: 'month', index: 0, name: '选择月份', show: true},
       {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
         {value: 3, label: '迷你店'},
         {value: 5, label: '重百店'},
@@ -58,6 +60,10 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
   // 选择框变更
   selectChanges(change) {
     this.shop_id  = change;
+  }
+  // 表单签收
+  inputBlurs(blur) {
+    this.expot_month = blur;
   }
   // 分页查询
   changPageIndex(page) {
@@ -114,7 +120,7 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
   }
   // 导出当月店面数据
   downloadBill() {
-    this.shopIncomeService.shopMonthExport({shop: this.shop_id}).subscribe(res => {
+    this.shopIncomeService.shopMonthExport({shop: this.shop_id, month: this.expot_month}).subscribe(res => {
       const blob = new Blob([res], {type: 'application/ms-excel'});
       const objectUrl = URL.createObjectURL(blob);
       window.open(objectUrl) ;

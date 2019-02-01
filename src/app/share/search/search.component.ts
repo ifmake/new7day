@@ -10,6 +10,7 @@ export class SearchComponent implements OnInit {
   @Input() seachArray: any;
   @Output() callBack: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectChanges: EventEmitter<any> = new EventEmitter<any>();
+  @Output() inputBlurs: EventEmitter<any> = new EventEmitter<any>();
   validateForm: FormGroup;
   isCollapse = true;
   dateFormat: string;
@@ -49,5 +50,9 @@ export class SearchComponent implements OnInit {
   // select Change
   selectChange(change) {
     this.selectChanges.emit(change);
+  }
+  // inputBlur
+  inputBlur(blur) {
+    this.inputBlurs.emit(blur);
   }
 }

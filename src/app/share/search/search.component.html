@@ -5,7 +5,7 @@
       <nz-form-item nzFlex *ngIf="!control.isSelect">
         <nz-form-label [nzFor]="control.name">{{control.name}}</nz-form-label>
         <nz-form-control>
-          <input *ngIf="!control.isTime"  nz-input placeholder="请输入关键字" [formControlName]="control.key" [attr.id]="'field'+control.index">
+          <input *ngIf="!control.isTime"  nz-input placeholder="请输入关键字" [formControlName]="control.key" [attr.id]="'field'+control.index" (blur)="inputBlur(validateForm.value[control.key])">
           <nz-date-picker  *ngIf="control.isTime" [nzFormat]="dateFormat" [formControlName]="control.key" ></nz-date-picker>
         </nz-form-control>
       </nz-form-item>

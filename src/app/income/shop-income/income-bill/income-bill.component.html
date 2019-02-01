@@ -1,6 +1,6 @@
 
     <!--条件查询-->
-    <app-search [seachArray]="searchArray"  (callBack)="refresh($event)" (selectChanges)="selectChanges($event)"></app-search>
+    <app-search [seachArray]="searchArray"  (callBack)="refresh($event)" (selectChanges)="selectChanges($event)" (inputBlurs)="inputBlurs($event)"></app-search>
   <!--操作层-->  
   <app-handle-layout>
       <button nz-button [nzType]="'primary'" (click)="add()">新增店面收入</button>

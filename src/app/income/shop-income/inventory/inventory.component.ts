@@ -41,6 +41,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
     this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.productSpec = '选择商品';
     this.searchArray = [
+      {key: 'month', index: 0, name: '选择月份', show: true},
       {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
         {value: 3, label: '迷你店'},
         {value: 5, label: '重百店'},
@@ -71,7 +72,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
       goods: [{value: '', disabled: false}],
       price: [{value: '', disabled: false}],
       stock: [{value: '', disabled: false}],
-      inventoryMonth: [{value: new Date().getFullYear + '-' + (new Date().getMonth() + 1), disabled: false}]
+      month: [{value: new Date().getFullYear + '-' + (new Date().getMonth() + 1), disabled: false}]
     });
    }
   ngOnInit() {
@@ -81,12 +82,14 @@ export class InventoryComponent extends ShareCommon implements OnInit {
   selectProduct(prod) {
     if (prod) {
         this.productService.getProductDetail(prod).subscribe(res => {
+          this.shopInventoryForm.patchValue({price: res.in_price});
           this.productSpec = res['unit'];
         });
     }
   }
    // 查询更多商品
    searchProd(msg) {
+    console.log(msg);
     this.isLoading = true;
     this.searchProdObj.search = msg;
     this.productStream.next();
@@ -112,6 +115,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
   // 添加收入弹窗
    add() {
     this.shopInventoryForm.reset();
+    this.shopInventoryForm.patchValue({month: new Date().getMonth()});
     this.OpenDraw = true;
     this.shopService.getShopMaterialList({ page: 1, page_size: 10}).subscribe(res => {
       if (!res.error) {
@@ -144,7 +148,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
         this.message.create('error', '请输入货物单价');
         return;
       }
-      if (this.shopInventoryForm.value.inventoryMonth === null || this.shopInventoryForm.value.inventoryMonth === '') {
+      if (this.shopInventoryForm.value.month === null || this.shopInventoryForm.value.month === '') {
         this.message.create('error', '请选择盘点月分');
         return;
       }
