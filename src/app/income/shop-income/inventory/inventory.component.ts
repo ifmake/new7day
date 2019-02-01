@@ -82,7 +82,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
   selectProduct(prod) {
     if (prod) {
         this.productService.getProductDetail(prod).subscribe(res => {
-          this.shopInventoryForm.patchValue({price: res.in_price});
+          this.shopInventoryForm.patchValue({price: res.last_price});
           this.productSpec = res['unit'];
         });
     }

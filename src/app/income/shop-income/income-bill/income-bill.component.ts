@@ -121,7 +121,7 @@ export class IncomeBillComponent extends ShareCommon implements OnInit {
   // 导出当月店面数据
   downloadBill() {
     this.shopIncomeService.shopMonthExport({shop: this.shop_id, month: this.expot_month}).subscribe(res => {
-      const blob = new Blob([res], {type: 'application/ms-excel'});
+      const blob = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
       const objectUrl = URL.createObjectURL(blob);
       window.open(objectUrl) ;
     });
