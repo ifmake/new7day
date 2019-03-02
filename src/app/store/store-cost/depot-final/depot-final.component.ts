@@ -93,14 +93,14 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
           }
         },
         legend: {
-          data: ['总成本', '总数量', '损耗成本', '使用成本', '使用数量', '转移成本' ]
+          data: ['进货总成本', '总数量', '损耗成本', '使用成本', '使用数量', '转移成本' ]
         },
         yAxis: {
           type: 'value'
         },
         series: [
           {
-            name: '总成本',
+            name: '进货总成本',
             data: this.costArr,
             type: 'line'
           },

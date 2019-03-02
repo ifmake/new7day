@@ -18,6 +18,7 @@ export const api_product = {
     list: () => `${API_PREFIX}/goods/goods/`,
     detail: (id) => `${API_PREFIX}/goods/goods/${id}/`,  // 查询或删除地址
     create: () => `${API_PREFIX}/goods/goods/`,
+    export: () => `${API_PREFIX}/goods/goods/export/`
 };
 // 仓库资料
 export const api_store = {

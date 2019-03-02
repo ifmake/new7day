@@ -5,6 +5,7 @@
   <app-handle-layout>
     <button nz-button [nzType]="'primary'" (click)="add()">新增商品</button>
     <app-upload-btn [uploadUrl]="uploadUrl" (callBack)="searchStream.next()"></app-upload-btn>
+    <button nz-button [nzType]="'primary'" (click)="exportDetail()">导出资料</button>
   </app-handle-layout>
   <div class="search-result-list">
       <nz-table #productManageTable 

@@ -30,4 +30,8 @@ export class ProductService {
   reviseProduct(id: string | number, body: any): any {
     return this._httpService.patch(api_product.detail(id), {body: body});
   }
+  // 导出商品资料
+  exportProduct() {
+    return this._httpService.get(api_product.export(), {responseType: 'blob' });
+  }
 }

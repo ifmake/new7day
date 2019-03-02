@@ -184,6 +184,14 @@ export class ProductComponent extends MaterialCommon implements OnInit {
         console.log(this.prodcutForm);
     });
   }
+  // 导出商品资料
+  exportDetail() {
+    this.productService.exportProduct().subscribe(res => {
+      const blob = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
+      const objectUrl = URL.createObjectURL(blob);
+      window.open(objectUrl) ;
+    });
+  }
 
 
   }

@@ -164,8 +164,9 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
         this.message.create('error', '报损原因必填');
         return;
       }
-      if(parseInt(this.loseFrom.value.price) === 0) {
-        this.message.create('error', '报损价能为0');
+      console.log(this.loseFrom.value.price);
+      if (this.loseFrom.value.price === 0 || this.loseFrom.value.price === '0' ) {
+        this.message.create('error', '报损价不能为0');
         return;
       }
       this.saveSupplier();
@@ -175,8 +176,8 @@ export class StoreLoseComponent extends StoreCommon implements OnInit {
   }
   // 报损保存
   saveSupplier(): void {
-    this.loseFrom.value.count = parseInt(this.loseFrom.value.count, 10);
-    this.loseFrom.value.price = parseInt(this.loseFrom.value.price, 10);
+    this.loseFrom.value.count = parseFloat(this.loseFrom.value.count);
+    this.loseFrom.value.price = parseFloat(this.loseFrom.value.price);
      this.stockLoseService.createLose(this.loseFrom.value).subscribe(res => {
       if (res.error) {
         console.log(res);
