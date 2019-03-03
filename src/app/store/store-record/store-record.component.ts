@@ -1,3 +1,4 @@
+import { ShopMaterialService } from 'src/app/common/service/shop-service/shop-material.service';
 import { Component, OnInit} from '@angular/core';
 import { StockListService } from 'src/app/common/service/product-service/production-stock.service';
 import { StoreCommon } from '../store_common.compoennt';
@@ -17,24 +18,32 @@ export class StoreRecordComponent extends StoreCommon implements OnInit {
   searchStream = new Subject<any>();
   dataList: any;
   currentMonth: string;
+  shopList = [];
   constructor(
     public message: NzMessageService,
     private stockListService: StockListService,
     private router: Router,
     private datePipe: DatePipe,
+    private shopMaterialService: ShopMaterialService
   ) {
     super();
+    this.shopMaterialService.getShopMaterialList(this.searchObj).subscribe(res => {
+      console.log(res);
+    });
     this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.searchArray = [
       {key: 'search', index: 0, name: '商品名称', show: true},
       {key: 'shop', index: 1, name: '出货店面', show: true, isSelect: true, selectArr: [
+        {value: '', label: '全部'},
         {value: 3, label: '迷你店'},
         {value: 5, label: '重百店'},
         {value: 6, label: '奎星店'},
         {value: 7, label: '白沙店'},
         {value: 8, label: '德感店'},
+        {value: 10, label: '成都店'},
       ]},
       {key: 'record_type', index: 2, name: '操作类型', show: true, isSelect: true, selectArr: [
+        {value: '', label: '全部'},
         {value: 'depot_in', label: '进货'},
         {value: 'depot_out', label: '出货'},
       ]},
