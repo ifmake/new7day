@@ -8,6 +8,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { ProductService } from 'src/app/common/service/product.service';
 import { Subject } from 'rxjs';
 import { ShopInventoryService } from 'src/app/common/service/shop-service/shop-inventory.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-inventory',
@@ -39,7 +40,7 @@ export class InventoryComponent extends ShareCommon implements OnInit {
     public message: NzMessageService,
   ) {
     super();
-    this.uploadUrl = 'http://47.93.0.160:9000/shop/inventory/file_import/';
+    this.uploadUrl = environment.API_PREFIX + '/shop/inventory/file_import/';
     this.currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-01';
     this.productSpec = '选择商品';
     this.searchArray = [
