@@ -35,6 +35,7 @@ export class UploadBtnComponent implements OnInit {
   // 文件上传转台变更
   listenUpload(fileObj) {
     if (fileObj.file.status !== 'uploading') {
+     
       if (fileObj.file && fileObj.file.status === 'done') {
         this.message.create('success', '商品资料导入成功');
         this.callBack.emit();
@@ -45,7 +46,7 @@ export class UploadBtnComponent implements OnInit {
             this.message.create('error', fileObj.file.error.error[code][0]);
           }
         }
-          this.message.create('error', '商品资料导入失败，请重新导入');
+          this.message.create('error',fileObj.file.error.error.error?fileObj.file.error.error.error:'商品资料导入失败，请重新导入');
       }
     }
   }

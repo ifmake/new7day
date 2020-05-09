@@ -52,6 +52,9 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
       page: 1,
       page_size: 10,
     };
+    this.searchObj = {
+      year: new Date().getFullYear()
+    }
     this.yearDate = new Date().getFullYear().toString();
     this.monthCostStream.pipe(switchMap(() => {
       return this.costService.getMonthAdjust(this.searchObj);
@@ -137,6 +140,7 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
   }
   // 数据刷新
   searchData() {
+    this.searchObj.year = new Date(this.yearDate.toString()).getFullYear();
     this.monthCostStream.next();
   }
   /**
