@@ -1,0 +1,46 @@
+nz-table,
+nz-table-title-footer,
+nz-table-inner-scroll,
+nz-table-inner-default,
+nz-table-selection {
+  display: block;
+}
+
+.nz-table-out-bordered {
+  > .@{table-prefix-cls}-title {
+    border: @table-border;
+    border-bottom: 0;
+  }
+  > .@{table-prefix-cls}-container {
+    border: @table-border;
+    border-bottom: 0;
+  }
+  > .@{table-prefix-cls}-footer {
+    border: @table-border;
+    border-top: 0;
+  }
+}
+
+cdk-virtual-scroll-viewport.ant-table-body {
+  overflow-y: scroll;
+}
+
+.nz-table-hide-scrollbar {
+  scrollbar-color: @table-header-bg @table-header-bg;
+  &::-webkit-scrollbar {
+    background-color: @table-header-bg;
+  }
+}
+
+.@{table-prefix-cls}.@{table-prefix-cls}-small {
+  .nz-table-hide-scrollbar {
+    scrollbar-color: @table-header-bg-sm @table-header-bg-sm;
+    &::-webkit-scrollbar {
+      background-color: transparent;
+    }
+  }
+}
+
+.ant-table-wrapper-rtl .ant-table thead > tr > th.ant-table-selection-column {
+  text-align: center;
+}

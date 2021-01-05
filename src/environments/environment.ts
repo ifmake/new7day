@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API_PREFIX: 'http://47.93.0.160:9000'
+  API_PREFIX: 'http://47.93.0.160:8000'
 };
 
 /*

@@ -1,0 +1,29 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: '<%= selector %>',
+  <% if(inlineTemplate) { %>template: `
+    <nz-radio-group [(ngModel)]="size">
+      <label nz-radio nzValue="small">Small</label>
+      <label nz-radio nzValue="middle">Middle</label>
+      <label nz-radio nzValue="large">Large</label>
+    </nz-radio-group>
+    <nz-space [nzSize]="size">
+      <nz-space-item>
+        <button nz-button nzType="primary">Button</button>
+      </nz-space-item>
+      <nz-space-item>
+        <button nz-button nzType="default">Default</button>
+      </nz-space-item>
+      <nz-space-item>
+        <button nz-button nzType="dashed">Dashed</button>
+      </nz-space-item>
+      <nz-space-item>
+        <a nz-button nzType="link">Link</a>
+      </nz-space-item>
+    </nz-space>
+  `<% } else { %>templateUrl: './<%= dasherize(name) %>.component.html'<% } %>
+})
+export class <%= classify(name) %>Component {
+  size: 'small' | 'middle' | 'large' | number = 'small';
+}
