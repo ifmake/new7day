@@ -13,6 +13,7 @@ import { ShopMaterialService } from 'src/app/common/service/shop-service/shop-ma
 export class ShopFinalComponent extends ShareCommon implements OnInit {
   // 整体成本走势
   yearDate: any;
+  isLoading:Boolean = false;
   // 月度成本统计
   LineOptions: any;
   PieOption: any;
@@ -69,6 +70,7 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
   // 数据刷新
   searchData() {
     // 获取店面列表
+    this.isLoading = true;
     this.shopService.getShopMaterialList({ page: 1, page_size: 10 }).subscribe(res => {
       this.shopLinesPromise = [];
       this.shopList = res.results;
@@ -81,12 +83,14 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
         const shopLineSearch = {
           page: 1,
           page_size: 10,
+          year: new Date(this.yearDate).getFullYear().toString(),
           shop: this.shopList[i].id,
         };
         this.shopLines.push(shoplineOBj);
         this.shopLinesPromise.push(this.costService.getMonthAdjust(shopLineSearch));
       }
       forkJoin(this.shopLinesPromise).subscribe(result => {
+        this.isLoading = false;
         for (let i = 0; i < result.length; i++) {
           const Data: any = result[i];
           this.MonthArr = [];
@@ -97,7 +101,7 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
           });
           this.shopLines[i].data = [...this.costArr];
         }
-        console.log(this.shopLines);
+
         this.LineOptions = {
           title: {
             text: '仓库成本（点击当月查看占比图）'
@@ -114,7 +118,7 @@ export class ShopFinalComponent extends ShareCommon implements OnInit {
             }
           },
           legend: {
-            data: ['奎星店', '迷你店', '重百店', '德感店', '白沙店']
+            data: ['奎星店', '迷你店', '重百店', '德感店', '白沙店','曹军店','成都店']
           },
           yAxis: {
             type: 'value'

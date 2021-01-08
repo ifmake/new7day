@@ -12,15 +12,18 @@
         <button nz-button [nzType]="'primary'" (click)="searchData()" style="margin-left:20px">刷新</button>
       </app-row-grid>
     </div>
+    <nz-spin [nzSpinning]="isLoading">
+            <div  echarts [options]="LineOptions"
+            [autoResize]="autoResize"
+            [merge]="updateOption"
+            style="height: 500px"
+            (chartInit)="onChartOninit($event)"
+            (chartClick)="onChartEvent($event)"
+            >
+            </div>
+      <!--成本占比图-->
+      <div *ngIf="IsPieChart" echarts [options]="PieOption" theme="default" style="height:400px;margin-top: 50px"></div>
+    </nz-spin>
     <!--成本折线走势图-->
-    <div  echarts [options]="LineOptions"
-          [autoResize]="autoResize"
-          [merge]="updateOption"
-          style="height: 500px"
-          (chartInit)="onChartOninit($event)"
-          (chartClick)="onChartEvent($event)"
-          >
-    </div>
-    <!--成本占比图-->
-    <div *ngIf="IsPieChart" echarts [options]="PieOption" theme="default" style="height:400px;margin-top: 50px"></div>
+
   </div>

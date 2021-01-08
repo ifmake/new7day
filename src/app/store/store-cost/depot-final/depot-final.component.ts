@@ -12,6 +12,7 @@ import { StockCostService } from 'src/app/common/service/product-service/product
 export class DepotFinalComponent extends ShareCommon implements OnInit {
    // 整体成本走势
    yearDate: any;
+   isLoading:Boolean = false;
    searchTypeList = [
      {name: '数量', checked: true},
      {name: '成本', checked: true},
@@ -57,8 +58,10 @@ export class DepotFinalComponent extends ShareCommon implements OnInit {
     }
     this.yearDate = new Date().getFullYear().toString();
     this.monthCostStream.pipe(switchMap(() => {
+      this.isLoading = true;
       return this.costService.getMonthAdjust(this.searchObj);
     })).subscribe(res => {
+      this.isLoading = false;
       if (res && res['length'] > 0) {
         const Data: any = res;
         this.MonthArr = [];
